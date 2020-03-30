@@ -1,0 +1,85 @@
+import React, {
+  memo,
+  PropsWithChildren,
+  ChangeEvent,
+  KeyboardEvent,
+  useState
+} from 'react';
+
+import SC from './styled';
+
+import RemoveIcon from '../../images/icon-remove.svg';
+
+import { KeyCode } from '../../types/enums';
+
+interface Props {
+  id?: string;
+  required?: boolean;
+  placeholder?: string;
+  labelText?: string;
+  value?: string[];
+  error?: any;
+  helperText?: any;
+  name: string;
+  onAddTag: (tag: string) => void;
+  onRemoveTag: (index: number) => void;
+}
+
+const TextTagsField = ({
+  id,
+  name,
+  value,
+  error,
+  helperText,
+  placeholder,
+  labelText,
+  onAddTag,
+  onRemoveTag
+}: PropsWithChildren<Props>) => {
+  const [inputValue, setInputValue] = useState('');
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setInputValue(e.target.value);
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (
+      inputValue?.trim() &&
+      (e.keyCode === KeyCode.TAB || e.keyCode === KeyCode.ENTER)
+    ) {
+      e.preventDefault();
+      onAddTag(inputValue.trim());
+      setInputValue('');
+    }
+  };
+  const handleBlur = () => {
+    if (inputValue && inputValue.trim()) {
+      onAddTag(inputValue.trim());
+      setInputValue('');
+    }
+  };
+  return (
+    <SC.Field error={error}>
+      {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
+      <SC.TextTagsField
+        id={id}
+        placeholder={placeholder || labelText}
+        name={name}
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyPress}
+        onBlur={handleBlur}
+      />
+      {helperText && <SC.HelperText error={error}>{helperText}</SC.HelperText>}
+      {value && value.length > 0 && (
+        <SC.Tags>
+          {value.map((tag, index) => (
+            <SC.Tag key={`${tag}-${index}`}>
+              <span>{tag}</span>
+              <RemoveIcon onClick={() => onRemoveTag(index)} />
+            </SC.Tag>
+          ))}
+        </SC.Tags>
+      )}
+    </SC.Field>
+  );
+};
+
+export default memo(TextTagsField);
