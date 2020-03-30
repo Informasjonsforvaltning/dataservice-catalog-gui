@@ -7,7 +7,9 @@ import withOrganization, {
   Props as OrganizationProps
 } from '../with-organization';
 
-import withDataServices, { Props as RecordsProps } from '../with-records';
+import withDataServices, {
+  Props as DataServicesProps
+} from '../with-dataservices';
 
 import IconAdd from '../../images/icon-add-cicle-sm-negative.svg';
 
@@ -18,7 +20,7 @@ import RecordListTable from '../record-list-table';
 
 import SC from './styled';
 
-import { Record } from '../../types';
+import { DataService } from '../../types';
 
 const { FDK_REGISTRATION_BASE_URI } = env;
 
@@ -26,21 +28,28 @@ interface RouteParams {
   organizationId: string;
 }
 
+// interface Props
+//   extends RecordsProps,
+//     OrganizationProps,
+//     RouteComponentProps<RouteParams> {
+//   records: Record[];
+// }
+
 interface Props
-  extends RecordsProps,
+  extends DataServicesProps,
     OrganizationProps,
     RouteComponentProps<RouteParams> {
-  records: Record[];
+  dataServices: DataService[];
 }
 
 const RecordListPage = ({
-  records,
+  dataServices,
   organization,
   history: { push },
   match: {
     params: { organizationId }
   },
-  recordsActions: { fetchAllDataServicesRequested }
+  dataServicesActions: { fetchAllDataServicesRequested }
 }: Props): JSX.Element => {
   useEffect(() => {
     if (organizationId) {
@@ -80,7 +89,7 @@ const RecordListPage = ({
           onClick={navigateToReportPage}
         />
       </SC.RecordListActions>
-      <RecordListTable records={records} />
+      <RecordListTable dataServices={dataServices} />
     </SC.RecordListPage>
   );
 };

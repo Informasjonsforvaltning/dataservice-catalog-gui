@@ -1,35 +1,35 @@
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 
 import CreateIconOutlined from '@material-ui/icons/CreateOutlined';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 
 import SC from './styled';
 
-import { RecordStatus } from '../../types/enums';
+import { Status } from '../../types/enums';
 
 interface Props {
-  status: RecordStatus;
+  status: Status;
 }
 
 const statuses = {
-  [RecordStatus.DRAFT]: {
+  [Status.DRAFT]: {
     text: 'Utkast',
     icon: CreateIconOutlined
   },
-  [RecordStatus.APPROVED]: {
+  [Status.APPROVED]: {
     text: 'Godkjent',
     icon: CheckBoxOutlinedIcon
   }
 };
 
-const RecordStatusIndicator = ({ status }: Props): JSX.Element => {
+const DataServiceStatusIndicator: FC<Props> = ({ status }) => {
   const { text, icon: Icon } = statuses[status];
   return (
-    <SC.RecordStatusIndicator>
+    <SC.DataServiceStatusIndicator>
       <Icon />
       <span>{text}</span>
-    </SC.RecordStatusIndicator>
+    </SC.DataServiceStatusIndicator>
   );
 };
 
-export default memo(RecordStatusIndicator);
+export default memo(DataServiceStatusIndicator);

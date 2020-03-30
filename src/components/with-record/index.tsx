@@ -17,7 +17,7 @@ const withRecord = (Component: ComponentType<any>) => {
   ) => <Component {...props} />;
 
   const mapStateToProps = (state: any) => ({
-    record: state.RecordReducer.get('record')?.toJS() ?? null
+    record: state.RecordReducer.get('dataServices')?.toJS() ?? null
   });
 
   const mapDispatchToProps = (dispatch: Dispatch) => ({

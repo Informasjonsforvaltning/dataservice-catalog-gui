@@ -7,12 +7,12 @@ import withOrganization, {
   Props as OrganizationProps
 } from '../with-organization';
 
-import withDataServices, { Props as RecordsProps } from '../with-records';
+import withDataServices, { Props as RecordsProps } from '../with-dataservices';
 
 import SC from './styled';
 import Headline from '../headline';
 import BreadcrumbsBar from '../breadcrumbs-bar';
-import { RecordItem } from './record-item';
+// import { RecordItem } from './record-item';
 import { RepresentativesInterface } from '../../types';
 import { localization } from '../../lib/localization';
 import { fetchAllRepresentativesRequested } from '../representatives/redux/actions';
@@ -33,7 +33,7 @@ interface Props
 const { FDK_REGISTRATION_BASE_URI } = env;
 
 const RecordReportPage = ({
-  records,
+  // records,
   organization,
   representatives,
   match: {
@@ -41,7 +41,7 @@ const RecordReportPage = ({
   },
   fetchAllRepresentatives,
   organizationActions: { fetchOrganizationRequested },
-  recordsActions: { fetchAllDataServicesRequested }
+  dataServicesActions: { fetchAllDataServicesRequested }
 }: Props): JSX.Element => {
   useEffect(() => {
     if (organizationId) {
@@ -77,9 +77,9 @@ const RecordReportPage = ({
       <ReportRepresentatives representatives={representatives} />
 
       <SC.RecordReportList>
-        {records.map(record => (
+        {/* {records.map(record => (
           <RecordItem key={record.id} record={record} />
-        ))}
+        ))} */}
       </SC.RecordReportList>
     </SC.RecordReportPage>
   );

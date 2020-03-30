@@ -1,4 +1,4 @@
-import { RecordStatus, DatasetStatus, DataServiceStatus } from './enums';
+import { RecordStatus, DatasetStatus, Status } from './enums';
 
 // TODO: delete
 export interface Record {
@@ -26,6 +26,13 @@ export interface Record {
   dataProcessingAgreements: DataProcessingAgreement[];
   endpointDescriptionUrls: string[];
   updatedAt: string;
+}
+
+interface DataServiceStatus {
+  statusText: Status;
+  expirationDate?: string;
+  comment?: string;
+  supersededByUrl?: string;
 }
 
 export interface DataService {

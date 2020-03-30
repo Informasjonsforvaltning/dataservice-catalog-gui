@@ -15,7 +15,7 @@ import StatusBar from '../status-bar';
 
 import SC from './styled';
 
-import { RecordStatus } from '../../types/enums';
+import { RecordStatus, Status } from '../../types/enums';
 
 const { FDK_REGISTRATION_BASE_URI } = env;
 
@@ -104,7 +104,7 @@ const RecordPage = ({
       <Headline
         title={recordTitle}
         subTitle={organization?.name ?? ''}
-        status={recordStatus}
+        status={Status.DRAFT} // TODO: dynamically please
       />
       <RecordForm
         organizationId={organizationId}

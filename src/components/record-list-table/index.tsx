@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { FC, memo } from 'react';
 
 import TableHead from '../table-head';
 
@@ -6,13 +6,13 @@ import SC from './styled';
 
 import RecordRow from '../record-row';
 
-import { Record } from '../../types';
+import { DataService } from '../../types';
 
 interface Props {
-  records: Record[];
+  dataServices: DataService[];
 }
 
-const RecordListTable = ({ records }: Props): JSX.Element => (
+const RecordListTable: FC<Props> = ({ dataServices }) => (
   <>
     <SC.RecordListTable>
       <thead>
@@ -21,21 +21,18 @@ const RecordListTable = ({ records }: Props): JSX.Element => (
             fieldSelector={['title']}
             title='Tittel på datatjenestebeskrivelse'
           />
-          <TableHead
-            // fieldSelector={['dataProcessorContactDetails', 'name']}
-            title='Sist endret av'
-          />
-          <TableHead title='Sist endret' />
-          <TableHead fieldSelector={['status']} title='Status' />
+          <TableHead fieldSelector={['modifiedBy']} title='Sist endret av' />
+          <TableHead fieldSelector={['modified']} title='Sist endret' />
+          <TableHead fieldSelector={['status', 'statusText']} title='Status' />
         </tr>
       </thead>
       <tbody>
-        {records.map(record => (
-          <RecordRow key={record.id} record={record} />
+        {dataServices.map(dataService => (
+          <RecordRow key={dataService.id} dataService={dataService} />
         ))}
       </tbody>
     </SC.RecordListTable>
-    {records.length === 0 && (
+    {dataServices.length === 0 && (
       <SC.EmptyTableBody>
         Det er ikke registrert noen beskrivelser ennå
       </SC.EmptyTableBody>

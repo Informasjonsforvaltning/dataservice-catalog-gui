@@ -1,22 +1,22 @@
 import React, { memo } from 'react';
 
-import RecordStatusIndicator from '../record-status-indicator';
+import DataServiceStatusIndicator from '../dataservice-status-indicator';
 
 import SC from './styled';
 
-import { RecordStatus } from '../../types/enums';
+import { Status } from '../../types/enums';
 
 interface Props {
   title: string;
   subTitle: string;
-  status?: RecordStatus;
+  status?: Status;
 }
 
 const Headline = ({ title, subTitle, status }: Props): JSX.Element => (
   <SC.Headline>
     <SC.TitleWrapper>
       <SC.Title>{title}</SC.Title>
-      {status && <RecordStatusIndicator status={status} />}
+      {status && <DataServiceStatusIndicator status={status} />}
     </SC.TitleWrapper>
     <SC.SubTitle>{subTitle}</SC.SubTitle>
   </SC.Headline>

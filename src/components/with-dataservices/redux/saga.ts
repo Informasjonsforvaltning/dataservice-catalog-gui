@@ -16,17 +16,16 @@ function* fetchAllDataServicesRequested({
     const authorization = yield call([auth, auth.getAuthorizationHeader]);
     const { data, message } = yield call(
       axios.get,
-      `${DATASERVICE_CATALOG_URL}/api/organizations/${organizationId}/records`,
+      `${DATASERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices`,
       {
-        params: { limit: 1000 },
         headers: {
           authorization,
           accept: 'application/json'
         }
       }
     );
-    if (data && data.hits) {
-      yield put(actions.fetchAllDataServicesSucceeded(data.hits));
+    if (data?.length > 0) {
+      yield put(actions.fetchAllDataServicesSucceeded(data));
     } else {
       yield put(actions.fetchAllDataServicesFailed(JSON.stringify(message)));
     }

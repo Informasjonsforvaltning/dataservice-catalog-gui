@@ -3,10 +3,9 @@ export enum RecordStatus {
   APPROVED = 'APPROVED'
 }
 
-export enum DataServiceStatus {
+export enum Status {
   DRAFT = 'DRAFT',
-  APPROVE = 'APPROVE',
-  PUBLISH = 'PUBLISH'
+  APPROVED = 'APPROVED'
 }
 
 export enum DatasetStatus {

@@ -1,33 +1,31 @@
 import React, { memo } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import RecordStatusIndicator from '../record-status-indicator';
+import { translate } from '../../lib/localization';
+import { formatDate, dateStringToDate } from '../../lib/date-utils';
+
+import DataServiceStatusIndicator from '../dataservice-status-indicator';
 
 import SC from './styled';
 
-import { Record } from '../../types';
+import { DataService } from '../../types';
 
 interface Props extends RouteComponentProps {
-  record: Record;
+  dataService: DataService;
 }
 
 const RecordRow = ({
-  record: {
-    id,
-    organizationId,
-    title,
-    dataProcessorContactDetails: { name },
-    status
-  },
+  dataService: { id, organizationId, title, status, modified },
   history: { push }
 }: Props) => {
   const navigateToRecord = () => push(`/${organizationId}/records/${id}`);
   return (
     <SC.RecordRow onClick={navigateToRecord}>
-      <td>{title}</td>
-      <td>{name}</td>
+      <td> {translate(title)} </td>
+      <td />
+      <td>{formatDate(dateStringToDate(modified))}</td>
       <td>
-        <RecordStatusIndicator status={status} />
+        <DataServiceStatusIndicator status={status.statusText} />
       </td>
     </SC.RecordRow>
   );

@@ -2,12 +2,14 @@ import React, { memo } from 'react';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
-import withDataServices, { Props as RecordsProps } from '../with-records';
+import withDataServices, {
+  Props as DataservicesProps
+} from '../with-dataservices';
 
 import SC from './styled';
 import { SortOrder } from '../../types/enums';
 
-interface Props extends RecordsProps {
+interface Props extends DataservicesProps {
   title: string;
   fieldSelector: string[];
 }
@@ -15,7 +17,7 @@ interface Props extends RecordsProps {
 const TableHead = ({
   title,
   fieldSelector,
-  recordsActions: { sortRecords }
+  dataServicesActions: { sortDataServices }
 }: Props): JSX.Element => (
   <th>
     <div>
@@ -23,13 +25,13 @@ const TableHead = ({
       <SC.SortButtons>
         <button
           type='button'
-          onClick={() => sortRecords(fieldSelector, SortOrder.ASC)}
+          onClick={() => sortDataServices(fieldSelector, SortOrder.ASC)}
         >
           <ArrowDropUp fontSize='large' />
         </button>
         <button
           type='button'
-          onClick={() => sortRecords(fieldSelector, SortOrder.DSC)}
+          onClick={() => sortDataServices(fieldSelector, SortOrder.DSC)}
         >
           <ArrowDropDown fontSize='large' />
         </button>

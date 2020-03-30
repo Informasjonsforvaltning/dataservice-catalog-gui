@@ -7,6 +7,7 @@ import Footer from '../footer';
 
 import ProtectedRoute from '../protected-route';
 
+// TODO: CHANGE ALL NAMES AND PATHS
 const RecordListPage = lazy(() => import('../record-list-page'));
 const RecordPage = lazy(() => import('../record-page'));
 const RecordReportPage = lazy(() =>

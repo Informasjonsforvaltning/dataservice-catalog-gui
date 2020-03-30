@@ -15,11 +15,11 @@ import withDatasets, { Props as DatasetsProps } from '../with-datasets';
 import withRecord, { Props as RecordProps } from '../with-record';
 
 import TextField from '../field-text';
-import TextAreaField from '../field-text-area';
-import TextTagsField from '../field-text-tags';
-import TextTagsSearchField from '../field-text-tags-search';
+// import TextAreaField from '../field-text-area';
+// import TextTagsField from '../field-text-tags';
+// import TextTagsSearchField from '../field-text-tags-search';
 import Radio from '../radio';
-import Checkbox from '../checkbox';
+// import Checkbox from '../checkbox';
 import Select from '../select';
 
 import SC from './styled';
@@ -33,8 +33,8 @@ import validationSchema from './validation-schema';
 
 import { mapRecordToValues } from './utils';
 
-import { Record, Dataset } from '../../types';
-import { DatasetStatus, RecordStatus } from '../../types/enums';
+import { Record } from '../../types';
+import { RecordStatus } from '../../types/enums';
 
 type FormValues = Omit<Record, 'updatedAt'>;
 
@@ -56,14 +56,11 @@ const RecordForm = ({
   datasetsActions: { fetchAllDatasetsRequested },
   recordActions: { patchRecordRequested: patchRecord },
   values,
-  errors,
-  touched,
   isValid,
   validateForm,
   handleChange,
   setValues,
-  setFieldValue,
-  setFieldTouched
+  setFieldValue
 }: Props): JSX.Element | null => {
   const [allExpanded, setAllExpanded] = useState([
     true,
@@ -77,9 +74,6 @@ const RecordForm = ({
     false,
     false
   ]);
-  const [datasetSuggestions, setDatasetSuggestions] = useState<Dataset[]>([]);
-  const [isWaitingForSuggestions, setIsWaitingForSuggestions] = useState(false);
-
   const mounted = useRef(false);
   const recordLoaded = useRef(false);
   const previousRecord = useRef<FormValues>(values);
@@ -92,7 +86,7 @@ const RecordForm = ({
   const isMounted = mounted.current;
   const isRecordLoaded = recordLoaded.current;
   const allFieldsExpanded = allExpanded.every(Boolean);
-  const isApproved = record?.status === RecordStatus.APPROVED;
+  // const isApproved = record?.status === RecordStatus.APPROVED;
 
   const toggleAllExpanded = () =>
     setAllExpanded(allExpanded.map(() => !allFieldsExpanded));
@@ -211,7 +205,7 @@ const RecordForm = ({
             onChange={handleChange}
           />
         </SC.Fieldset>
-        <SC.Fieldset
+        {/* <SC.Fieldset
           title='Felles databehandlingsansvar'
           subtitle={localization.commonDataControllerContactAbstract}
           description={localization.commonDataControllerContactDescription}
@@ -292,7 +286,7 @@ const RecordForm = ({
               </>
             )}
           />
-        </SC.Fieldset>
+        </SC.Fieldset> */}
       </SC.RecordFormSection>
       <SC.RecordFormSection
         title='Versjon'
@@ -348,6 +342,7 @@ const RecordForm = ({
           subtitle={localization.dataProcessingAgreementsAbstract}
           description={localization.dataProcessingAgreementsDescription}
         >
+          {/* TODO: ADD INITIAL CASE? */}
           <FieldArray
             name='endpointDescriptionUrls'
             render={arrayHelpers => (
@@ -713,7 +708,7 @@ const RecordForm = ({
         </SC.Fieldset>
       </SC.RecordFormSection>
 
-      <SC.RecordFormSection
+      {/* <SC.RecordFormSection
         required
         title='Behandlingsaktiviteter'
         isExpanded={allExpanded[1]}
@@ -983,8 +978,8 @@ const RecordForm = ({
             )}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
-      <SC.RecordFormSection
+      </SC.RecordFormSection> */}
+      {/* <SC.RecordFormSection
         required
         title='Personopplysninger'
         isExpanded={allExpanded[2]}
@@ -1122,8 +1117,8 @@ const RecordForm = ({
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
-      <SC.RecordFormSection
+      </SC.RecordFormSection> */}
+      {/* <SC.RecordFormSection
         required
         title='Overføring av personopplysningene'
         isExpanded={allExpanded[3]}
@@ -1234,7 +1229,7 @@ const RecordForm = ({
             />
           </SC.Fieldset>
         )}
-      </SC.RecordFormSection>
+      </SC.RecordFormSection> */}
     </SC.RecordForm>
   ) : null;
 };

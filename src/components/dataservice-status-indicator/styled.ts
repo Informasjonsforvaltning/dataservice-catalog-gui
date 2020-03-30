@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const RecordStatusIndicator = styled.div`
+const DataServiceStatusIndicator = styled.div`
   display: flex;
   align-items: center;
 
@@ -21,4 +21,4 @@ const RecordStatusIndicator = styled.div`
   }
 `;
 
-export default { RecordStatusIndicator };
+export default { DataServiceStatusIndicator };
