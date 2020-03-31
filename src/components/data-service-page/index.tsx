@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { FC, memo, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import env from '../../env';
@@ -31,7 +31,7 @@ interface Props
     DataServiceProps,
     RouteComponentProps<RouteParams> {}
 
-const DataServicePage = ({
+const DataServicePage: FC<Props> = ({
   dataService,
   organization,
   history: { replace },
@@ -44,10 +44,10 @@ const DataServicePage = ({
     resetDataService
   },
   organizationActions: { fetchOrganizationRequested }
-}: Props): JSX.Element => {
+}) => {
   const [dataServiceTitle, setDataServiceTitle] = useState('');
   const [dataServiceStatus, setDataServiceStatus] = useState(
-    dataService?.status ?? Status.DRAFT
+    dataService?.status.statusText ?? Status.DRAFT
   );
   const [canChangeUrl, setCanChangeUrl] = useState(false);
   const [formIsValid, setFormValidity] = useState(false);
@@ -78,8 +78,8 @@ const DataServicePage = ({
     if (!dataServiceId && id && canChangeUrl) {
       replace(`/${organizationId}/dataservices/${id}`);
     }
-    if (dataService?.status && dataService.status !== dataServiceStatus) {
-      setDataServiceStatus(dataService.status);
+    if (dataService?.status.statusText !== dataServiceStatus) {
+      setDataServiceStatus(dataService?.status.statusText ?? Status.DRAFT);
     }
   }, [dataService]);
 
@@ -113,7 +113,6 @@ const DataServicePage = ({
         status={Status.DRAFT} // TODO: dynamically please
       />
       <DataServiceForm
-        organizationId={organizationId}
         dataServiceStatus={dataServiceStatus}
         onTitleChange={setDataServiceTitle}
         onStatusChange={setDataServiceStatus}
@@ -122,8 +121,8 @@ const DataServicePage = ({
       <StatusBar
         dataServiceId={dataServiceId}
         canBeApproved={formIsValid}
-        updatedAt={dataService?.updatedAt}
-        status={dataServiceStatus.statusText}
+        updatedAt={dataService?.modified}
+        status={dataServiceStatus}
         onSetStatus={handleDataServiceStatusChange}
         onDataServiceRemove={() =>
           id &&

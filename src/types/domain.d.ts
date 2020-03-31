@@ -12,8 +12,8 @@ export interface DataService {
   status: DataServiceStatus;
   organizationId: string;
   title: MultiLanguageText;
-  version: string;
-  operationCount: number;
+  version?: string;
+  operationCount?: number;
   contact: Partial<Contact>;
   endpointUrl: string;
   mediaType: string;
@@ -24,8 +24,8 @@ export interface DataService {
   termsAndConditions: Partial<TermsAndConditions>;
   serviceType: string;
   servesDataset: string[];
-  created: string;
-  modified: string;
+  created?: string;
+  modified?: string;
 }
 
 export interface TermsAndConditions {

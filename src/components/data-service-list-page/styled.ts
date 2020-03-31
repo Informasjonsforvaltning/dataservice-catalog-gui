@@ -2,11 +2,11 @@ import styled from 'styled-components';
 
 import Common from '../common/styled';
 
-const RecordListPage = styled(Common.Container)`
+const DataServiceListPage = styled(Common.Container)`
   margin-bottom: 50px;
 `;
 
-const RecordListActions = styled.div`
+const DataServiceListActions = styled.div`
   margin-top: 50px;
   margin-bottom: 15px;
 
@@ -16,6 +16,6 @@ const RecordListActions = styled.div`
 `;
 
 export default {
-  RecordListPage,
-  RecordListActions
+  DataServiceListPage,
+  DataServiceListActions
 };

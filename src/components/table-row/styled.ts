@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const RecordRow = styled.tr`
+const TableRow = styled.tr`
   cursor: pointer;
 
   & > td {
@@ -8,4 +8,4 @@ const RecordRow = styled.tr`
   }
 `;
 
-export default { RecordRow };
+export default { TableRow };

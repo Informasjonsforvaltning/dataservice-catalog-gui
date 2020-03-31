@@ -16,8 +16,8 @@ const statuses = {
     text: 'Utkast',
     icon: CreateIconOutlined
   },
-  [Status.APPROVED]: {
-    text: 'Godkjent',
+  [Status.PUBLISHED]: {
+    text: 'Publisert',
     icon: CheckBoxOutlinedIcon
   }
 };

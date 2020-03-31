@@ -1,7 +1,7 @@
 {
-  "name": "records-of-processing-activities-gui",
+  "name": "dataservice-catalog-gui",
   "version": "1.0.0",
-  "description": "An application for managing records of processing activities",
+  "description": "An application for managing data services",
   "private": true,
   "engines": {
     "node": ">= 12.13.0"
@@ -29,14 +29,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Informasjonsforvaltning/records-of-processing-activities-gui.git"
+    "url": "git+https://github.com/Informasjonsforvaltning/dataservice-catalog-gui.git"
   },
-  "author": "Øyvind Isaksen",
+  "author": "German Poljakov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Informasjonsforvaltning/records-of-processing-activities-gui/issues"
+    "url": "https://github.com/Informasjonsforvaltning/dataservice-catalog-gui/issues"
   },
-  "homepage": "https://github.com/Informasjonsforvaltning/records-of-processing-activities-gui#readme",
+  "homepage": "https://github.com/Informasjonsforvaltning/dataservice-catalog-gui#readme",
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"

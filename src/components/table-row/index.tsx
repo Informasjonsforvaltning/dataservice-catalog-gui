@@ -14,21 +14,22 @@ interface Props extends RouteComponentProps {
   dataService: DataService;
 }
 
-const RecordRow = ({
-  dataService: { id, organizationId, title, status, modified },
+const TableRow = ({
+  dataService: { id, organizationId, title, status, modified = '' },
   history: { push }
 }: Props) => {
-  const navigateToRecord = () => push(`/${organizationId}/dataservices/${id}`);
+  const navigateToDataService = () =>
+    push(`/${organizationId}/data-services/${id}`);
   return (
-    <SC.RecordRow onClick={navigateToRecord}>
+    <SC.TableRow onClick={navigateToDataService}>
       <td> {translate(title)} </td>
       <td />
       <td>{formatDate(dateStringToDate(modified))}</td>
       <td>
         <DataServiceStatusIndicator status={status.statusText} />
       </td>
-    </SC.RecordRow>
+    </SC.TableRow>
   );
 };
 
-export default memo(withRouter(RecordRow));
+export default memo(withRouter(TableRow));

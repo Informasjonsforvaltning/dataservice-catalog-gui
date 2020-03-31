@@ -4,7 +4,7 @@ import TableHead from '../table-head';
 
 import SC from './styled';
 
-import RecordRow from '../record-row';
+import TableRow from '../table-row';
 
 import { DataService } from '../../types';
 
@@ -12,9 +12,9 @@ interface Props {
   dataServices: DataService[];
 }
 
-const RecordListTable: FC<Props> = ({ dataServices }) => (
+const DataServiceListTable: FC<Props> = ({ dataServices }) => (
   <>
-    <SC.RecordListTable>
+    <SC.DataServiceListTable>
       <thead>
         <tr>
           <TableHead
@@ -28,10 +28,10 @@ const RecordListTable: FC<Props> = ({ dataServices }) => (
       </thead>
       <tbody>
         {dataServices.map(dataService => (
-          <RecordRow key={dataService.id} dataService={dataService} />
+          <TableRow key={dataService.id} dataService={dataService} />
         ))}
       </tbody>
-    </SC.RecordListTable>
+    </SC.DataServiceListTable>
     {dataServices.length === 0 && (
       <SC.EmptyTableBody>
         Det er ikke registrert noen beskrivelser ennå
@@ -40,4 +40,4 @@ const RecordListTable: FC<Props> = ({ dataServices }) => (
   </>
 );
 
-export default memo(RecordListTable);
+export default memo(DataServiceListTable);

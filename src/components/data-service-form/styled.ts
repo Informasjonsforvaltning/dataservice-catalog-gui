@@ -4,7 +4,7 @@ import { Form } from 'formik';
 import ExpansionPanel from '../expansion-panel';
 import BaseFieldSet from '../fdk-fieldset';
 
-const RecordForm = styled(Form)`
+const DataServiceForm = styled(Form)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -29,7 +29,7 @@ const ExpandAllButton = styled.button`
   }
 `;
 
-const RecordFormSection = styled(ExpansionPanel)`
+const DataServiceFormSection = styled(ExpansionPanel)`
   width: 100%;
 
   &:nth-of-type(n + 2) {
@@ -99,9 +99,9 @@ const RemoveButton = styled.button`
 `;
 
 export default {
-  RecordForm,
+  DataServiceForm,
   ExpandAllButton,
-  RecordFormSection,
+  DataServiceFormSection,
   Fieldset,
   InlineFields,
   AddButton,

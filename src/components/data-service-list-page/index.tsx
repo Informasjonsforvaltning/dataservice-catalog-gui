@@ -1,4 +1,5 @@
-import React, { useEffect, memo } from 'react';
+import React, { FC, memo, useEffect } from 'react';
+import { compose } from 'redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import env from '../../env';
@@ -16,7 +17,7 @@ import IconAdd from '../../images/icon-add-cicle-sm-negative.svg';
 import Headline from '../headline';
 import FDKButton from '../fdk-button';
 import BreadcrumbsBar from '../breadcrumbs-bar';
-import RecordListTable from '../data-service-list-table';
+import DataServiceListTable from '../data-service-list-table';
 
 import SC from './styled';
 
@@ -28,13 +29,6 @@ interface RouteParams {
   organizationId: string;
 }
 
-// interface Props
-//   extends RecordsProps,
-//     OrganizationProps,
-//     RouteComponentProps<RouteParams> {
-//   records: Record[];
-// }
-
 interface Props
   extends DataServicesProps,
     OrganizationProps,
@@ -42,26 +36,26 @@ interface Props
   dataServices: DataService[];
 }
 
-const RecordListPage = ({
+const DataServiceListPage: FC<Props> = ({
   dataServices,
   organization,
   history: { push },
   match: {
     params: { organizationId }
   },
-  dataServicesActions: { fetchAllDataServicesRequested }
-}: Props): JSX.Element => {
+  dataServicesActions: { fetchAllDataServicesRequested: fetchAllDataServices }
+}) => {
   useEffect(() => {
     if (organizationId) {
-      fetchAllDataServicesRequested(organizationId);
+      fetchAllDataServices(organizationId);
     }
   }, [organizationId]);
 
-  const navigateToReportPage = () => push(`/${organizationId}/report`);
-  const navigateToNewRecordPage = () => push(`/${organizationId}/dataservices`);
+  const navigateToNewDataServicePage = () =>
+    push(`/${organizationId}/data-services`);
 
   return (
-    <SC.RecordListPage>
+    <SC.DataServiceListPage>
       <BreadcrumbsBar
         breadcrumbs={[
           {
@@ -75,23 +69,26 @@ const RecordListPage = ({
         title='Datatjenestekatalog'
         subTitle={organization?.name ?? ''}
       />
-      <SC.RecordListActions>
+      <SC.DataServiceListActions>
         <FDKButton
           icon={IconAdd}
           variant='default'
           text='Legg til datatjenestebeskrivelse'
-          onClick={navigateToNewRecordPage}
+          onClick={navigateToNewDataServicePage}
         />
         <FDKButton
           icon={IconAdd}
           variant='secondary'
           text='Høst spesifikasjon fra katalog'
-          onClick={navigateToReportPage}
         />
-      </SC.RecordListActions>
-      <RecordListTable dataServices={dataServices} />
-    </SC.RecordListPage>
+      </SC.DataServiceListActions>
+      <DataServiceListTable dataServices={dataServices} />
+    </SC.DataServiceListPage>
   );
 };
 
-export default memo(withDataServices(withOrganization(RecordListPage)));
+export default compose<FC<any>>(
+  memo,
+  withDataServices,
+  withOrganization
+)(DataServiceListPage);

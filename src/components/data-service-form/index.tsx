@@ -1,18 +1,26 @@
 import React, {
+  FC,
   memo,
-  Fragment,
+  // Fragment,
   useEffect,
   useRef,
   useState,
   ChangeEvent
 } from 'react';
-import { FormikProps, withFormik, FieldArray } from 'formik';
+import { compose } from 'redux';
+import { FormikProps, withFormik } from 'formik';
+// import { FormikProps, withFormik, FieldArray } from 'formik';
 import { compare, Operation } from 'fast-json-patch';
 
-import { localization } from '../../lib/localization';
+import {
+  localization as translations,
+  translate
+} from '../../lib/localization';
 
-import withDatasets, { Props as DatasetsProps } from '../with-datasets';
-import withDataService, { Props as RecordProps } from '../with-data-service';
+// import withDatasets, { Props as DatasetsProps } from '../with-datasets';
+import withDataService, {
+  Props as DataServiceProps
+} from '../with-data-service';
 
 import TextField from '../field-text';
 // import TextAreaField from '../field-text-area';
@@ -24,44 +32,41 @@ import Select from '../select';
 
 import SC from './styled';
 
-import AddIcon from '../../images/icon-add.svg';
-import RemoveIcon from '../../images/icon-remove.svg';
+// import AddIcon from '../../images/icon-add.svg';
+// import RemoveIcon from '../../images/icon-remove.svg';
 import ExpandAllUpIcon from '../../images/expand-all-up.svg';
 import ExpandAllDownIcon from '../../images/expand-all-down.svg';
 
 import validationSchema from './validation-schema';
 
-import { mapRecordToValues } from './utils';
+import { mapDataServiceToValues } from './utils';
 
-import { Record } from '../../types';
-import { RecordStatus } from '../../types/enums';
+import { DataService } from '../../types';
+import { Status } from '../../types/enums';
 
-type FormValues = Omit<Record, 'updatedAt'>;
-
-interface Props extends DatasetsProps, RecordProps, FormikProps<FormValues> {
-  organizationId: string;
-  recordStatus: RecordStatus;
+interface Props extends DataServiceProps, FormikProps<DataService> {
+  dataServiceStatus: Status;
   onTitleChange?: (title: string) => void;
-  onStatusChange?: (status: RecordStatus) => void;
+  onStatusChange?: (status: Status) => void;
   onValidityChange?: (isValid: boolean) => void;
 }
 
-const RecordForm = ({
-  organizationId,
-  record,
-  recordStatus,
-  datasets,
+const DataServiceForm: FC<Props> = ({
+  dataService,
+  dataServiceStatus,
+  // datasets,
   onTitleChange,
+  // onStatusChange,
   onValidityChange,
-  datasetsActions: { fetchAllDatasetsRequested },
-  recordActions: { patchDataServiceRequested: patchDataService },
+  // datasetsActions: { fetchAllDatasetsRequested },
+  dataServiceActions: { patchDataServiceRequested: patchDataService },
   values,
   isValid,
   validateForm,
   handleChange,
   setValues,
   setFieldValue
-}: Props): JSX.Element | null => {
+}) => {
   const [allExpanded, setAllExpanded] = useState([
     true,
     false,
@@ -75,18 +80,18 @@ const RecordForm = ({
     false
   ]);
   const mounted = useRef(false);
-  const recordLoaded = useRef(false);
-  const previousRecord = useRef<FormValues>(values);
+  const dataServiceLoaded = useRef(false);
+  const previousDataService = useRef<DataService>(values);
 
   useEffect(() => {
-    fetchAllDatasetsRequested(organizationId);
+    // fetchAllDatasetsRequested(organizationId);
     mounted.current = true;
   }, []);
 
   const isMounted = mounted.current;
-  const isRecordLoaded = recordLoaded.current;
+  const isDataServiceLoaded = dataServiceLoaded.current;
   const allFieldsExpanded = allExpanded.every(Boolean);
-  // const isApproved = record?.status === RecordStatus.APPROVED;
+  // const isPublished = dataService?.status.statusText === Status.PUBLISHED;
 
   const toggleAllExpanded = () =>
     setAllExpanded(allExpanded.map(() => !allFieldsExpanded));
@@ -99,32 +104,38 @@ const RecordForm = ({
   };
 
   useEffect(() => {
-    if (record) {
-      const recordValues = mapRecordToValues(record, organizationId);
-      if (!isRecordLoaded) {
-        setValues(recordValues, true);
-        previousRecord.current = recordValues;
-        recordLoaded.current = true;
+    if (dataService) {
+      const dataServiceValues = mapDataServiceToValues(dataService);
+      if (!isDataServiceLoaded) {
+        setValues(dataServiceValues, true);
+        previousDataService.current = dataServiceValues;
+        dataServiceLoaded.current = true;
       } else {
-        const previousRecordStatus = record?.status;
-        const nextRecordStatus = previousRecord.current.status;
-        if (previousRecordStatus !== nextRecordStatus) {
-          setValues(recordValues, true);
-          previousRecord.current = recordValues;
+        const previousDataServiceStatus = dataService?.status;
+        const nextDataServiceStatus = previousDataService.current.status;
+        if (
+          previousDataServiceStatus.statusText !==
+          nextDataServiceStatus.statusText
+        ) {
+          setValues(dataServiceValues, true);
+          previousDataService.current = dataServiceValues;
         }
       }
     }
-  }, [record]);
+  }, [dataService]);
 
   useEffect(() => {
     if (isMounted) {
-      const previousRecordStatus = record?.status;
-      const nextRecordStatus = recordStatus;
-      if (previousRecordStatus !== nextRecordStatus) {
-        const newValues = { ...values, status: nextRecordStatus };
+      const previousDataServiceStatus = dataService?.status;
+      const nextDataServiceStatus = { statusText: dataServiceStatus };
+      if (
+        previousDataServiceStatus?.statusText !==
+        nextDataServiceStatus.statusText
+      ) {
+        const newValues = { ...values, status: nextDataServiceStatus };
         if (
-          previousRecordStatus === RecordStatus.DRAFT &&
-          nextRecordStatus === RecordStatus.APPROVED
+          previousDataServiceStatus?.statusText === Status.DRAFT &&
+          nextDataServiceStatus.statusText === Status.PUBLISHED
         ) {
           if (isValid) {
             patchDataService(newValues);
@@ -134,7 +145,7 @@ const RecordForm = ({
         }
       }
     }
-  }, [recordStatus]);
+  }, [dataServiceStatus]);
 
   useEffect(() => {
     if (isMounted && onValidityChange) {
@@ -144,11 +155,11 @@ const RecordForm = ({
 
   useEffect(() => {
     const validateAndSave = async () => {
-      const diff: Operation[] = compare(previousRecord.current, values);
+      const diff: Operation[] = compare(previousDataService.current, values);
       const hasErrors = Object.keys(await validateForm(values)).length > 0;
       if (
         diff.length > 0 &&
-        !(record?.status === RecordStatus.APPROVED && hasErrors)
+        !(dataService?.status.statusText === Status.PUBLISHED && hasErrors)
       ) {
         patchDataService(values);
       }
@@ -159,21 +170,21 @@ const RecordForm = ({
   useEffect(() => {
     if (onTitleChange) {
       onTitleChange(
-        values?.title?.trim() ||
+        translate(values?.title)?.trim() ||
           'Åpne Data fra Enhetsregisteret - API Dokumentasjon'
       );
     }
   }, [values?.title]);
 
-  return datasets.length > 0 ? (
-    <SC.RecordForm>
+  return (
+    <SC.DataServiceForm>
       <SC.ExpandAllButton as='a' onClick={toggleAllExpanded}>
         <span>
           {allFieldsExpanded ? 'Lukk alle felter' : 'Åpne alle felter'}
         </span>
         {allFieldsExpanded ? <ExpandAllUpIcon /> : <ExpandAllDownIcon />}
       </SC.ExpandAllButton>
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         required
         title='Tittel og beskrivelse'
         isExpanded={allExpanded[0]}
@@ -287,8 +298,8 @@ const RecordForm = ({
             )}
           />
         </SC.Fieldset> */}
-      </SC.RecordFormSection>
-      <SC.RecordFormSection
+      </SC.DataServiceFormSection>
+      <SC.DataServiceFormSection
         title='Versjon'
         isExpanded={allExpanded[1]}
         onClick={() =>
@@ -301,19 +312,19 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Versjon'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='version'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
-      <SC.RecordFormSection
+      </SC.DataServiceFormSection>
+      <SC.DataServiceFormSection
         title='Endepunkt'
         isExpanded={allExpanded[2]}
         onClick={() =>
@@ -326,24 +337,24 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Endepunkt'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='endpoint'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
         <SC.Fieldset
           title='Lenke til endepunktbeskrivelse'
-          subtitle={localization.dataProcessingAgreementsAbstract}
-          description={localization.dataProcessingAgreementsDescription}
+          subtitle={translations.dataProcessingAgreementsAbstract}
+          description={translations.dataProcessingAgreementsDescription}
         >
           {/* TODO: ADD INITIAL CASE? */}
-          <FieldArray
+          {/* <FieldArray
             name='endpointDescriptionUrls'
             render={arrayHelpers => (
               <>
@@ -376,11 +387,11 @@ const RecordForm = ({
                 </SC.AddButton>
               </>
             )}
-          />
+          /> */}
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         title='Kontaktinformasjon'
         isExpanded={allExpanded[3]}
         onClick={() =>
@@ -393,44 +404,44 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Kontaktpunkt'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='version'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
         <SC.Fieldset
           title='Kontaktinformasjon'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <SC.InlineFields>
             <TextField
               name='version'
               labelText='E-post'
               // value={values.title}
-              // error={isApproved && touched.title && errors.title}
-              // helperText={isApproved && touched.title && errors.title}
+              // error={isPublished && touched.title && errors.title}
+              // helperText={isPublished && touched.title && errors.title}
               onChange={handleChange}
             />
             <TextField
               name='version'
               labelText='Telefon'
               // value={values.title}
-              // error={isApproved && touched.title && errors.title}
-              // helperText={isApproved && touched.title && errors.title}
+              // error={isPublished && touched.title && errors.title}
+              // helperText={isPublished && touched.title && errors.title}
               onChange={handleChange}
             />
           </SC.InlineFields>
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         title='Format'
         isExpanded={allExpanded[4]}
         onClick={() =>
@@ -443,29 +454,29 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Mediatyper'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='mediatyper'
             labelText='Velg blant registrerte mediatyper'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
           <TextField
             name='mediatyper'
             labelText='Oppgi evt. annen mediatype'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         title='Tilgang'
         isExpanded={allExpanded[5]}
         onClick={() =>
@@ -478,8 +489,8 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Kan alle få tilgang?'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <Radio
             name='tilgang'
@@ -493,8 +504,8 @@ const RecordForm = ({
         </SC.Fieldset>
         <SC.Fieldset
           title='Er lisensen åpen?'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <Radio
             name='lisens'
@@ -508,8 +519,8 @@ const RecordForm = ({
         </SC.Fieldset>
         <SC.Fieldset
           title='Er API-et gratis å bruke?'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <Radio
             name='gratis'
@@ -523,8 +534,8 @@ const RecordForm = ({
         </SC.Fieldset>
         <SC.Fieldset
           title='Gir datatjenesten kilde til en autoritativ kilde?'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <Radio
             name='autoritativ'
@@ -536,9 +547,9 @@ const RecordForm = ({
             onChange={handleBooleanRadioChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         title='Vilkår og begrensninger'
         isExpanded={allExpanded[6]}
         onClick={() =>
@@ -551,59 +562,59 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Trafikkbegrensninger'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='trafikkbegrensninger'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
         <SC.Fieldset
           title='Standard'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='standard'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
         <SC.Fieldset
           title='Kapasitet og ytelse'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='kapasitet'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
         <SC.Fieldset
           title='Pålitelighet'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='paalitelighet'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         title='Status'
         isExpanded={allExpanded[7]}
         onClick={() =>
@@ -616,8 +627,8 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Status på API-et'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <Select
             name='status'
@@ -625,10 +636,6 @@ const RecordForm = ({
               {
                 label: 'Utkast',
                 value: 'DRAFT'
-              },
-              {
-                label: 'Godkjent',
-                value: 'APPROVED'
               },
               {
                 label: 'Publisert',
@@ -642,22 +649,22 @@ const RecordForm = ({
             name='utlopsdato'
             labelText='Utløpsdato'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
           <TextField
             name='nyttapi'
             labelText='Lenke til ny versjon av API-beskrivelsen'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         title='Tilknyttede datasettbeskrivelser'
         isExpanded={allExpanded[8]}
         onClick={() =>
@@ -670,20 +677,20 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Søk etter og velg datasettbeskrivelse(r)'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <TextField
             name='version'
             // value={values.title}
-            // error={isApproved && touched.title && errors.title}
-            // helperText={isApproved && touched.title && errors.title}
+            // error={isPublished && touched.title && errors.title}
+            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      <SC.RecordFormSection
+      <SC.DataServiceFormSection
         title='Standarder (tjenestetype)'
         isExpanded={allExpanded[9]}
         onClick={() =>
@@ -696,8 +703,8 @@ const RecordForm = ({
       >
         <SC.Fieldset
           title='Tjenestetype'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
+          subtitle={translations.titleAbstract}
+          description={translations.titleDescription}
         >
           <Select
             name='tjenestetype'
@@ -706,9 +713,9 @@ const RecordForm = ({
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection>
+      </SC.DataServiceFormSection>
 
-      {/* <SC.RecordFormSection
+      {/* <SC.DataServiceFormSection
         required
         title='Behandlingsaktiviteter'
         isExpanded={allExpanded[1]}
@@ -729,8 +736,8 @@ const RecordForm = ({
           <TextField
             name='title'
             value={values.title}
-            error={isApproved && touched.title && errors.title}
-            helperText={isApproved && touched.title && errors.title}
+            error={isPublished && touched.title && errors.title}
+            helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -743,8 +750,8 @@ const RecordForm = ({
           <TextAreaField
             name='purpose'
             value={values.purpose}
-            error={isApproved && touched.purpose && errors.purpose}
-            helperText={isApproved && touched.purpose && errors.purpose}
+            error={isPublished && touched.purpose && errors.purpose}
+            helperText={isPublished && touched.purpose && errors.purpose}
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -761,12 +768,12 @@ const RecordForm = ({
                 name='dataSubjectCategories'
                 value={values.dataSubjectCategories}
                 error={
-                  isApproved &&
+                  isPublished &&
                   touched.dataSubjectCategories &&
                   errors.dataSubjectCategories
                 }
                 helperText={
-                  isApproved &&
+                  isPublished &&
                   touched.dataSubjectCategories &&
                   errors.dataSubjectCategories
                 }
@@ -978,8 +985,8 @@ const RecordForm = ({
             )}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection> */}
-      {/* <SC.RecordFormSection
+      </SC.DataServiceFormSection> */}
+      {/* <SC.DataServiceFormSection
         required
         title='Personopplysninger'
         isExpanded={allExpanded[2]}
@@ -1004,12 +1011,12 @@ const RecordForm = ({
                 name='personalDataCategories'
                 value={values.personalDataCategories}
                 error={
-                  isApproved &&
+                  isPublished &&
                   touched.personalDataCategories &&
                   errors.personalDataCategories
                 }
                 helperText={
-                  isApproved &&
+                  isPublished &&
                   touched.personalDataCategories &&
                   errors.personalDataCategories
                 }
@@ -1034,10 +1041,10 @@ const RecordForm = ({
             name='securityMeasures'
             value={values.securityMeasures}
             error={
-              isApproved && touched.securityMeasures && errors.securityMeasures
+              isPublished && touched.securityMeasures && errors.securityMeasures
             }
             helperText={
-              isApproved && touched.securityMeasures && errors.securityMeasures
+              isPublished && touched.securityMeasures && errors.securityMeasures
             }
             onChange={handleChange}
           />
@@ -1051,10 +1058,10 @@ const RecordForm = ({
             name='plannedDeletion'
             value={values.plannedDeletion}
             error={
-              isApproved && touched.plannedDeletion && errors.plannedDeletion
+              isPublished && touched.plannedDeletion && errors.plannedDeletion
             }
             helperText={
-              isApproved && touched.plannedDeletion && errors.plannedDeletion
+              isPublished && touched.plannedDeletion && errors.plannedDeletion
             }
             onChange={handleChange}
           />
@@ -1117,8 +1124,8 @@ const RecordForm = ({
             onChange={handleChange}
           />
         </SC.Fieldset>
-      </SC.RecordFormSection> */}
-      {/* <SC.RecordFormSection
+      </SC.DataServiceFormSection> */}
+      {/* <SC.DataServiceFormSection
         required
         title='Overføring av personopplysningene'
         isExpanded={allExpanded[3]}
@@ -1143,12 +1150,12 @@ const RecordForm = ({
                 name='recipientCategories'
                 value={values.recipientCategories}
                 error={
-                  isApproved &&
+                  isPublished &&
                   touched.recipientCategories &&
                   errors.recipientCategories
                 }
                 helperText={
-                  isApproved &&
+                  isPublished &&
                   touched.recipientCategories &&
                   errors.recipientCategories
                 }
@@ -1177,12 +1184,12 @@ const RecordForm = ({
               { label: 'Ja', value: true }
             ]}
             error={
-              isApproved &&
+              isPublished &&
               touched.dataTransfers?.transferred &&
               errors.dataTransfers?.transferred
             }
             helperText={
-              isApproved &&
+              isPublished &&
               touched?.dataTransfers?.transferred &&
               errors?.dataTransfers?.transferred
             }
@@ -1194,12 +1201,12 @@ const RecordForm = ({
               value={values.dataTransfers.thirdCountryRecipients}
               labelText='Oppgi hvilke(t) tredjeland personopplysningene overføres til'
               error={
-                isApproved &&
+                isPublished &&
                 touched.dataTransfers?.thirdCountryRecipients &&
                 errors.dataTransfers?.thirdCountryRecipients
               }
               helperText={
-                isApproved &&
+                isPublished &&
                 touched?.dataTransfers?.thirdCountryRecipients &&
                 errors?.dataTransfers?.thirdCountryRecipients
               }
@@ -1216,12 +1223,12 @@ const RecordForm = ({
               name='dataTransfers.guarantees'
               value={values.dataTransfers.guarantees}
               error={
-                isApproved &&
+                isPublished &&
                 touched.dataTransfers?.guarantees &&
                 errors.dataTransfers?.guarantees
               }
               helperText={
-                isApproved &&
+                isPublished &&
                 touched?.dataTransfers?.guarantees &&
                 errors?.dataTransfers?.guarantees
               }
@@ -1229,21 +1236,19 @@ const RecordForm = ({
             />
           </SC.Fieldset>
         )}
-      </SC.RecordFormSection> */}
-    </SC.RecordForm>
-  ) : null;
+      </SC.DataServiceFormSection> */}
+    </SC.DataServiceForm>
+  );
 };
 
-export default memo(
-  withDatasets(
-    withDataService(
-      withFormik<Props, FormValues>({
-        mapPropsToValues: ({ record, organizationId }: Props) =>
-          mapRecordToValues(record ?? {}, organizationId),
-        handleSubmit: () => {},
-        validationSchema,
-        displayName: 'RecordForm'
-      })(RecordForm)
-    )
-  )
-);
+export default compose<FC<any>>(
+  memo,
+  withDataService,
+  withFormik<Props, DataService>({
+    mapPropsToValues: ({ dataService }: Props) =>
+      mapDataServiceToValues(dataService ?? {}),
+    handleSubmit: () => {},
+    validationSchema,
+    displayName: 'DataServiceForm'
+  })
+)(DataServiceForm);

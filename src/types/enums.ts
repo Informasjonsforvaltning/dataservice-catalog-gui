@@ -1,6 +1,6 @@
 export enum Status {
   DRAFT = 'DRAFT',
-  APPROVED = 'APPROVED'
+  PUBLISHED = 'PUBLISHED'
 }
 
 export enum SortOrder {

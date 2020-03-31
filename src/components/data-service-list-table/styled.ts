@@ -14,7 +14,7 @@ const EmptyTableBody = styled.div`
   text-overflow: ellipsis;
 `;
 
-const RecordListTable = styled.table`
+const DataServiceListTable = styled.table`
   width: 100%;
   border-spacing: 0 5px;
   border-collapse: separate;
@@ -61,4 +61,4 @@ const RecordListTable = styled.table`
   }
 `;
 
-export default { RecordListTable, EmptyTableBody };
+export default { DataServiceListTable, EmptyTableBody };

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, memo } from 'react';
+import React, { FC, lazy, Suspense, memo } from 'react';
 import { BrowserRouter, Switch, Redirect } from 'react-router-dom';
 
 import Root from '../root';
@@ -7,14 +7,10 @@ import Footer from '../footer';
 
 import ProtectedRoute from '../protected-route';
 
-// TODO: CHANGE ALL NAMES AND PATHS
-const RecordListPage = lazy(() => import('../record-list-page'));
-const RecordPage = lazy(() => import('../record-page'));
-const RecordReportPage = lazy(() =>
-  import('../record-report-page/record-report-page')
-);
+const DataServiceListPage = lazy(() => import('../data-service-list-page'));
+const DataServicePage = lazy(() => import('../data-service-page'));
 
-const Router = (): JSX.Element => (
+const Router: FC = () => (
   <BrowserRouter>
     <Root>
       <Header />
@@ -23,17 +19,12 @@ const Router = (): JSX.Element => (
           <ProtectedRoute
             exact
             path='/:organizationId'
-            component={RecordListPage}
+            component={DataServiceListPage}
           />
           <ProtectedRoute
             exact
-            path='/:organizationId/records/:recordId?'
-            component={RecordPage}
-          />
-          <ProtectedRoute
-            exact
-            path='/:organizationId/report'
-            component={RecordReportPage}
+            path='/:organizationId/data-services/:dataServiceId?'
+            component={DataServicePage}
           />
           <Redirect to='/' />
         </Switch>
