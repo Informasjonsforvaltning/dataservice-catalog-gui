@@ -18,7 +18,7 @@ const RecordRow = ({
   dataService: { id, organizationId, title, status, modified },
   history: { push }
 }: Props) => {
-  const navigateToRecord = () => push(`/${organizationId}/records/${id}`);
+  const navigateToRecord = () => push(`/${organizationId}/dataservices/${id}`);
   return (
     <SC.RecordRow onClick={navigateToRecord}>
       <td> {translate(title)} </td>

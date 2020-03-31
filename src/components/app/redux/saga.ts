@@ -1,17 +1,9 @@
 import { all } from 'redux-saga/effects';
 
-import representativesSaga from '../../representatives/redux/saga';
 import organizationSaga from '../../with-organization/redux/saga';
-import datasetsSaga from '../../with-datasets/redux/saga';
-import recordsSaga from '../../with-dataservices/redux/saga';
-import recordSaga from '../../with-record/redux/saga';
+import dataServicesSaga from '../../with-data-services/redux/saga';
+import dataServiceSaga from '../../with-data-service/redux/saga';
 
 export default function* saga(): Generator {
-  yield all([
-    representativesSaga(),
-    organizationSaga(),
-    datasetsSaga(),
-    recordsSaga(),
-    recordSaga()
-  ]);
+  yield all([organizationSaga(), dataServicesSaga(), dataServiceSaga()]);
 }

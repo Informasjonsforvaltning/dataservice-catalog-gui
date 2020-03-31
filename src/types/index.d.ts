@@ -1,6 +1,6 @@
 export interface Configuration {
   OIDC_ISSUER: string;
-  DATASERVICE_CATALOG_URL: string;
+  DATA_SERVICE_CATALOG_URL: string;
   FDK_REGISTRATION_BASE_URI: string;
   ORGANIZATION_API: string;
 }

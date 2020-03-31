@@ -4,7 +4,7 @@ import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
 import withDataServices, {
   Props as DataservicesProps
-} from '../with-dataservices';
+} from '../with-data-services';
 
 import SC from './styled';
 import { SortOrder } from '../../types/enums';

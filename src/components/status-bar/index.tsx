@@ -5,19 +5,19 @@ import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 
 import SC from './styled';
 
-import { RecordStatus } from '../../types/enums';
+import { Status } from '../../types/enums';
 
 interface Props {
-  recordId?: string;
-  status: RecordStatus;
+  dataServiceId?: string;
+  status: Status;
   updatedAt?: string;
   canBeApproved: boolean;
-  onSetStatus: (status: RecordStatus) => void;
+  onSetStatus: (status: Status) => void;
   onRecordRemove: () => void;
 }
 
 const StatusBar = ({
-  recordId,
+  dataServiceId,
   status,
   updatedAt,
   onSetStatus,
@@ -27,8 +27,8 @@ const StatusBar = ({
   const [showConfirmDeleteMessage, setShowConfirmDeleteMessage] = useState(
     false
   );
-  const setStatusToDraft = () => onSetStatus(RecordStatus.DRAFT);
-  const setStatusToApproved = () => onSetStatus(RecordStatus.APPROVED);
+  const setStatusToDraft = () => onSetStatus(Status.DRAFT);
+  const setStatusToApproved = () => onSetStatus(Status.APPROVED);
   return (
     <SC.StatusBar>
       <SC.StatusBarBody>
@@ -42,19 +42,19 @@ const StatusBar = ({
           {!showConfirmDeleteMessage && (
             <>
               <SC.StatusButton
-                variant={status === RecordStatus.DRAFT ? 'primary' : 'default'}
-                selected={status === RecordStatus.DRAFT}
+                variant={status === Status.DRAFT ? 'primary' : 'default'}
+                selected={status === Status.DRAFT}
                 text='Utkast'
                 icon={CreateIconOutlined}
                 onClick={setStatusToDraft}
               />
               <SC.StatusButton
                 variant={
-                  status === RecordStatus.APPROVED && canBeApproved
+                  status === Status.APPROVED && canBeApproved
                     ? 'primary'
                     : 'default'
                 }
-                selected={status === RecordStatus.APPROVED}
+                selected={status === Status.APPROVED}
                 disabled={!canBeApproved}
                 text='Godkjent'
                 icon={CheckBoxOutlinedIcon}
@@ -62,7 +62,7 @@ const StatusBar = ({
               />
               <SC.RemoveButton
                 as='a'
-                disabled={!recordId || status === RecordStatus.APPROVED}
+                disabled={!dataServiceId || status === Status.APPROVED}
                 onClick={() => {
                   setShowConfirmDeleteMessage(true);
                 }}

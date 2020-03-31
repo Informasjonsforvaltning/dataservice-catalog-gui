@@ -1,15 +1,11 @@
 import { combineReducers } from 'redux';
 
-import RepresentativesReducer from '../../representatives/redux/reducer';
 import OrganizationReducer from '../../with-organization/redux/reducer';
-import DatasetsReducer from '../../with-datasets/redux/reducer';
-import RecordsReducer from '../../with-dataservices/redux/reducer';
-import RecordReducer from '../../with-record/redux/reducer';
+import DataServicesReducer from '../../with-data-services/redux/reducer';
+import DataServiceReducer from '../../with-data-service/redux/reducer';
 
 export default combineReducers({
-  RepresentativesReducer,
   OrganizationReducer,
-  DatasetsReducer,
-  RecordsReducer,
-  RecordReducer
+  DataServicesReducer,
+  DataServiceReducer
 });
