@@ -1,4 +1,4 @@
-name: Deploy to demo
+name: Deploy latest production image to demo
 
 on:
   repository_dispatch:

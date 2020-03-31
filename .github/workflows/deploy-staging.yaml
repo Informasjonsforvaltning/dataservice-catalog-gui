@@ -13,17 +13,17 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      # Setup gcloud CLI
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - name: Setup gcloud CLI
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '270.0.0'
           service_account_email: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_EMAIL }}
           service_account_key: ${{ secrets.GCP_SA_DIGDIR_FDK_GCR_KEY }}
 
-      # Configure docker to use the gcloud command-line tool as a credential helper
-      - run: gcloud auth configure-docker
+      - name: Configure gcloud credential helper
+        run: gcloud auth configure-docker
 
-      - name: Build Docker image with GitHub commit sha and staging tag
+      - name: Build (and test) Docker image with GitHub commit sha and staging tag
         run: docker build . -t eu.gcr.io/digdir-fdk-infra/dataservice-catalog-gui:$GITHUB_SHA -t eu.gcr.io/digdir-fdk-infra/dataservice-catalog-gui:staging_latest
 
       - name: Publish docker image to Google Cloud
