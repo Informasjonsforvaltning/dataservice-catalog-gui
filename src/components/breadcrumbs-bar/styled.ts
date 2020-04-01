@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 const BreadcrumbsBar = styled.div`
-  padding: 10px 0;
+  padding: 16px 0;
   margin-bottom: 40px;
   border-bottom: 1px solid ${({ theme }) => theme.fdk.colors.neutrals.lighter};
 
   & * {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 
   & nav a {

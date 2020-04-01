@@ -110,7 +110,7 @@ const DataServicePage: FC<Props> = ({
       <Headline
         title={dataServiceTitle}
         subTitle={organization?.name ?? ''}
-        status={Status.DRAFT} // TODO: dynamically please
+        status={dataServiceStatus}
       />
       <DataServiceForm
         dataServiceStatus={dataServiceStatus}

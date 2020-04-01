@@ -1,15 +1,27 @@
 import styled, { css } from 'styled-components';
 import { Field as FormikField } from 'formik';
 
+const Language = styled.span`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 25px;
+  margin: 0 8px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+`;
+
 const TextField = styled(FormikField)<{ error?: boolean }>`
   width: 100%;
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.fdk.colors.neutrals.lightblue};
+  border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
   color: ${({ theme }) => theme.fdk.colors.text.default};
 
   &:not(:disabled):focus {
-    box-shadow: 0 0 0 0.1rem rgba(38, 128, 179, 0.5);
+    box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};
   }
 `;
 
@@ -24,6 +36,20 @@ const HelperText = styled.p`
   font-size: 1.2rem;
 `;
 
+const FieldWrapper = styled.div<{ language?: string }>`
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  ${({ language }) =>
+    language &&
+    css`
+      & > ${TextField} {
+        padding-left: 41px;
+      }
+    `}
+`;
+
 const Field = styled.div<{ error?: boolean }>`
   display: flex;
   flex-direction: column;
@@ -31,7 +57,7 @@ const Field = styled.div<{ error?: boolean }>`
   ${({ error }) =>
     error &&
     css`
-      & ${TextField} {
+      & ${FieldWrapper} {
         border-color: red;
 
         &:not(:disabled):focus {
@@ -45,4 +71,4 @@ const Field = styled.div<{ error?: boolean }>`
     `}
 `;
 
-export default { Field, TextField, Label, HelperText };
+export default { Field, FieldWrapper, TextField, Language, Label, HelperText };

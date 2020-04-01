@@ -22,6 +22,7 @@ import withDataService, {
   Props as DataServiceProps
 } from '../with-data-service';
 
+import MultilingualInput from '../multilingual-input';
 import TextField from '../field-text';
 // import TextAreaField from '../field-text-area';
 // import TextTagsField from '../field-text-tags';
@@ -185,8 +186,8 @@ const DataServiceForm: FC<Props> = ({
         {allFieldsExpanded ? <ExpandAllUpIcon /> : <ExpandAllDownIcon />}
       </SC.ExpandAllButton>
       <SC.DataServiceFormSection
-        required
         title='Tittel og beskrivelse'
+        required
         isExpanded={allExpanded[0]}
         onClick={() =>
           setAllExpanded(
@@ -199,10 +200,14 @@ const DataServiceForm: FC<Props> = ({
         <SC.Fieldset
           title='Tittel'
           subtitle='Den korte hjelpeteksten som oppsummerer hvordan feltet skal fylles ut'
+          required
         >
-          <TextField
+          <MultilingualInput
             name='dataProcessorContactDetails.name'
-            // value={values.dataProcessorContactDetails.name}
+            component={TextField}
+            languages={['nb', 'en', 'nn']}
+            labelText='Some label'
+            placeholder='Some placeholder'
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -326,6 +331,7 @@ const DataServiceForm: FC<Props> = ({
       </SC.DataServiceFormSection>
       <SC.DataServiceFormSection
         title='Endepunkt'
+        required
         isExpanded={allExpanded[2]}
         onClick={() =>
           setAllExpanded(
@@ -337,6 +343,7 @@ const DataServiceForm: FC<Props> = ({
       >
         <SC.Fieldset
           title='Endepunkt'
+          required
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
