@@ -8,6 +8,12 @@ export enum SortOrder {
   DSC
 }
 
+export enum Language {
+  NB = 'nb',
+  NN = 'nn',
+  EN = 'en'
+}
+
 export enum KeyCode {
   TAB = 9,
   ENTER = 13,

@@ -23,6 +23,7 @@ import withDataService, {
 } from '../with-data-service';
 
 import MultilingualInput from '../multilingual-input';
+import LanguagePicker from '../language-picker';
 import TextField from '../field-text';
 // import TextAreaField from '../field-text-area';
 // import TextTagsField from '../field-text-tags';
@@ -43,7 +44,7 @@ import validationSchema from './validation-schema';
 import { mapDataServiceToValues } from './utils';
 
 import { DataService } from '../../types';
-import { Status } from '../../types/enums';
+import { Status, Language } from '../../types/enums';
 
 interface Props extends DataServiceProps, FormikProps<DataService> {
   dataServiceStatus: Status;
@@ -93,6 +94,25 @@ const DataServiceForm: FC<Props> = ({
   const isDataServiceLoaded = dataServiceLoaded.current;
   const allFieldsExpanded = allExpanded.every(Boolean);
   // const isPublished = dataService?.status.statusText === Status.PUBLISHED;
+
+  const [languages, setLanguages] = useState({
+    [Language.NB]: true,
+    [Language.NN]: false,
+    [Language.EN]: false
+  });
+
+  const selectedLanguages = Object.entries(languages)
+    .filter(([_, selected]) => selected)
+    .map(([k, _]) => k);
+
+  const toggleLanguage = (key: Language) => {
+    const isOnlyOneSelectedLanguage =
+      Object.values(languages).filter(selected => selected).length === 1;
+
+    if (!languages[key] || !isOnlyOneSelectedLanguage) {
+      setLanguages({ ...languages, [key]: !languages[key] });
+    }
+  };
 
   const toggleAllExpanded = () =>
     setAllExpanded(allExpanded.map(() => !allFieldsExpanded));
@@ -179,6 +199,7 @@ const DataServiceForm: FC<Props> = ({
 
   return (
     <SC.DataServiceForm>
+      <LanguagePicker languages={languages} toggleLanguage={toggleLanguage} />
       <SC.ExpandAllButton as='a' onClick={toggleAllExpanded}>
         <span>
           {allFieldsExpanded ? 'Lukk alle felter' : 'Åpne alle felter'}
@@ -205,7 +226,7 @@ const DataServiceForm: FC<Props> = ({
           <MultilingualInput
             name='dataProcessorContactDetails.name'
             component={TextField}
-            languages={['nb', 'en', 'nn']}
+            languages={selectedLanguages}
             labelText='Some label'
             placeholder='Some placeholder'
             onChange={handleChange}

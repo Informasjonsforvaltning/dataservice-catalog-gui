@@ -31,6 +31,7 @@ const MultilingualInput: FC<Props> = ({
     {labelText && <SC.Label>{labelText}</SC.Label>}
     {languages.map(language => (
       <Component
+        key={language}
         id={`${id}.${language}`}
         name={`${name}.${language}`}
         value={value?.[language]}
