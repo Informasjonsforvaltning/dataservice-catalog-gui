@@ -4,7 +4,7 @@ import SC from './styled';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
-  variant?: 'primary' | 'secondary' | 'default';
+  variant?: 'primary' | 'secondary' | 'anchor' | 'default';
   icon?: ComponentType;
 }
 

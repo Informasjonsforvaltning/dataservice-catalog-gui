@@ -8,10 +8,50 @@ import {
   DELETE_DATA_SERVICE_FAILED,
   DELETE_DATA_SERVICE_REQUESTED,
   DELETE_DATA_SERVICE_SUCCEEDED,
+  IMPORT_DATA_SERVICE_FAILED,
+  IMPORT_DATA_SERVICE_REQUESTED,
+  IMPORT_DATA_SERVICE_SUCCEEDED,
   RESET_DATA_SERVICE
 } from './action-types';
 
 import { DataService } from '../../../types';
+
+export function importDataServiceFailed(message: string) {
+  return {
+    type: IMPORT_DATA_SERVICE_FAILED,
+    payload: {
+      message
+    }
+  };
+}
+
+export function importDataServiceRequested(
+  importUrl: string,
+  organizationId: string,
+  onError: (message: string) => void,
+  onSuccess: () => void,
+  dataServiceId?: string
+) {
+  return {
+    type: IMPORT_DATA_SERVICE_REQUESTED,
+    payload: {
+      importUrl,
+      dataServiceId,
+      organizationId,
+      onSuccess,
+      onError
+    }
+  };
+}
+
+export function importDataServiceSucceeded(dataService: DataService) {
+  return {
+    type: IMPORT_DATA_SERVICE_SUCCEEDED,
+    payload: {
+      dataService
+    }
+  };
+}
 
 export function getDataServiceRequested(
   dataServiceId: string,

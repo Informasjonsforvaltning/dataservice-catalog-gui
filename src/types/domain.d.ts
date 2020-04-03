@@ -8,9 +8,9 @@ interface DataServiceStatus {
 }
 
 export interface DataService {
+  created?: string;
+  modified?: string;
   id?: string;
-  status: Status;
-  dataServiceStatus: DataServiceStatus;
   organizationId: string;
   title: MultiLanguageText;
   version?: string;
@@ -23,10 +23,14 @@ export interface DataService {
   license: Partial<License>;
   access: Partial<Access>;
   termsAndConditions: Partial<TermsAndConditions>;
+  status: Status;
   serviceType?: ServiceType;
   servesDataset: string[];
-  created?: string;
-  modified?: string;
+  dataServiceStatus: DataServiceStatus;
+}
+
+export interface ImportFormData {
+  apiSpecUrl: string;
 }
 
 export interface TermsAndConditions {

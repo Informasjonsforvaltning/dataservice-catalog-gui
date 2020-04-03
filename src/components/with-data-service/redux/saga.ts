@@ -14,7 +14,8 @@ import * as actions from './actions';
 import {
   GET_DATA_SERVICE_REQUESTED,
   PATCH_DATA_SERVICE_REQUESTED,
-  DELETE_DATA_SERVICE_REQUESTED
+  DELETE_DATA_SERVICE_REQUESTED,
+  IMPORT_DATA_SERVICE_REQUESTED
 } from './action-types';
 
 const { DATA_SERVICE_CATALOG_URL } = env;
@@ -54,11 +55,12 @@ function* patchDataServiceRequested({
   try {
     const auth = yield getContext('auth');
     const authorization = yield call([auth, auth.getAuthorizationHeader]);
+
+    const url = `${DATA_SERVICE_CATALOG_URL}/catalogs/${dataService.organizationId}/dataservices`;
+
     const { data, message } = yield call(
       axios.patch,
-      `${DATA_SERVICE_CATALOG_URL}/catalogs/${
-        dataService.organizationId
-      }/dataservices${dataService.id ? `/${dataService.id}` : ''}`,
+      dataService.id ? `${url}/${dataService.id}` : url,
       dataService,
       {
         headers: {
@@ -104,10 +106,49 @@ function* deleteDataServiceRequested({
   }
 }
 
+function* importDataServiceRequested({
+  payload: { importUrl, dataServiceId, organizationId, onSuccess, onError }
+}: ReturnType<typeof actions.importDataServiceRequested>) {
+  try {
+    const auth = yield getContext('auth');
+    const authorization = yield call([auth, auth.getAuthorizationHeader]);
+
+    const url = dataServiceId
+      ? `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices/${dataServiceId}/import`
+      : `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices`;
+
+    const { status, data, message } = yield call(
+      axios.post,
+      url,
+      {
+        apiSpecUrl: importUrl
+      },
+      {
+        headers: {
+          authorization,
+          accept: 'application/json'
+        }
+      }
+    );
+
+    if (status === 200) {
+      yield put(actions.importDataServiceSucceeded(data));
+      onSuccess();
+    } else {
+      yield put(actions.importDataServiceFailed(JSON.stringify(message)));
+      onError(message);
+    }
+  } catch (e) {
+    yield put(actions.importDataServiceFailed(e.message));
+    onError(e.message);
+  }
+}
+
 export default function* saga() {
   yield all([
     takeLatest(GET_DATA_SERVICE_REQUESTED, getDataServiceRequested),
     debounce(1000, PATCH_DATA_SERVICE_REQUESTED, patchDataServiceRequested),
-    takeLatest(DELETE_DATA_SERVICE_REQUESTED, deleteDataServiceRequested)
+    takeLatest(DELETE_DATA_SERVICE_REQUESTED, deleteDataServiceRequested),
+    takeLatest(IMPORT_DATA_SERVICE_REQUESTED, importDataServiceRequested)
   ]);
 }

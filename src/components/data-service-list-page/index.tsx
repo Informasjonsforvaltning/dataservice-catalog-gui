@@ -76,11 +76,11 @@ const DataServiceListPage: FC<Props> = ({
           text='Legg til datatjenestebeskrivelse'
           onClick={navigateToNewDataServicePage}
         />
-        <FDKButton
+        {/*        <FDKButton
           icon={IconAdd}
           variant='secondary'
           text='Høst spesifikasjon fra katalog'
-        />
+        /> */}
       </SC.DataServiceListActions>
       <DataServiceListTable dataServices={dataServices} />
     </SC.DataServiceListPage>

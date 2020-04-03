@@ -62,7 +62,6 @@ const DataServicePage: FC<Props> = ({
   }, [organizationId]);
 
   useEffect(() => {
-    resetDataService();
     setCanChangeUrl(true);
     if (dataServiceId) {
       getDataService(
@@ -72,11 +71,14 @@ const DataServicePage: FC<Props> = ({
       );
     }
     window.scrollTo(0, 0);
+    return function cleanup() {
+      resetDataService();
+    };
   }, []);
 
   useEffect(() => {
     if (!dataServiceId && id && canChangeUrl) {
-      replace(`/${organizationId}/dataservices/${id}`);
+      replace(`/${organizationId}/data-services/${id}`);
     }
     if (dataService?.status !== dataServiceStatus) {
       setDataServiceStatus(dataService?.status ?? Status.DRAFT);
@@ -114,6 +116,7 @@ const DataServicePage: FC<Props> = ({
       />
 
       <DataServiceForm
+        organizationId={organizationId}
         dataServiceStatus={dataServiceStatus}
         onTitleChange={setDataServiceTitle}
         onValidityChange={setFormValidity}

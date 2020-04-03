@@ -5,6 +5,7 @@ import ExpansionPanel from '../expansion-panel';
 import BaseFieldSet from '../fdk-fieldset';
 
 const DataServiceForm = styled(Form)`
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

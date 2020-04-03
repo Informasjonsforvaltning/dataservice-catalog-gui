@@ -7,6 +7,7 @@ const SortButtons = styled.div`
   right: 0;
 
   & > button {
+    overflow: hidden;
     height: 16px;
     width: 16px;
     cursor: pointer;

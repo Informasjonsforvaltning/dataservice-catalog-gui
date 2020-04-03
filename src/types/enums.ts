@@ -26,6 +26,17 @@ export enum Language {
   EN = 'en'
 }
 
+export enum ImportMethod {
+  URI = 'uri',
+  FILE = 'file'
+}
+
+export enum AlertType {
+  WARNING = 'warning',
+  SUCCESS = 'success',
+  ERROR = 'error'
+}
+
 export enum KeyCode {
   TAB = 9,
   ENTER = 13,

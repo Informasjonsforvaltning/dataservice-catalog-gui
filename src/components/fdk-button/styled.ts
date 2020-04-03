@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-type Variant = 'primary' | 'secondary' | 'default';
+type Variant = 'primary' | 'secondary' | 'anchor' | 'default';
 
 const FDKButton = styled.button<{ variant?: Variant }>`
   display: inline-flex;
@@ -36,6 +36,27 @@ const FDKButton = styled.button<{ variant?: Variant }>`
 
           & > svg {
             fill: ${theme.fdk.colors.text.default};
+          }
+
+          &:disabled {
+            color: white;
+          }
+        `;
+      }
+      case 'anchor': {
+        return css`
+          background: none;
+          color: ${buttonStyles.secondary.text};
+          box-shadow: none;
+          border-bottom: 1px dashed;
+          border-radius: 0;
+          margin-bottom: 10px;
+
+          padding: 0;
+          justify-content: center;
+
+          & > svg {
+            display: none;
           }
         `;
       }
