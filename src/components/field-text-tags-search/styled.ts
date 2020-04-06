@@ -32,13 +32,13 @@ const TextTagsSearchField = styled(FormikField)`
   display: block;
   width: 100%;
   padding: 8px;
-  border: 1px solid ${({ theme }) => theme.fdk.colors.neutrals.lightblue};
+  border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
   border-radius: 5px;
   background: none;
   color: ${({ theme }) => theme.fdk.colors.text.default};
 
   &:not(:disabled):focus {
-    box-shadow: 0 0 0 0.1rem rgba(38, 128, 179, 0.5);
+    box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};
   }
 `;
 
@@ -84,7 +84,7 @@ const Dropdown = styled.ul`
 
 const NoOptionLabel = styled.p`
   padding: 8px;
-  font-size: 1.4rem;
+  font-size: 14px;
   color: ${({ theme }) => theme.fdk.colors.neutrals.default};
   cursor: auto;
   user-select: none;
@@ -109,7 +109,7 @@ const DropdownItem = styled.li<{ selected: boolean }>`
 const HelperText = styled.p<{ error?: boolean }>`
   margin-top: 5px;
   margin-left: 8px;
-  font-size: 1.2rem;
+  font-size: 12px;
 
   ${({ error }) =>
     error &&
@@ -134,7 +134,7 @@ const Tag = styled.span`
   margin-right: 5px;
   padding: 5px 8px;
   border-radius: 4px;
-  font-size: 1.4rem;
+  font-size: 14px;
   background: ${({ theme }) => theme.fdk.colors.neutrals.darker};
   color: white;
 

@@ -33,7 +33,7 @@ const Label = styled.label`
 const HelperText = styled.p`
   margin-top: 5px;
   margin-left: 8px;
-  font-size: 1.2rem;
+  font-size: 12px;
 `;
 
 const FieldWrapper = styled.div<{ language?: string }>`
@@ -57,7 +57,7 @@ const Field = styled.div<{ error?: boolean }>`
   ${({ error }) =>
     error &&
     css`
-      & ${FieldWrapper} {
+      & ${TextField} {
         border-color: red;
 
         &:not(:disabled):focus {

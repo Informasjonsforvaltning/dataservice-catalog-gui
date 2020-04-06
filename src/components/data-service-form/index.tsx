@@ -1,15 +1,14 @@
 import React, {
   FC,
   memo,
-  // Fragment,
+  Fragment,
   useEffect,
   useRef,
   useState,
   ChangeEvent
 } from 'react';
 import { compose } from 'redux';
-import { FormikProps, withFormik } from 'formik';
-// import { FormikProps, withFormik, FieldArray } from 'formik';
+import { FormikProps, withFormik, FieldArray } from 'formik';
 import { compare, Operation } from 'fast-json-patch';
 
 import {
@@ -17,25 +16,27 @@ import {
   translate
 } from '../../lib/localization';
 
-// import withDatasets, { Props as DatasetsProps } from '../with-datasets';
+import withDatasets, { Props as DatasetsProps } from '../with-datasets';
 import withDataService, {
   Props as DataServiceProps
 } from '../with-data-service';
+import withReferenceData, {
+  Props as ReferenceDataProps
+} from '../with-reference-data';
 
 import MultilingualInput from '../multilingual-input';
 import LanguagePicker from '../language-picker';
 import TextField from '../field-text';
-// import TextAreaField from '../field-text-area';
-// import TextTagsField from '../field-text-tags';
-// import TextTagsSearchField from '../field-text-tags-search';
+import TextAreaField from '../field-text-area';
+import TextTagsField from '../field-text-tags';
+import TextTagsSearchField from '../field-text-tags-search';
 import Radio from '../radio';
-// import Checkbox from '../checkbox';
 import Select from '../select';
 
 import SC from './styled';
 
-// import AddIcon from '../../images/icon-add.svg';
-// import RemoveIcon from '../../images/icon-remove.svg';
+import AddIcon from '../../images/icon-add.svg';
+import RemoveIcon from '../../images/icon-remove.svg';
 import ExpandAllUpIcon from '../../images/expand-all-up.svg';
 import ExpandAllDownIcon from '../../images/expand-all-down.svg';
 
@@ -43,26 +44,37 @@ import validationSchema from './validation-schema';
 
 import { mapDataServiceToValues } from './utils';
 
-import { DataService } from '../../types';
-import { Status, Language } from '../../types/enums';
+import { DataService, Dataset, MediaType } from '../../types';
+import { Status, StatusText, ServiceType, Language } from '../../types/enums';
 
-interface Props extends DataServiceProps, FormikProps<DataService> {
+interface Props
+  extends DataServiceProps,
+    DatasetsProps,
+    ReferenceDataProps,
+    FormikProps<DataService> {
   dataServiceStatus: Status;
   onTitleChange?: (title: string) => void;
-  onStatusChange?: (status: Status) => void;
   onValidityChange?: (isValid: boolean) => void;
 }
 
 const DataServiceForm: FC<Props> = ({
   dataService,
   dataServiceStatus,
-  // datasets,
+  datasets,
+  datasetSearchSuggestions,
+  referenceData: { mediatypes: mediaTypes },
   onTitleChange,
-  // onStatusChange,
   onValidityChange,
-  // datasetsActions: { fetchAllDatasetsRequested },
+  datasetsActions: {
+    getDatasetsRequested: getDatasets,
+    searchDatasetsRequested: searchDatasets,
+    addDataset
+  },
   dataServiceActions: { patchDataServiceRequested: patchDataService },
+  referenceDataActions: { getReferenceDataRequested: getReferenceData },
   values,
+  errors,
+  touched,
   isValid,
   validateForm,
   handleChange,
@@ -85,15 +97,30 @@ const DataServiceForm: FC<Props> = ({
   const dataServiceLoaded = useRef(false);
   const previousDataService = useRef<DataService>(values);
 
+  const [mediaTypesSuggestions, setMediaTypesSuggestions] = useState<
+    MediaType[]
+  >([]);
+  const [
+    isWaitingForMediaTypesSuggestions,
+    setIsWaitingForMediaTypesSuggestions
+  ] = useState(false);
+
+  const [datasetSuggestions, setDatasetSuggestions] = useState<Dataset[]>([]);
+  const [
+    isWaitingForDatasetSuggestions,
+    setIsWaitingForDatasetSuggestions
+  ] = useState(false);
+
   useEffect(() => {
-    // fetchAllDatasetsRequested(organizationId);
+    getReferenceData('mediatypes');
+    getDatasets({});
     mounted.current = true;
   }, []);
 
   const isMounted = mounted.current;
   const isDataServiceLoaded = dataServiceLoaded.current;
   const allFieldsExpanded = allExpanded.every(Boolean);
-  // const isPublished = dataService?.status.statusText === Status.PUBLISHED;
+  const isPublished = dataService?.status === Status.PUBLISHED;
 
   const [languages, setLanguages] = useState({
     [Language.NB]: true,
@@ -103,7 +130,7 @@ const DataServiceForm: FC<Props> = ({
 
   const selectedLanguages = Object.entries(languages)
     .filter(([_, selected]) => selected)
-    .map(([k, _]) => k);
+    .map<Language>(([language, _]) => language as Language);
 
   const toggleLanguage = (key: Language) => {
     const isOnlyOneSelectedLanguage =
@@ -134,10 +161,7 @@ const DataServiceForm: FC<Props> = ({
       } else {
         const previousDataServiceStatus = dataService?.status;
         const nextDataServiceStatus = previousDataService.current.status;
-        if (
-          previousDataServiceStatus.statusText !==
-          nextDataServiceStatus.statusText
-        ) {
+        if (previousDataServiceStatus !== nextDataServiceStatus) {
           setValues(dataServiceValues, true);
           previousDataService.current = dataServiceValues;
         }
@@ -148,15 +172,12 @@ const DataServiceForm: FC<Props> = ({
   useEffect(() => {
     if (isMounted) {
       const previousDataServiceStatus = dataService?.status;
-      const nextDataServiceStatus = { statusText: dataServiceStatus };
-      if (
-        previousDataServiceStatus?.statusText !==
-        nextDataServiceStatus.statusText
-      ) {
+      const nextDataServiceStatus = dataServiceStatus;
+      if (previousDataServiceStatus !== nextDataServiceStatus) {
         const newValues = { ...values, status: nextDataServiceStatus };
         if (
-          previousDataServiceStatus?.statusText === Status.DRAFT &&
-          nextDataServiceStatus.statusText === Status.PUBLISHED
+          previousDataServiceStatus === Status.DRAFT &&
+          nextDataServiceStatus === Status.PUBLISHED
         ) {
           if (isValid) {
             patchDataService(newValues);
@@ -169,8 +190,8 @@ const DataServiceForm: FC<Props> = ({
   }, [dataServiceStatus]);
 
   useEffect(() => {
-    if (isMounted && onValidityChange) {
-      onValidityChange(isValid);
+    if (isMounted) {
+      onValidityChange?.(isValid);
     }
   }, [values, isValid]);
 
@@ -180,7 +201,7 @@ const DataServiceForm: FC<Props> = ({
       const hasErrors = Object.keys(await validateForm(values)).length > 0;
       if (
         diff.length > 0 &&
-        !(dataService?.status.statusText === Status.PUBLISHED && hasErrors)
+        !(dataService?.status === Status.PUBLISHED && hasErrors)
       ) {
         patchDataService(values);
       }
@@ -196,6 +217,11 @@ const DataServiceForm: FC<Props> = ({
       );
     }
   }, [values?.title]);
+
+  useEffect(() => {
+    setDatasetSuggestions(datasetSearchSuggestions);
+    setIsWaitingForDatasetSuggestions(false);
+  }, [datasetSearchSuggestions]);
 
   return (
     <SC.DataServiceForm>
@@ -224,106 +250,46 @@ const DataServiceForm: FC<Props> = ({
           required
         >
           <MultilingualInput
-            name='dataProcessorContactDetails.name'
+            name='title'
             component={TextField}
             languages={selectedLanguages}
-            labelText='Some label'
-            placeholder='Some placeholder'
+            value={values.title}
+            error={isPublished && touched.title && errors.title}
+            helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
+            onLanguageChange={() => {
+              const hasAtLeastOneLanguage = selectedLanguages.some(
+                language => values.title[language]
+              );
+              onValidityChange?.(hasAtLeastOneLanguage);
+
+              if (!hasAtLeastOneLanguage) {
+                // setFieldError
+                // console.log(
+                //   '::TITLE::',
+                //   'language changed',
+                //   selectedLanguages,
+                //   hasAtLeastOneLanguage,
+                //   errors.title
+                // );
+                // setFieldError('title.nb', 'Feltet må fylles ut');
+              }
+            }}
           />
         </SC.Fieldset>
         <SC.Fieldset
           title='Beskrivelse'
           subtitle='Den korte hjelpeteksten som oppsummerer hvordan feltet skal fylles ut'
         >
-          <TextField
-            name='dataProcessorContactDetails.name'
-            // value={values.dataProcessorContactDetails.name}
+          <MultilingualInput
+            name='description'
+            component={TextAreaField}
+            languages={selectedLanguages}
+            value={values.description}
+            error={errors.description}
             onChange={handleChange}
           />
         </SC.Fieldset>
-        {/* <SC.Fieldset
-          title='Felles databehandlingsansvar'
-          subtitle={localization.commonDataControllerContactAbstract}
-          description={localization.commonDataControllerContactDescription}
-        >
-          <TextField
-            name='commonDataControllerContact.companies'
-            value={values.commonDataControllerContact.companies}
-            labelText='Virksomheter som har felles databehandlingsansvar'
-            onChange={handleChange}
-          />
-          <TextField
-            name='commonDataControllerContact.distributionOfResponsibilities'
-            value={
-              values.commonDataControllerContact.distributionOfResponsibilities
-            }
-            labelText='Ansvarsfordeling'
-            onChange={handleChange}
-          />
-          <FieldArray
-            name='commonDataControllerContact.contactPoints'
-            render={arrayHelpers => (
-              <>
-                {(values.commonDataControllerContact.contactPoints || []).map(
-                  ({ name, email, phone }, index) => (
-                    <Fragment
-                      key={`commonDataControllerContact.contactPoints-${index}`}
-                    >
-                      <TextField
-                        name={`commonDataControllerContact.contactPoints[${index}].name`}
-                        value={name}
-                        labelText='Kontaktpunkt'
-                        onChange={handleChange}
-                      />
-                      <SC.InlineFields>
-                        <TextField
-                          name={`commonDataControllerContact.contactPoints[${index}].email`}
-                          value={email}
-                          labelText='E-post'
-                          onChange={handleChange}
-                        />
-                        <TextField
-                          name={`commonDataControllerContact.contactPoints[${index}].phone`}
-                          value={phone}
-                          labelText='Telefon'
-                          onChange={handleChange}
-                        />
-                      </SC.InlineFields>
-                      {(values.commonDataControllerContact.contactPoints || [])
-                        .length > 1 && (
-                        <SC.RemoveButton
-                          type='button'
-                          onClick={() => arrayHelpers.remove(index)}
-                        >
-                          <RemoveIcon />
-                          Slett kontaktpunkt
-                        </SC.RemoveButton>
-                      )}
-                    </Fragment>
-                  )
-                )}
-                <SC.AddButton
-                  type='button'
-                  addMargin={
-                    (values.commonDataControllerContact.contactPoints || [])
-                      .length === 1
-                  }
-                  onClick={() =>
-                    arrayHelpers.push({
-                      name: '',
-                      email: '',
-                      phone: ''
-                    })
-                  }
-                >
-                  <AddIcon />
-                  Legg til nytt kontaktpunkt
-                </SC.AddButton>
-              </>
-            )}
-          />
-        </SC.Fieldset> */}
       </SC.DataServiceFormSection>
       <SC.DataServiceFormSection
         title='Versjon'
@@ -343,9 +309,7 @@ const DataServiceForm: FC<Props> = ({
         >
           <TextField
             name='version'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+            value={values.version}
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -363,62 +327,62 @@ const DataServiceForm: FC<Props> = ({
         }
       >
         <SC.Fieldset
-          title='Endepunkt'
+          title='Endepunkt URL'
           required
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
           <TextField
-            name='endpoint'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+            name='endpointUrl'
+            value={values.endpointUrl}
+            error={isPublished && touched.endpointUrl && errors.endpointUrl}
+            helperText={
+              isPublished && touched.endpointUrl && errors.endpointUrl
+            }
             onChange={handleChange}
           />
         </SC.Fieldset>
         <SC.Fieldset
-          title='Lenke til endepunktbeskrivelse'
+          title='Lenke til endepunktsbeskrivelse'
           subtitle={translations.dataProcessingAgreementsAbstract}
           description={translations.dataProcessingAgreementsDescription}
         >
-          {/* TODO: ADD INITIAL CASE? */}
-          {/* <FieldArray
-            name='endpointDescriptionUrls'
-            render={arrayHelpers => (
+          <FieldArray
+            name='endpointDescriptions'
+            render={({ push, remove }) => (
               <>
-                {values.endpointDescriptionUrls.map((descriptionUrl, index) => (
-                  <Fragment key={`endpointDescriptionUrls-${index}`}>
+                {values.endpointDescriptions.map((description, index) => (
+                  <Fragment key={`endpointDescriptions-${index}`}>
                     <TextField
-                      placeholder='Ny endepunktbeskrivelse'
-                      name={`endpointDescriptionUrls[${index}]`}
-                      value={descriptionUrl}
+                      placeholder='Ny endepunktsbeskrivelse'
+                      name={`endpointDescriptions[${index}]`}
+                      value={description}
                       onChange={handleChange}
                     />
-                    {values.endpointDescriptionUrls.length > 1 && (
+                    {values.endpointDescriptions.length > 1 && (
                       <SC.RemoveButton
                         type='button'
-                        onClick={() => arrayHelpers.remove(index)}
+                        onClick={() => remove(index)}
                       >
                         <RemoveIcon />
-                        Slett beskrivelse
+                        Slett endepunkt
                       </SC.RemoveButton>
                     )}
                   </Fragment>
                 ))}
                 <SC.AddButton
                   type='button'
-                  addMargin={values.endpointDescriptionUrls.length === 1}
-                  onClick={() => arrayHelpers.push([])}
+                  addMargin={values.endpointDescriptions.length === 1}
+                  onClick={() => push('')}
                 >
                   <AddIcon />
-                  Legg til ny beskrivelse
+                  Legg til nytt endepunkt
                 </SC.AddButton>
               </>
             )}
-          /> */}
+          />
         </SC.Fieldset>
       </SC.DataServiceFormSection>
-
       <SC.DataServiceFormSection
         title='Kontaktinformasjon'
         isExpanded={allExpanded[3]}
@@ -436,10 +400,15 @@ const DataServiceForm: FC<Props> = ({
           description={translations.titleDescription}
         >
           <TextField
-            name='version'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+            name='contact.name'
+            value={values.contact.name}
+            labelText='Navn'
+            onChange={handleChange}
+          />
+          <TextField
+            name='contact.url'
+            value={values.contact.url}
+            labelText='URL'
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -450,25 +419,20 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.InlineFields>
             <TextField
-              name='version'
+              name='contact.email'
+              value={values.contact.email}
               labelText='E-post'
-              // value={values.title}
-              // error={isPublished && touched.title && errors.title}
-              // helperText={isPublished && touched.title && errors.title}
               onChange={handleChange}
             />
             <TextField
-              name='version'
+              name='contact.phone'
+              value={values.contact.phone}
               labelText='Telefon'
-              // value={values.title}
-              // error={isPublished && touched.title && errors.title}
-              // helperText={isPublished && touched.title && errors.title}
               onChange={handleChange}
             />
           </SC.InlineFields>
         </SC.Fieldset>
       </SC.DataServiceFormSection>
-
       <SC.DataServiceFormSection
         title='Format'
         isExpanded={allExpanded[4]}
@@ -485,25 +449,71 @@ const DataServiceForm: FC<Props> = ({
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
-          <TextField
-            name='mediatyper'
-            labelText='Velg blant registrerte mediatyper'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
-            onChange={handleChange}
-          />
-          <TextField
-            name='mediatyper'
-            labelText='Oppgi evt. annen mediatype'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
-            onChange={handleChange}
+          <FieldArray
+            name='mediaTypes'
+            render={({ push, remove }) => (
+              <>
+                <TextTagsSearchField
+                  name='mediaTypes'
+                  labelText='Velg blant registrerte mediatyper'
+                  value={values.mediaTypes.map(mediaType => {
+                    const match = mediaTypes?.find(
+                      ({ code }) => mediaType === code
+                    );
+                    return {
+                      label: match?.name,
+                      value: match?.code
+                    };
+                  })}
+                  suggestions={mediaTypesSuggestions.map(({ code, name }) => ({
+                    label: name,
+                    value: code
+                  }))}
+                  onChange={({
+                    target: { value: query }
+                  }: ChangeEvent<HTMLInputElement>) => {
+                    if (query && mediaTypes) {
+                      setIsWaitingForMediaTypesSuggestions(true);
+                      setMediaTypesSuggestions(
+                        mediaTypes
+                          .filter(({ code, name }) => {
+                            const match = values.mediaTypes.find(
+                              mediaType => code === mediaType
+                            );
+                            return (
+                              !match &&
+                              (code.toLowerCase().includes(query) ||
+                                name.toLowerCase().includes(query))
+                            );
+                          })
+                          .slice(0, 5)
+                      );
+                      setIsWaitingForMediaTypesSuggestions(false);
+                    }
+                  }}
+                  isLoadingSuggestions={isWaitingForMediaTypesSuggestions}
+                  onAddTag={(tag: string) =>
+                    !values.mediaTypes.includes(tag) && push(tag)
+                  }
+                  onRemoveTag={remove}
+                />
+                <TextTagsField
+                  name='mediaTypes'
+                  labelText='Oppgi evt. annen mediatype'
+                  value={values.mediaTypes.filter(
+                    mediaType =>
+                      !mediaTypes?.find(({ code }) => mediaType === code)
+                  )}
+                  onAddTag={(tag: string) =>
+                    !values.mediaTypes.includes(tag) && push(tag)
+                  }
+                  onRemoveTag={remove}
+                />
+              </>
+            )}
           />
         </SC.Fieldset>
       </SC.DataServiceFormSection>
-
       <SC.DataServiceFormSection
         title='Tilgang'
         isExpanded={allExpanded[5]}
@@ -521,8 +531,8 @@ const DataServiceForm: FC<Props> = ({
           description={translations.titleDescription}
         >
           <Radio
-            name='tilgang'
-            value={false}
+            name='access.isOpenAccess'
+            value={values.access.isOpenAccess}
             options={[
               { label: 'Ja', value: true },
               { label: 'Nei', value: false }
@@ -536,8 +546,8 @@ const DataServiceForm: FC<Props> = ({
           description={translations.titleDescription}
         >
           <Radio
-            name='lisens'
-            value={false}
+            name='access.isOpenLicense'
+            value={values.access.isOpenLicense}
             options={[
               { label: 'Ja', value: true },
               { label: 'Nei', value: false }
@@ -551,8 +561,8 @@ const DataServiceForm: FC<Props> = ({
           description={translations.titleDescription}
         >
           <Radio
-            name='gratis'
-            value={false}
+            name='access.isFree'
+            value={values.access.isFree}
             options={[
               { label: 'Ja', value: true },
               { label: 'Nei', value: false }
@@ -566,8 +576,8 @@ const DataServiceForm: FC<Props> = ({
           description={translations.titleDescription}
         >
           <Radio
-            name='autoritativ'
-            value={false}
+            name='access.isAuthoritativeSource'
+            value={values.access.isAuthoritativeSource}
             options={[
               { label: 'Ja', value: true },
               { label: 'Nei', value: false }
@@ -576,7 +586,6 @@ const DataServiceForm: FC<Props> = ({
           />
         </SC.Fieldset>
       </SC.DataServiceFormSection>
-
       <SC.DataServiceFormSection
         title='Vilkår og begrensninger'
         isExpanded={allExpanded[6]}
@@ -593,24 +602,24 @@ const DataServiceForm: FC<Props> = ({
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
-          <TextField
-            name='trafikkbegrensninger'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+          <MultilingualInput
+            name='termsAndConditions.usageLimitation'
+            component={TextField}
+            languages={selectedLanguages}
+            value={values.termsAndConditions.usageLimitation}
             onChange={handleChange}
           />
         </SC.Fieldset>
         <SC.Fieldset
-          title='Standard'
+          title='Pris'
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
-          <TextField
-            name='standard'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+          <MultilingualInput
+            name='termsAndConditions.price'
+            component={TextField}
+            languages={selectedLanguages}
+            value={values.termsAndConditions.price}
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -619,11 +628,11 @@ const DataServiceForm: FC<Props> = ({
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
-          <TextField
-            name='kapasitet'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+          <MultilingualInput
+            name='termsAndConditions.capacityAndPerformance'
+            component={TextField}
+            languages={selectedLanguages}
+            value={values.termsAndConditions.capacityAndPerformance}
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -632,16 +641,15 @@ const DataServiceForm: FC<Props> = ({
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
-          <TextField
-            name='paalitelighet'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+          <MultilingualInput
+            name='termsAndConditions.reliability'
+            component={TextField}
+            languages={selectedLanguages}
+            value={values.termsAndConditions.reliability}
             onChange={handleChange}
           />
         </SC.Fieldset>
       </SC.DataServiceFormSection>
-
       <SC.DataServiceFormSection
         title='Status'
         isExpanded={allExpanded[7]}
@@ -659,34 +667,45 @@ const DataServiceForm: FC<Props> = ({
           description={translations.titleDescription}
         >
           <Select
-            name='status'
+            name='dataServiceStatus.statusText'
+            value={values.dataServiceStatus.statusText}
             options={[
               {
-                label: 'Utkast',
-                value: 'DRAFT'
+                label: 'Under utprøving',
+                value: StatusText.EXPERIMENTAL
               },
               {
-                label: 'Publisert',
-                value: 'PUBLISHED'
+                label: 'I produksjon',
+                value: StatusText.STABLE
+              },
+              {
+                label: 'Foreldet',
+                value: StatusText.DEPRECATED
+              },
+              {
+                label: 'Avviklet',
+                value: StatusText.REMOVED
               }
             ]}
+            isResettable
             noOptionLabel='Velg status'
             onChange={handleChange}
           />
-          <TextField
-            name='utlopsdato'
-            labelText='Utløpsdato'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
+          {/* <SC.DatePicker
+            id='expiration-date-picker'
+            name='dataServiceStatus.expirationDate'
+            label='Utløpsdato'
+            value={values.dataServiceStatus.expirationDate}
+            format='dd.MM.yyyy'
+            variant='inline'
+            disableToolbar
+            margin='normal'
             onChange={handleChange}
-          />
+          /> */}
           <TextField
-            name='nyttapi'
+            name='dataServiceStatus.supersededByUrl'
+            value={values.dataServiceStatus.supersededByUrl}
             labelText='Lenke til ny versjon av API-beskrivelsen'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
           />
         </SC.Fieldset>
@@ -708,18 +727,48 @@ const DataServiceForm: FC<Props> = ({
           subtitle={translations.titleAbstract}
           description={translations.titleDescription}
         >
-          <TextField
-            name='version'
-            // value={values.title}
-            // error={isPublished && touched.title && errors.title}
-            // helperText={isPublished && touched.title && errors.title}
-            onChange={handleChange}
+          <FieldArray
+            name='servesDataset'
+            render={({ push, remove }) => (
+              <TextTagsSearchField
+                name='servesDataset'
+                value={values.servesDataset.map(datasetUri => {
+                  const match = datasets.find(({ uri }) => datasetUri === uri);
+                  return {
+                    label: translate(match?.title),
+                    value: match?.uri
+                  };
+                })}
+                onChange={({
+                  target: { value: query }
+                }: ChangeEvent<HTMLInputElement>) => {
+                  if (query) {
+                    setIsWaitingForDatasetSuggestions(true);
+                    searchDatasets({ q: query, size: 5 });
+                  }
+                }}
+                suggestions={datasetSuggestions.map(({ title, uri }) => ({
+                  label: translate(title),
+                  value: uri
+                }))}
+                isLoadingSuggestions={isWaitingForDatasetSuggestions}
+                onAddTag={(tag: string) => {
+                  const dataset = datasetSuggestions.find(
+                    ({ uri }) => tag === uri
+                  );
+                  if (dataset && !values.servesDataset.includes(tag)) {
+                    addDataset(dataset);
+                    push(tag);
+                  }
+                }}
+                onRemoveTag={remove}
+              />
+            )}
           />
         </SC.Fieldset>
       </SC.DataServiceFormSection>
-
       <SC.DataServiceFormSection
-        title='Standarder (tjenestetype)'
+        title='Standard (tjenestetype)'
         isExpanded={allExpanded[9]}
         onClick={() =>
           setAllExpanded(
@@ -735,536 +784,24 @@ const DataServiceForm: FC<Props> = ({
           description={translations.titleDescription}
         >
           <Select
-            name='tjenestetype'
-            options={[]}
+            name='serviceType'
+            value={values.serviceType}
+            options={[
+              {
+                label: 'Kundeforhold',
+                value: ServiceType.CUSTOMER_RELATIONS
+              },
+              {
+                label: 'Kontoopplysninger',
+                value: ServiceType.ACCOUNT_DETAILS
+              }
+            ]}
+            isResettable
             noOptionLabel='Velg tjenestetype'
             onChange={handleChange}
           />
         </SC.Fieldset>
       </SC.DataServiceFormSection>
-
-      {/* <SC.DataServiceFormSection
-        required
-        title='Behandlingsaktiviteter'
-        isExpanded={allExpanded[1]}
-        onClick={() =>
-          setAllExpanded(
-            allExpanded.map((expanded, index) =>
-              index === 1 ? !expanded : expanded
-            )
-          )
-        }
-      >
-        <SC.Fieldset
-          required
-          title='Behandlingen gjelder'
-          subtitle={localization.titleAbstract}
-          description={localization.titleDescription}
-        >
-          <TextField
-            name='title'
-            value={values.title}
-            error={isPublished && touched.title && errors.title}
-            helperText={isPublished && touched.title && errors.title}
-            onChange={handleChange}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          required
-          title='Formålet med behandlingsaktivitetene'
-          subtitle={localization.purposeAbstract}
-          description={localization.purposeDescription}
-        >
-          <TextAreaField
-            name='purpose'
-            value={values.purpose}
-            error={isPublished && touched.purpose && errors.purpose}
-            helperText={isPublished && touched.purpose && errors.purpose}
-            onChange={handleChange}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          required
-          title='Kategorier av registrerte'
-          subtitle={localization.dataSubjectCategoriesAbstract}
-          description={localization.dataSubjectCategoriesDescription}
-        >
-          <FieldArray
-            name='dataSubjectCategories'
-            render={arrayHelpers => (
-              <TextTagsField
-                name='dataSubjectCategories'
-                value={values.dataSubjectCategories}
-                error={
-                  isPublished &&
-                  touched.dataSubjectCategories &&
-                  errors.dataSubjectCategories
-                }
-                helperText={
-                  isPublished &&
-                  touched.dataSubjectCategories &&
-                  errors.dataSubjectCategories
-                }
-                onAddTag={(tag: string) => {
-                  arrayHelpers.push(tag);
-                  setFieldTouched('dataSubjectCategories', true, true);
-                }}
-                onRemoveTag={(index: number) => {
-                  arrayHelpers.remove(index);
-                  setFieldTouched('dataSubjectCategories', true, true);
-                }}
-              />
-            )}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Behandlingsgrunnlag etter artikkel 6'
-          subtitle={localization.articleSixBasisAbstract}
-          description={localization.articleSixBasisDescription}
-        >
-          <FieldArray
-            name='articleSixBasis'
-            render={arrayHelpers => (
-              <>
-                {(values.articleSixBasis || []).map(
-                  ({ legality, referenceUrl }, index) => (
-                    <Fragment key={`articleSixBasis-${index}`}>
-                      <Select
-                        name={`articleSixBasis[${index}].legality`}
-                        value={legality}
-                        options={[
-                          {
-                            label:
-                              'Artikkel 6.1.a - Den registrerte har samtykket til behandling av sine personopplysninger for ett eller flere spesifikke formål',
-                            value: '6.1.a'
-                          },
-                          {
-                            label:
-                              'Artikkel 6.1.b - Behandlingen er nødvendig for å oppfylle en avtale som den registrerte er part i, eller for å gjennomføre tiltak på den registrertes anmodning før en avtaleinngåelse',
-                            value: '6.1.b'
-                          },
-                          {
-                            label:
-                              'Artikkel 6.1.c - Behandlingen er nødvendig for å oppfylle en rettslig forpliktelse som påhviler den behandlingsansvarlige',
-                            value: '6.1.c'
-                          },
-                          {
-                            label:
-                              'Artikkel 6.1.d - Behandlingen er nødvendig for å verne den registrertes eller en annen fysisk persons vitale interesser',
-                            value: '6.1.d'
-                          },
-                          {
-                            label:
-                              'Artikkel 6.1.e - Behandlingen er nødvendig for å utføre en oppgave i allmennhetens interesse eller utøve offentlig myndighet som den behandlingsansvarlige er pålagt',
-                            value: '6.1.e'
-                          },
-                          {
-                            label:
-                              'Artikkel 6.1.f - Behandlingen er nødvendig for formål knyttet til de berettigede interessene som forfølges av den behandlingsansvarlige eller en tredjepart, med mindre den registrertes interesser eller grunnleggende rettigheter og friheter går foran og krever vern av personopplysninger, særlig dersom den registrerte er et barn',
-                            value: '6.1.f'
-                          }
-                        ]}
-                        labelText='Behandlingens lovlighet'
-                        noOptionLabel='Velg artikkel fra listen'
-                        onChange={handleChange}
-                      />
-                      {['6.1.a', '6.1.b'].includes(legality) && (
-                        <TextField
-                          name={`articleSixBasis[${index}].referenceUrl`}
-                          value={referenceUrl}
-                          labelText='Henvisning til rettslig forpliktelse, berettighet, interesse mv'
-                          onChange={handleChange}
-                        />
-                      )}
-                      {(values.articleSixBasis || []).length > 1 && (
-                        <SC.RemoveButton
-                          type='button'
-                          onClick={() => arrayHelpers.remove(index)}
-                        >
-                          <RemoveIcon />
-                          Slett behandlingsgrunnlag
-                        </SC.RemoveButton>
-                      )}
-                    </Fragment>
-                  )
-                )}
-                <SC.AddButton
-                  type='button'
-                  addMargin={(values.articleSixBasis || []).length === 1}
-                  onClick={() =>
-                    arrayHelpers.push({
-                      legality: '',
-                      referenceUrl: ''
-                    })
-                  }
-                >
-                  <AddIcon />
-                  Legg til nytt behandlingsgrunnlag
-                </SC.AddButton>
-              </>
-            )}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Behandlingsgrunnlag etter artikkel 9 eller 10'
-          subtitle={localization.otherArticlesAbstract}
-        >
-          <Checkbox
-            name='otherArticles.articleNine.checked'
-            checked={!!values.otherArticles?.articleNine?.checked}
-            labelText='Artikkel 9 - Behandling av særlige kategorier av personopplysninger'
-            onChange={handleChange}
-          />
-          {values.otherArticles?.articleNine?.checked && (
-            <TextField
-              name='otherArticles.articleNine.referenceUrl'
-              value={values.otherArticles?.articleNine?.referenceUrl ?? ''}
-              labelText='Henvisning til annen lovgivning, dersom relevant'
-              onChange={handleChange}
-            />
-          )}
-          <Checkbox
-            name='otherArticles.articleTen.checked'
-            checked={!!values.otherArticles?.articleTen?.checked}
-            labelText='Artikkel 10 - Behandling av personopplysninger om straffedommer og lovovertredelser'
-            onChange={handleChange}
-          />
-          {values.otherArticles?.articleTen?.checked && (
-            <TextField
-              name='otherArticles.articleTen.referenceUrl'
-              value={values.otherArticles?.articleTen?.referenceUrl ?? ''}
-              labelText='Henvisning til annen lovgivning, dersom relevant'
-              onChange={handleChange}
-            />
-          )}
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Funksjonsområde behandlingen faller inn under'
-          subtitle={localization.businessAreasAbstract}
-          description={localization.businessAreasDescription}
-        >
-          <FieldArray
-            name='businessAreas'
-            render={arrayHelpers => (
-              <TextTagsField
-                name='businessAreas'
-                value={values.businessAreas}
-                onAddTag={(tag: string) => arrayHelpers.push(tag)}
-                onRemoveTag={(index: number) => arrayHelpers.remove(index)}
-              />
-            )}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Tilhørende datasett'
-          subtitle={localization.relatedDatasetsAbstract}
-          description={localization.relatedDatasetsDescription}
-        >
-          <FieldArray
-            name='relatedDatasets'
-            render={arrayHelpers => (
-              <TextTagsSearchField
-                name='relatedDatasets'
-                value={values.relatedDatasets.map(id => {
-                  return {
-                    label:
-                      datasets.find(
-                        ({ id: datasetId }: Dataset) => datasetId === id
-                      )?.title[localization.getLanguage()] ?? '',
-                    value: id
-                  };
-                })}
-                onChange={({
-                  target: { value: query }
-                }: ChangeEvent<HTMLInputElement>) => {
-                  if (query) {
-                    setIsWaitingForSuggestions(true);
-                    setDatasetSuggestions(
-                      datasets
-                        .filter(
-                          ({ id, registrationStatus, title }) =>
-                            [
-                              DatasetStatus.APPROVE,
-                              DatasetStatus.PUBLISH
-                            ].includes(registrationStatus) &&
-                            !values.relatedDatasets.includes(id) &&
-                            (Object.values(
-                              title
-                            ) as string[]).some((localTitle: string): boolean =>
-                              localTitle
-                                .toLowerCase()
-                                .includes(query.toLowerCase())
-                            )
-                        )
-                        .slice(0, 5)
-                    );
-                    setIsWaitingForSuggestions(false);
-                  }
-                }}
-                placeholder={localization.relatedDatasetsPlaceholder}
-                isLoadingSuggestions={isWaitingForSuggestions}
-                suggestions={datasetSuggestions.map(({ id: value, title }) => ({
-                  label: title[localization.getLanguage()],
-                  value
-                }))}
-                onAddTag={(tag: string) => arrayHelpers.push(tag)}
-                onRemoveTag={(index: number) => arrayHelpers.remove(index)}
-              />
-            )}
-          />
-        </SC.Fieldset>
-      </SC.DataServiceFormSection> */}
-      {/* <SC.DataServiceFormSection
-        required
-        title='Personopplysninger'
-        isExpanded={allExpanded[2]}
-        onClick={() =>
-          setAllExpanded(
-            allExpanded.map((expanded, index) =>
-              index === 2 ? !expanded : expanded
-            )
-          )
-        }
-      >
-        <SC.Fieldset
-          required
-          title='Kategorier av personopplysninger'
-          subtitle={localization.personalDataCategoriesAbstract}
-          description={localization.personalDataCategoriesDescription}
-        >
-          <FieldArray
-            name='personalDataCategories'
-            render={arrayHelpers => (
-              <TextTagsField
-                name='personalDataCategories'
-                value={values.personalDataCategories}
-                error={
-                  isPublished &&
-                  touched.personalDataCategories &&
-                  errors.personalDataCategories
-                }
-                helperText={
-                  isPublished &&
-                  touched.personalDataCategories &&
-                  errors.personalDataCategories
-                }
-                onAddTag={(tag: string) => {
-                  arrayHelpers.push(tag);
-                  setFieldTouched('personalDataCategories', true, true);
-                }}
-                onRemoveTag={(index: number) => {
-                  arrayHelpers.remove(index);
-                  setFieldTouched('personalDataCategories', true, true);
-                }}
-              />
-            )}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          required
-          title='Generell beskrivelse av tekniske og organisatoriske sikkerhetstiltak'
-          subtitle={localization.securityMeasuresAbstract}
-        >
-          <TextAreaField
-            name='securityMeasures'
-            value={values.securityMeasures}
-            error={
-              isPublished && touched.securityMeasures && errors.securityMeasures
-            }
-            helperText={
-              isPublished && touched.securityMeasures && errors.securityMeasures
-            }
-            onChange={handleChange}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          required
-          title='Planlagte tidsfrister for sletting'
-          subtitle={localization.plannedDeletionAbstract}
-        >
-          <TextAreaField
-            name='plannedDeletion'
-            value={values.plannedDeletion}
-            error={
-              isPublished && touched.plannedDeletion && errors.plannedDeletion
-            }
-            helperText={
-              isPublished && touched.plannedDeletion && errors.plannedDeletion
-            }
-            onChange={handleChange}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Kan behandlingen innebære høy personvernrisiko?'
-          subtitle={localization.highPrivacyRiskAbstract}
-        >
-          <Radio
-            name='highPrivacyRisk'
-            value={values.highPrivacyRisk}
-            options={[
-              { label: 'Nei', value: false },
-              { label: 'Ja', value: true }
-            ]}
-            onChange={handleBooleanRadioChange}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Er det gjennomført risikovurdering?'
-          subtitle={localization.dataProtectionImpactAssessmentAbstract}
-        >
-          <Radio
-            name='dataProtectionImpactAssessment.conducted'
-            value={values.dataProtectionImpactAssessment.conducted}
-            options={[
-              { label: 'Nei', value: false },
-              { label: 'Ja', value: true }
-            ]}
-            onChange={handleBooleanRadioChange}
-          />
-          {values.dataProtectionImpactAssessment.conducted && (
-            <TextField
-              name='dataProtectionImpactAssessment.assessmentReportUrl'
-              value={values.dataProtectionImpactAssessment.assessmentReportUrl}
-              labelText='Lenke til risikovurdering'
-              onChange={handleChange}
-            />
-          )}
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Kilder til personopplysningene'
-          subtitle={localization.personalDataSubjectsAbstract}
-          description={localization.personalDataSubjectsDescription}
-        >
-          <TextField
-            name='personalDataSubjects'
-            value={values.personalDataSubjects}
-            onChange={handleChange}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          title='Systemer i din virksomhet som behandler personopplysningene'
-          subtitle={localization.privacyProcessingSystemsAbstract}
-          description={localization.privacyProcessingSystemsDescription}
-        >
-          <TextField
-            name='privacyProcessingSystems'
-            value={values.privacyProcessingSystems}
-            onChange={handleChange}
-          />
-        </SC.Fieldset>
-      </SC.DataServiceFormSection> */}
-      {/* <SC.DataServiceFormSection
-        required
-        title='Overføring av personopplysningene'
-        isExpanded={allExpanded[3]}
-        onClick={() =>
-          setAllExpanded(
-            allExpanded.map((expanded, index) =>
-              index === 3 ? !expanded : expanded
-            )
-          )
-        }
-      >
-        <SC.Fieldset
-          required
-          title='Kategorier av mottakere'
-          subtitle={localization.recipientCategoriesAbstract}
-          description={localization.recipientCategoriesDescription}
-        >
-          <FieldArray
-            name='recipientCategories'
-            render={arrayHelpers => (
-              <TextTagsField
-                name='recipientCategories'
-                value={values.recipientCategories}
-                error={
-                  isPublished &&
-                  touched.recipientCategories &&
-                  errors.recipientCategories
-                }
-                helperText={
-                  isPublished &&
-                  touched.recipientCategories &&
-                  errors.recipientCategories
-                }
-                onAddTag={(tag: string) => {
-                  arrayHelpers.push(tag);
-                  setFieldTouched('recipientCategories', true, true);
-                }}
-                onRemoveTag={(index: number) => {
-                  arrayHelpers.remove(index);
-                  setFieldTouched('recipientCategories', true, true);
-                }}
-              />
-            )}
-          />
-        </SC.Fieldset>
-        <SC.Fieldset
-          required
-          title='Overføres personopplysningene til tredjeland?'
-          subtitle={localization.transferredAbstract}
-        >
-          <Radio
-            name='dataTransfers.transferred'
-            value={values.dataTransfers.transferred}
-            options={[
-              { label: 'Nei', value: false },
-              { label: 'Ja', value: true }
-            ]}
-            error={
-              isPublished &&
-              touched.dataTransfers?.transferred &&
-              errors.dataTransfers?.transferred
-            }
-            helperText={
-              isPublished &&
-              touched?.dataTransfers?.transferred &&
-              errors?.dataTransfers?.transferred
-            }
-            onChange={handleBooleanRadioChange}
-          />
-          {values.dataTransfers.transferred && (
-            <TextField
-              name='dataTransfers.thirdCountryRecipients'
-              value={values.dataTransfers.thirdCountryRecipients}
-              labelText='Oppgi hvilke(t) tredjeland personopplysningene overføres til'
-              error={
-                isPublished &&
-                touched.dataTransfers?.thirdCountryRecipients &&
-                errors.dataTransfers?.thirdCountryRecipients
-              }
-              helperText={
-                isPublished &&
-                touched?.dataTransfers?.thirdCountryRecipients &&
-                errors?.dataTransfers?.thirdCountryRecipients
-              }
-              onChange={handleChange}
-            />
-          )}
-        </SC.Fieldset>
-        {values.dataTransfers.transferred && (
-          <SC.Fieldset
-            title='Nødvendige garantier ved overføring til tredjeland eller internasjonale organisasjoner'
-            subtitle={localization.guaranteesAbstract}
-          >
-            <TextField
-              name='dataTransfers.guarantees'
-              value={values.dataTransfers.guarantees}
-              error={
-                isPublished &&
-                touched.dataTransfers?.guarantees &&
-                errors.dataTransfers?.guarantees
-              }
-              helperText={
-                isPublished &&
-                touched?.dataTransfers?.guarantees &&
-                errors?.dataTransfers?.guarantees
-              }
-              onChange={handleChange}
-            />
-          </SC.Fieldset>
-        )}
-      </SC.DataServiceFormSection> */}
     </SC.DataServiceForm>
   );
 };
@@ -1272,6 +809,8 @@ const DataServiceForm: FC<Props> = ({
 export default compose<FC<any>>(
   memo,
   withDataService,
+  withDatasets,
+  withReferenceData,
   withFormik<Props, DataService>({
     mapPropsToValues: ({ dataService }: Props) =>
       mapDataServiceToValues(dataService ?? {}),

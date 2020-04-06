@@ -14,6 +14,7 @@ interface Props {
   helperText?: string;
   labelText?: string;
   noOptionLabel?: string;
+  isResettable?: boolean;
   onChange?: (event?: ChangeEvent<any>) => void;
 }
 
@@ -22,6 +23,7 @@ const Select = ({
   options,
   labelText,
   noOptionLabel,
+  isResettable,
   value,
   onChange
 }: Props): JSX.Element => {
@@ -43,6 +45,26 @@ const Select = ({
     }
   };
 
+  const handleChangeValue = (
+    newValue: string | undefined,
+    newIndex: number,
+    newLabel?: string
+  ) => (e: any) => {
+    if (!newValue) {
+      e.stopPropagation();
+    }
+    setSelectValue(newValue);
+    setSelectLabel(newLabel ?? (noOptionLabel || ''));
+    setImmediate(() => {
+      if (inputElement && inputElement.current) {
+        inputElement.current.selectedIndex = newIndex;
+        const event = document.createEvent('Event');
+        event.initEvent('input', true, true);
+        inputElement.current.dispatchEvent(event);
+      }
+    });
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -55,6 +77,9 @@ const Select = ({
       {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
       <SC.SelectButton type='button'>
         <span>{currentOption ? currentOption.label : selectLabel}</span>
+        {isResettable && selectValue && (
+          <SC.ResetIcon onClick={handleChangeValue(undefined, -1)} />
+        )}
       </SC.SelectButton>
       <SC.OverflowControl visible={isExpanded}>
         <SC.Dropdown>
@@ -66,18 +91,7 @@ const Select = ({
               id={name}
               key={`${label}-${optionValue}`}
               selected={`${value}` === `${optionValue}`}
-              onClick={() => {
-                setSelectValue(optionValue);
-                setSelectLabel(label);
-                setImmediate(() => {
-                  if (inputElement && inputElement.current) {
-                    inputElement.current.selectedIndex = index;
-                    const event = document.createEvent('Event');
-                    event.initEvent('input', true, true);
-                    inputElement.current.dispatchEvent(event);
-                  }
-                });
-              }}
+              onClick={handleChangeValue(optionValue, index, label)}
             >
               {label}
             </SC.DropdownItem>

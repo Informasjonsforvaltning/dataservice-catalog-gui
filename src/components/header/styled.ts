@@ -69,7 +69,7 @@ const LogoutButton = styled(Button)`
   white-space: nowrap;
 
   & span {
-    font-size: 1.4rem;
+    font-size: 14px;
   }
 `;
 

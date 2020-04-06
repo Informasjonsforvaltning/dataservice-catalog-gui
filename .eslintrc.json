@@ -92,11 +92,11 @@
   "overrides": [
     {
       "files": [
-        "*.ts",
-        "*.tsx",
-        "*.d.ts"
+        "**/*.ts?(x)"
       ],
-      "rules": {}
+      "rules": {
+        "no-unused-expressions": "off"
+      }
     }
   ]
 }

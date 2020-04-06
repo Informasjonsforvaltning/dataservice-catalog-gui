@@ -3,6 +3,18 @@ export enum Status {
   PUBLISHED = 'PUBLISHED'
 }
 
+export enum StatusText {
+  EXPERIMENTAL = 'EXPERIMENTAL',
+  STABLE = 'STABLE',
+  DEPRECATED = 'DEPRECATED',
+  REMOVED = 'REMOVED'
+}
+
+export enum ServiceType {
+  CUSTOMER_RELATIONS = 'CUSTOMER_RELATIONS',
+  ACCOUNT_DETAILS = 'ACCOUNT_DETAILS'
+}
+
 export enum SortOrder {
   ASC,
   DSC

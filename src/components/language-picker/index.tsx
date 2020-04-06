@@ -22,7 +22,7 @@ const LanguagePicker: FC<Props> = ({ languages, toggleLanguage }) => (
     {Object.entries(languages).map(([key, value]) => (
       <FDKButton
         key={key}
-        variant={value ? 'primary' : 'secondary'}
+        variant={value ? 'default' : 'secondary'}
         text={description[key as Language]}
         onClick={() => toggleLanguage(key as Language)}
       />

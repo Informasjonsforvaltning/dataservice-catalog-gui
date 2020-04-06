@@ -10,13 +10,13 @@ const DataServiceStatusIndicator = styled.div`
     margin-right: 6px;
     padding: 6px;
     border-radius: 50%;
-    font-size: 2rem;
+    font-size: 20px;
     background: ${({ theme }) => theme.fdk.colors.neutrals.default};
     fill: white;
   }
 
   & > span {
-    font-size: 1.8rem;
+    font-size: 18px;
     font-weight: normal;
   }
 `;

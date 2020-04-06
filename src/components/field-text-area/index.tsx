@@ -2,6 +2,8 @@ import React, { memo, PropsWithChildren, ChangeEvent } from 'react';
 
 import SC from './styled';
 
+import { Language } from '../../types/enums';
+
 interface Props {
   id?: string;
   required?: boolean;
@@ -10,6 +12,7 @@ interface Props {
   value?: string;
   error?: any;
   helperText?: any;
+  language?: Language;
   name: string;
   onChange?: (event: ChangeEvent<any>) => void;
 }
@@ -22,19 +25,23 @@ const TextAreaField = ({
   helperText,
   placeholder,
   labelText,
+  language,
   onChange
 }: PropsWithChildren<Props>) => (
   <SC.Field error={error}>
     {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-    <SC.TextAreaField
-      component='textarea'
-      rows={3}
-      id={id}
-      placeholder={placeholder || labelText}
-      name={name}
-      value={value}
-      onChange={onChange}
-    />
+    <SC.FieldWrapper language={language}>
+      {language && <SC.Language>{language}</SC.Language>}
+      <SC.TextAreaField
+        component='textarea'
+        rows={3}
+        id={id}
+        placeholder={placeholder || labelText}
+        name={name}
+        value={value}
+        onChange={onChange}
+      />
+    </SC.FieldWrapper>
     {helperText && <SC.HelperText>{helperText}</SC.HelperText>}
   </SC.Field>
 );

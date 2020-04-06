@@ -1,17 +1,28 @@
 import styled, { css } from 'styled-components';
 import { Field as FormikField } from 'formik';
 
+const Language = styled.span`
+  position: absolute;
+  top: 9px;
+  left: 0;
+  width: 25px;
+  margin: 0 8px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+`;
+
 const TextAreaField = styled(FormikField)<{ error?: boolean }>`
   width: 100%;
   min-height: 72px;
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.fdk.colors.neutrals.lightblue};
+  border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
   color: ${({ theme }) => theme.fdk.colors.text.default};
   resize: vertical;
 
   &:not(:disabled):focus {
-    box-shadow: 0 0 0 0.1rem rgba(38, 128, 179, 0.5);
+    box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};
   }
 `;
 
@@ -23,7 +34,21 @@ const Label = styled.label`
 const HelperText = styled.p`
   margin-top: 5px;
   margin-left: 8px;
-  font-size: 1.2rem;
+  font-size: 12px;
+`;
+
+const FieldWrapper = styled.div<{ language?: string }>`
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  ${({ language }) =>
+    language &&
+    css`
+      & > ${TextAreaField} {
+        padding-left: 41px;
+      }
+    `}
 `;
 
 const Field = styled.div<{ error?: boolean }>`
@@ -47,4 +72,11 @@ const Field = styled.div<{ error?: boolean }>`
     `}
 `;
 
-export default { Field, TextAreaField, Label, HelperText };
+export default {
+  Field,
+  FieldWrapper,
+  TextAreaField,
+  Language,
+  Label,
+  HelperText
+};

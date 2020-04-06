@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Field } from 'formik';
+import ResetIconBase from '@material-ui/icons/Close';
 
 const Select = styled.div`
   display: flex;
@@ -22,12 +23,15 @@ const Label = styled.label`
 `;
 
 const SelectButton = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   width: 100%;
   min-height: 36px;
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.fdk.colors.neutrals.lightblue};
+  border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
   color: ${({ theme }) => theme.fdk.colors.text.default};
   background: none;
   text-align: left;
@@ -41,7 +45,7 @@ const SelectButton = styled.button`
   }
 
   &:not(:disabled):focus {
-    box-shadow: 0 0 0 0.1rem rgba(38, 128, 179, 0.5);
+    box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};
   }
 
   &:after {
@@ -81,7 +85,7 @@ const Dropdown = styled.ul`
 
 const NoOptionLabel = styled.p`
   padding: 8px;
-  font-size: 1.4rem;
+  font-size: 14px;
   color: ${({ theme }) => theme.fdk.colors.neutrals.default};
   cursor: auto;
   user-select: none;
@@ -107,6 +111,13 @@ const HiddenSelect = styled(Field)<any>`
   display: none;
 `;
 
+const ResetIcon = styled(ResetIconBase)`
+  height: 20px !important;
+  width: 20px !important;
+  margin-right: 20px;
+  color: ${({ theme }) => theme.fdk.colors.neutrals.default};
+`;
+
 export default {
   Select,
   Label,
@@ -115,5 +126,6 @@ export default {
   Dropdown,
   NoOptionLabel,
   DropdownItem,
-  HiddenSelect
+  HiddenSelect,
+  ResetIcon
 };

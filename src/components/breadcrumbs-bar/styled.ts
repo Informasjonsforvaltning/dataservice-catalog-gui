@@ -6,12 +6,12 @@ const BreadcrumbsBar = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.fdk.colors.neutrals.lighter};
 
   & * {
-    font-size: 1.6rem;
+    font-size: 16px;
   }
 
   & nav a {
-    border-bottom: 1px solid ${({ theme }) => theme.fdk.colors.text.link};
-    color: ${({ theme }) => theme.fdk.colors.text.link};
+    border-bottom: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
+    color: ${({ theme }) => theme.fdk.colors.text.default};
   }
 
   & nav a,

@@ -1,38 +1,33 @@
-import * as Yup from 'yup';
+import { object, string, lazy } from 'yup';
 
-// import { Status } from '../../types/enums';
+import { Status, StatusText, ServiceType } from '../../types/enums';
 
-export default Yup.object().shape({
-  // status: Yup.string().oneOf([Status.DRAFT, Status.PUBLISHED]),
-  // title: Yup.string().ensure().required('Feltet må fylles ut'),
-  // purpose: Yup.string().ensure().required('Feltet må fylles ut'),
-  // dataSubjectCategories: Yup.array()
-  //   .of(Yup.string().ensure())
-  //   .min(1, 'Feltet må fylles ut')
-  //   .required('Feltet må fylles ut'),
-  // personalDataCategories: Yup.array()
-  //   .of(Yup.string().ensure())
-  //   .min(1, 'Feltet må fylles ut')
-  //   .required('Feltet må fylles ut'),
-  // securityMeasures: Yup.string().ensure().required('Feltet må fylles ut'),
-  // plannedDeletion: Yup.string().ensure().required('Feltet må fylles ut'),
-  // recipientCategories: Yup.array()
-  //   .of(Yup.string().ensure())
-  //   .min(1, 'Feltet må fylles ut')
-  //   .required('Feltet må fylles ut'),
-  // dataTransfers: Yup.object().shape({
-  //   transferred: Yup.boolean().required('Feltet må fylles ut'),
-  //   thirdCountryRecipients: Yup.string()
-  //     .ensure()
-  //     .when('transferred', {
-  //       is: true,
-  //       then: Yup.string().ensure().required('Feltet må fylles ut')
-  //     }),
-  //   guarantees: Yup.string()
-  //     .ensure()
-  //     .when('transferred', {
-  //       is: true,
-  //       then: Yup.string().ensure().required('Feltet må fylles ut')
-  //     })
-  // })
+export default object().shape({
+  status: string().oneOf([Status.DRAFT, Status.PUBLISHED]),
+  title: lazy((values: any) => {
+    const hasValues = Object.values(values).filter(Boolean).length > 0;
+    return object().shape(
+      Object.entries(values).reduce(
+        (previous, [key]) => ({
+          ...previous,
+          [key]: hasValues
+            ? string().ensure()
+            : string().ensure().required('Feltet må fylles ut')
+        }),
+        {}
+      )
+    );
+  }),
+  // ENDPOINT URL
+  dataServiceStatus: object().shape({
+    statusText: string().oneOf([
+      StatusText.DEPRECATED,
+      StatusText.EXPERIMENTAL,
+      StatusText.REMOVED,
+      StatusText.STABLE
+    ])
+  }),
+  serviceType: string()
+    .notRequired()
+    .oneOf([ServiceType.ACCOUNT_DETAILS, ServiceType.CUSTOMER_RELATIONS])
 });

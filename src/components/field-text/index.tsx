@@ -2,6 +2,8 @@ import React, { memo, PropsWithChildren, ChangeEvent } from 'react';
 
 import SC from './styled';
 
+import { Language } from '../../types/enums';
+
 interface Props {
   id?: string;
   required?: boolean;
@@ -10,7 +12,7 @@ interface Props {
   value?: string;
   error?: any;
   helperText?: any;
-  language?: string;
+  language?: Language;
   name: string;
   onChange?: (event: ChangeEvent<any>) => void;
 }

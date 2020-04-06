@@ -26,7 +26,7 @@ const TableRow = ({
       <td />
       <td>{formatDate(dateStringToDate(modified))}</td>
       <td>
-        <DataServiceStatusIndicator status={status.statusText} />
+        <DataServiceStatusIndicator status={status} />
       </td>
     </SC.TableRow>
   );

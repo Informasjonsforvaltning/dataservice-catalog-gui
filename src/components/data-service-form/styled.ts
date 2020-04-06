@@ -16,7 +16,7 @@ const ExpandAllButton = styled.button`
   align-self: flex-end;
   margin-bottom: 12px;
 
-  color: ${({ theme }) => theme.fdk.colors.text.link};
+  color: ${({ theme }) => theme.fdk.colors.text.default};
 
   &:hover {
     text-decoration: underline;
@@ -26,6 +26,7 @@ const ExpandAllButton = styled.button`
     height: 16px;
     width: 16px;
     margin-left: 5px;
+    fill: ${({ theme }) => theme.fdk.colors.text.default};
   }
 `;
 

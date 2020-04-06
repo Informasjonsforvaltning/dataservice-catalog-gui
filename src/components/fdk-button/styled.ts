@@ -53,7 +53,7 @@ const FDKButton = styled.button<{ variant?: Variant }>`
 
   & > svg {
     margin-right: 5px;
-    font-size: 2.1rem;
+    font-size: 21px;
     width: 20px;
     height: 20px;
   }

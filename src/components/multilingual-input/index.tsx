@@ -1,18 +1,30 @@
-import React, { FC, memo, ComponentType, ChangeEvent } from 'react';
+import React, {
+  FC,
+  memo,
+  useRef,
+  useEffect,
+  ComponentType,
+  ChangeEvent
+} from 'react';
+import { fromJS } from 'immutable';
 
 import SC from './styled';
 
+import { MultiLanguageText } from '../../types';
+import { Language } from '../../types/enums';
+
 interface Props {
   component: ComponentType<any>;
-  languages: string[];
+  languages: Language[];
   id?: string;
   name: string;
-  value?: { [key in string]: string };
-  error?: string;
+  value?: MultiLanguageText;
+  error?: any;
   placeholder?: string;
   labelText?: string;
-  helperText?: string;
+  helperText?: any;
   onChange?: (event: ChangeEvent<any>) => void;
+  onLanguageChange?: () => void;
 }
 
 const MultilingualInput: FC<Props> = ({
@@ -24,25 +36,39 @@ const MultilingualInput: FC<Props> = ({
   labelText,
   helperText,
   onChange,
+  onLanguageChange,
   languages,
   component: Component
-}) => (
-  <SC.MultilingualInput>
-    {labelText && <SC.Label>{labelText}</SC.Label>}
-    {languages.map(language => (
-      <Component
-        key={language}
-        id={`${id}.${language}`}
-        name={`${name}.${language}`}
-        value={value?.[language]}
-        error={error}
-        placeholder={placeholder}
-        helperText={helperText}
-        onChange={onChange}
-        language={language}
-      />
-    ))}
-  </SC.MultilingualInput>
-);
+}) => {
+  const previousLanguages = useRef<Language[]>([]);
+
+  useEffect(() => {
+    if (
+      !fromJS(languages.sort()).equals(fromJS(previousLanguages.current.sort()))
+    ) {
+      onLanguageChange?.();
+      previousLanguages.current = languages;
+    }
+  }, [languages]);
+
+  return (
+    <SC.MultilingualInput>
+      {labelText && <SC.Label>{labelText}</SC.Label>}
+      {languages.map(language => (
+        <Component
+          key={language}
+          id={`${id}.${language}`}
+          name={`${name}.${language}`}
+          value={value?.[language] ?? ''}
+          error={error?.[language]}
+          placeholder={placeholder}
+          helperText={helperText?.[language]}
+          onChange={onChange}
+          language={language}
+        />
+      ))}
+    </SC.MultilingualInput>
+  );
+};
 
 export default memo(MultilingualInput);

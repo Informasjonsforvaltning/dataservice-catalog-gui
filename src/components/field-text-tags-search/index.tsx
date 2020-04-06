@@ -18,8 +18,8 @@ import RemoveIcon from '../../images/icon-remove.svg';
 import { KeyCode } from '../../types/enums';
 
 interface Suggestion {
-  label: string;
-  value: any;
+  label?: string;
+  value?: any;
 }
 
 interface Value extends Suggestion {}
@@ -154,29 +154,33 @@ const TextTagsSearchField = ({
             {noOptionLabel && (
               <SC.NoOptionLabel>{noOptionLabel}</SC.NoOptionLabel>
             )}
-            {suggestions.map(({ label, value: suggestionValue }, index) => (
-              <SC.DropdownItem
-                id={name}
-                key={`${label}-${suggestionValue}`}
-                selected={selectedItemIndex === index}
-                tabIndex={0}
-                onClick={() => addTag(suggestionValue)}
-              >
-                {label}
-              </SC.DropdownItem>
-            ))}
+            {suggestions
+              .filter(({ label: l, value: v }) => l && v)
+              .map(({ label, value: suggestionValue }, index) => (
+                <SC.DropdownItem
+                  id={name}
+                  key={`${label}-${suggestionValue}`}
+                  selected={selectedItemIndex === index}
+                  tabIndex={0}
+                  onClick={() => addTag(suggestionValue)}
+                >
+                  {label}
+                </SC.DropdownItem>
+              ))}
           </SC.Dropdown>
         </SC.OverflowControl>
       </SC.FieldWrapper>
       {helperText && <SC.HelperText error={error}>{helperText}</SC.HelperText>}
       {value && value.length > 0 && (
         <SC.Tags>
-          {value.map(({ label, value: tagValue }, index) => (
-            <SC.Tag key={`${tagValue}-${index}`}>
-              <span>{label}</span>
-              <RemoveIcon onClick={() => onRemoveTag(index)} />
-            </SC.Tag>
-          ))}
+          {value
+            .filter(({ label: l, value: v }) => l && v)
+            .map(({ label, value: tagValue }, index) => (
+              <SC.Tag key={`${tagValue}-${index}`}>
+                <span>{label}</span>
+                <RemoveIcon onClick={() => onRemoveTag(index)} />
+              </SC.Tag>
+            ))}
         </SC.Tags>
       )}
     </SC.Field>

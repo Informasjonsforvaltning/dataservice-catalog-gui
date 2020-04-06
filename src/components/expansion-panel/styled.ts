@@ -19,7 +19,7 @@ const Title = styled.h2`
   display: inline-flex;
   font-size: 22px;
   font-weight: bold;
-  color: ${({ theme }) => theme.fdk.colors.text.link};
+  color: ${({ theme }) => theme.fdk.colors.text.alternative};
 `;
 
 const Subtitle = styled.h3`
@@ -27,7 +27,6 @@ const Subtitle = styled.h3`
 `;
 
 const RequiredLabel = styled(Tag)`
-  padding: 2px;
   margin-left: 5px;
 `;
 
@@ -41,7 +40,9 @@ const Head = styled.div`
   cursor: pointer;
 
   & svg {
-    fill: ${({ theme }) => theme.fdk.colors.text.link};
+    height: 30px;
+    width: 30px;
+    fill: ${({ theme }) => theme.fdk.colors.text.default};
   }
 `;
 

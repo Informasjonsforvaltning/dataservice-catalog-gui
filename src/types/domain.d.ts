@@ -1,7 +1,7 @@
-import { Status } from './enums';
+import { Status, StatusText, ServiceType, Language } from './enums';
 
 interface DataServiceStatus {
-  statusText: Status;
+  statusText?: StatusText;
   expirationDate?: string;
   comment?: string;
   supersededByUrl?: string;
@@ -9,30 +9,31 @@ interface DataServiceStatus {
 
 export interface DataService {
   id?: string;
-  status: DataServiceStatus;
+  status: Status;
+  dataServiceStatus: DataServiceStatus;
   organizationId: string;
   title: MultiLanguageText;
   version?: string;
   operationCount?: number;
   contact: Partial<Contact>;
   endpointUrl: string;
-  mediaType: string;
+  mediaTypes: string[];
   description: MultiLanguageText;
-  endpointDescription: MultiLanguageText;
+  endpointDescriptions: string[];
   license: Partial<License>;
   access: Partial<Access>;
   termsAndConditions: Partial<TermsAndConditions>;
-  serviceType: string;
+  serviceType?: ServiceType;
   servesDataset: string[];
   created?: string;
   modified?: string;
 }
 
 export interface TermsAndConditions {
-  cost: string;
-  usageLimitation: string;
-  performance: string;
-  availability: string;
+  usageLimitation: MultiLanguageText;
+  price: MultiLanguageText;
+  capacityAndPerformance: MultiLanguageText;
+  reliability: MultiLanguageText;
 }
 
 export interface License {
@@ -41,7 +42,7 @@ export interface License {
 }
 
 export interface Access {
-  nationalComponent: boolean;
+  isAuthoritativeSource: boolean;
   isOpenAccess: boolean;
   isOpenLicense: boolean;
   isFree: boolean;
@@ -51,17 +52,29 @@ export interface Contact {
   name: string;
   url: string;
   email: string;
+  phone: string;
 }
 
-export interface MultiLanguageText {
-  en?: string;
-  no?: string;
-  nn?: string;
-}
+export type MultiLanguageText = { [key in Language]?: string };
 
 export interface Organization {
   uri: string;
   id: string;
   name: string;
   orgPath: string;
+}
+
+export interface Dataset {
+  id: string;
+  uri: string;
+  title: MultiLanguageText;
+}
+
+export interface MediaType {
+  name: string;
+  code: string;
+}
+
+export interface ReferenceData {
+  mediatypes?: MediaType[];
 }

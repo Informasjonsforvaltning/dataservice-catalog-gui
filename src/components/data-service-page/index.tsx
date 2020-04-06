@@ -47,7 +47,7 @@ const DataServicePage: FC<Props> = ({
 }) => {
   const [dataServiceTitle, setDataServiceTitle] = useState('');
   const [dataServiceStatus, setDataServiceStatus] = useState(
-    dataService?.status.statusText ?? Status.DRAFT
+    dataService?.status ?? Status.DRAFT
   );
   const [canChangeUrl, setCanChangeUrl] = useState(false);
   const [formIsValid, setFormValidity] = useState(false);
@@ -78,8 +78,8 @@ const DataServicePage: FC<Props> = ({
     if (!dataServiceId && id && canChangeUrl) {
       replace(`/${organizationId}/dataservices/${id}`);
     }
-    if (dataService?.status.statusText !== dataServiceStatus) {
-      setDataServiceStatus(dataService?.status.statusText ?? Status.DRAFT);
+    if (dataService?.status !== dataServiceStatus) {
+      setDataServiceStatus(dataService?.status ?? Status.DRAFT);
     }
   }, [dataService]);
 
@@ -116,7 +116,6 @@ const DataServicePage: FC<Props> = ({
       <DataServiceForm
         dataServiceStatus={dataServiceStatus}
         onTitleChange={setDataServiceTitle}
-        onStatusChange={setDataServiceStatus}
         onValidityChange={setFormValidity}
       />
       <StatusBar

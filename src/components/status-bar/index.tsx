@@ -42,7 +42,7 @@ const StatusBar = ({
           {!showConfirmDeleteMessage && (
             <>
               <SC.StatusButton
-                variant={status === Status.DRAFT ? 'primary' : 'default'}
+                variant={status === Status.DRAFT ? 'default' : 'secondary'}
                 selected={status === Status.DRAFT}
                 text='Utkast'
                 icon={CreateIconOutlined}
@@ -51,12 +51,12 @@ const StatusBar = ({
               <SC.StatusButton
                 variant={
                   status === Status.PUBLISHED && canBeApproved
-                    ? 'primary'
-                    : 'default'
+                    ? 'default'
+                    : 'secondary'
                 }
                 selected={status === Status.PUBLISHED}
                 disabled={!canBeApproved}
-                text='Godkjent'
+                text='Publiser'
                 icon={CheckBoxOutlinedIcon}
                 onClick={setStatusToApproved}
               />

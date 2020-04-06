@@ -32,7 +32,7 @@ const Option = styled.span`
 const HelperText = styled.p<{ error?: boolean }>`
   margin-top: 5px;
   margin-left: 8px;
-  font-size: 1.2rem;
+  font-size: 12;
 
   ${({ error }) =>
     error &&

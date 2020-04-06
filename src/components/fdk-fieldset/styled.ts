@@ -22,7 +22,7 @@ const Legend = styled.legend`
 
   & svg {
     fill: ${({ theme }) => theme.fdk.colors.text.link};
-    font-size: 1.8rem;
+    font-size: 18px;
   }
 `;
 
@@ -52,7 +52,7 @@ const Subtitle = styled.small`
 
 const Description = styled.p`
   margin-top: 5px;
-  font-size: 1.5rem;
+  font-size: 15px;
   font-weight: 300;
   & a {
     color: ${({ theme }) => theme.fdk.colors.text.link};

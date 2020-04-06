@@ -16,6 +16,7 @@ const Title = styled.h1`
   font-size: 30px;
   font-weight: bolder;
   margin-right: 10px;
+  line-height: 42px;
 
   white-space: nowrap;
   overflow: hidden;

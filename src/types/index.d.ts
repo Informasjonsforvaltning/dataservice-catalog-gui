@@ -3,6 +3,7 @@ export interface Configuration {
   DATA_SERVICE_CATALOG_URL: string;
   FDK_REGISTRATION_BASE_URI: string;
   ORGANIZATION_API: string;
+  SEARCH_API: string;
 }
 
 export * from './domain';
