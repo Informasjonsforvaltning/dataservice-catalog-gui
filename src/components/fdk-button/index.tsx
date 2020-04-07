@@ -13,9 +13,15 @@ const FDKButton = ({
   variant,
   icon: Icon,
   onClick,
+  type,
   ...rest
 }: Props): JSX.Element => (
-  <SC.FDKButton variant={variant} onClick={onClick} {...rest}>
+  <SC.FDKButton
+    type={type ?? 'button'}
+    variant={variant}
+    onClick={onClick}
+    {...rest}
+  >
     {Icon && <Icon />}
     {text}
   </SC.FDKButton>

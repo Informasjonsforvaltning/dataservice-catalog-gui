@@ -47,11 +47,15 @@ import { mapDataServiceToValues } from './utils';
 import { DataService, Dataset, MediaType } from '../../types';
 import { Status, StatusText, ServiceType, Language } from '../../types/enums';
 
+interface FormValues extends DataService {
+  languages?: Language[];
+}
+
 interface Props
   extends DataServiceProps,
     DatasetsProps,
     ReferenceDataProps,
-    FormikProps<DataService> {
+    FormikProps<FormValues> {
   dataServiceStatus: Status;
   onTitleChange?: (title: string) => void;
   onValidityChange?: (isValid: boolean) => void;
@@ -198,7 +202,10 @@ const DataServiceForm: FC<Props> = ({
   useEffect(() => {
     const validateAndSave = async () => {
       const diff: Operation[] = compare(previousDataService.current, values);
-      const hasErrors = Object.keys(await validateForm(values)).length > 0;
+      const hasErrors =
+        Object.keys(
+          await validateForm({ ...values, languages: selectedLanguages })
+        ).length > 0;
       if (
         diff.length > 0 &&
         !(dataService?.status === Status.PUBLISHED && hasErrors)
@@ -257,24 +264,9 @@ const DataServiceForm: FC<Props> = ({
             error={isPublished && touched.title && errors.title}
             helperText={isPublished && touched.title && errors.title}
             onChange={handleChange}
-            onLanguageChange={() => {
-              const hasAtLeastOneLanguage = selectedLanguages.some(
-                language => values.title[language]
-              );
-              onValidityChange?.(hasAtLeastOneLanguage);
-
-              if (!hasAtLeastOneLanguage) {
-                // setFieldError
-                // console.log(
-                //   '::TITLE::',
-                //   'language changed',
-                //   selectedLanguages,
-                //   hasAtLeastOneLanguage,
-                //   errors.title
-                // );
-                // setFieldError('title.nb', 'Feltet må fylles ut');
-              }
-            }}
+            onLanguageChange={() =>
+              setFieldValue('languages', selectedLanguages)
+            }
           />
         </SC.Fieldset>
         <SC.Fieldset
@@ -811,7 +803,7 @@ export default compose<FC<any>>(
   withDataService,
   withDatasets,
   withReferenceData,
-  withFormik<Props, DataService>({
+  withFormik<Props, FormValues>({
     mapPropsToValues: ({ dataService }: Props) =>
       mapDataServiceToValues(dataService ?? {}),
     handleSubmit: () => {},

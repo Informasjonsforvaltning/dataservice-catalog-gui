@@ -60,9 +60,9 @@ const MultilingualInput: FC<Props> = ({
           id={`${id}.${language}`}
           name={`${name}.${language}`}
           value={value?.[language] ?? ''}
-          error={error?.[language]}
+          error={error?.[language] ?? error}
           placeholder={placeholder}
-          helperText={helperText?.[language]}
+          helperText={helperText?.[language] ?? helperText}
           onChange={onChange}
           language={language}
         />
