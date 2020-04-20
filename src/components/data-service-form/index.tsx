@@ -187,7 +187,10 @@ const DataServiceForm: FC<Props> = ({
 
   useEffect(() => {
     if (dataService) {
-      const dataServiceValues = mapDataServiceToValues(dataService);
+      const dataServiceValues = {
+        ...mapDataServiceToValues(dataService),
+        languages: selectedLanguages
+      };
       if (!isDataServiceLoaded) {
         setValues(dataServiceValues, true);
         previousDataService.current = dataServiceValues;

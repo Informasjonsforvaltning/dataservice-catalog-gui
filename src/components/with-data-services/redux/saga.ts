@@ -24,7 +24,7 @@ function* fetchAllDataServicesRequested({
         }
       }
     );
-    if (data?.length > 0) {
+    if (Array.isArray(data)) {
       yield put(actions.fetchAllDataServicesSucceeded(data));
     } else {
       yield put(actions.fetchAllDataServicesFailed(JSON.stringify(message)));

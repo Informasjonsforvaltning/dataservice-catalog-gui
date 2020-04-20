@@ -28,6 +28,7 @@ const ButtonGroup = styled.div`
 
 const StatusButton = styled(FDKButton)<{ selected?: boolean }>`
   border-radius: 0;
+  color: ${({ theme }) => theme.fdk.colors.text.link} !important;
 
   &:first-of-type {
     border-radius: 3px 0 0 3px;
@@ -45,9 +46,10 @@ const StatusButton = styled(FDKButton)<{ selected?: boolean }>`
       cursor: not-allowed;
     `}
 
-  ${({ selected }) =>
+  ${({ selected, disabled, theme }) =>
     selected &&
     css`
+      color: ${disabled ? theme.fdk.colors.text.link : 'white'} !important;
       cursor: default !important;
     `}
 `;
