@@ -29,13 +29,6 @@ export default function reducer(
 
     case IMPORT_DATA_SERVICE_SUCCEEDED:
       return state.set('dataService', fromJS(action.payload.dataService));
-    // return state.set(
-    //   'dataService',
-    //   fromJS({
-    //     ...(state.get('dataService')?.toJS() ?? null),
-    //     ...action.payload.dataService
-    //   })
-    // );
     default:
       return state;
   }

@@ -77,10 +77,7 @@ const DataServiceForm: FC<Props> = ({
     searchDatasetsRequested: searchDatasets,
     addDataset
   },
-  dataServiceActions: {
-    patchDataServiceRequested: patchDataService,
-    importDataServiceRequested: importDataService
-  },
+  dataServiceActions: { patchDataServiceRequested: patchDataService },
   referenceDataActions: { getReferenceDataRequested: getReferenceData },
   values,
   errors,
@@ -251,7 +248,6 @@ const DataServiceForm: FC<Props> = ({
       <DataServiceImportForm
         dataServiceId={values.id}
         organizationId={organizationId}
-        importDataService={importDataService}
       />
 
       <SC.DataServiceForm>

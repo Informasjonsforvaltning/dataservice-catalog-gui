@@ -6,20 +6,15 @@ import TextField from '../field-text';
 import AlertBox from '../alert-box';
 
 import validationSchema from './validation-schema';
+import withDataService, {
+  Props as DataServiceProps
+} from '../with-data-service';
 
 import SC from './styled';
 
 import { ImportMethod, AlertType } from '../../types/enums';
 
-interface Props {
-  importDataService: (
-    importUrl: string,
-    organizationId: string,
-    onError: (message: string) => void,
-    onSuccess: () => void,
-    dataServiceId?: string
-  ) => void;
-
+interface Props extends DataServiceProps {
   organizationId: string;
   dataServiceId?: string;
 }
@@ -30,7 +25,7 @@ interface Alert {
 }
 
 const DataServiceImportForm: FC<Props> = ({
-  importDataService,
+  dataServiceActions: { importDataServiceRequested: importDataService },
   organizationId,
   dataServiceId
 }) => {
@@ -41,7 +36,7 @@ const DataServiceImportForm: FC<Props> = ({
     initialValues: {
       url: ''
     },
-    isInitialValid: false, // TODO: deprecated, replace with initialErrors or validateOnMount
+    initialErrors: {},
     validationSchema,
     onSubmit: ({ url }) => {
       importDataService(
@@ -136,4 +131,4 @@ const DataServiceImportForm: FC<Props> = ({
   );
 };
 
-export default memo(DataServiceImportForm);
+export default memo(withDataService(DataServiceImportForm));
