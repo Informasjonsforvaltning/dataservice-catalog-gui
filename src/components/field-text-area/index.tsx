@@ -14,6 +14,7 @@ interface Props {
   helperText?: any;
   language?: Language;
   name: string;
+  disabled: boolean;
   onChange?: (event: ChangeEvent<any>) => void;
 }
 
@@ -26,6 +27,7 @@ const TextAreaField = ({
   placeholder,
   labelText,
   language,
+  disabled,
   onChange
 }: PropsWithChildren<Props>) => (
   <SC.Field error={error}>
@@ -40,6 +42,7 @@ const TextAreaField = ({
         name={name}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
     </SC.FieldWrapper>
     {helperText && <SC.HelperText>{helperText}</SC.HelperText>}
