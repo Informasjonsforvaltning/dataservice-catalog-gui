@@ -27,6 +27,7 @@ export interface DataService {
   serviceType?: ServiceType;
   servesDataset: string[];
   dataServiceStatus: DataServiceStatus;
+  imported: boolean;
 }
 
 export interface ImportFormData {

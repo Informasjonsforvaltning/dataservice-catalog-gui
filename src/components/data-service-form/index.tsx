@@ -128,6 +128,7 @@ const DataServiceForm: FC<Props> = ({
   const isDataServiceLoaded = dataServiceLoaded.current;
   const allFieldsExpanded = allExpanded.every(Boolean);
   const isPublished = dataService?.status === Status.PUBLISHED;
+  const isImported = !!dataService?.imported;
 
   const [languages, setLanguages] = useState({
     [Language.NB]: true,
@@ -195,7 +196,12 @@ const DataServiceForm: FC<Props> = ({
       } else {
         const previousDataServiceStatus = dataService?.status;
         const nextDataServiceStatus = previousDataService.current.status;
-        if (previousDataServiceStatus !== nextDataServiceStatus) {
+        const previousDataServiceImported =
+          previousDataService.current.imported;
+        if (
+          previousDataServiceStatus !== nextDataServiceStatus ||
+          isImported !== previousDataServiceImported
+        ) {
           setValues(dataServiceValues, true);
           previousDataService.current = dataServiceValues;
         }
@@ -283,6 +289,7 @@ const DataServiceForm: FC<Props> = ({
               error={isPublished && touched.title && errors.title}
               helperText={isPublished && touched.title && errors.title}
               onChange={handleChange}
+              disabled={isImported}
               onLanguageChange={() =>
                 setFieldValue('languages', selectedLanguages)
               }
@@ -299,6 +306,7 @@ const DataServiceForm: FC<Props> = ({
               value={values.description}
               error={errors.description}
               onChange={handleChange}
+              disabled={isImported}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
@@ -322,6 +330,7 @@ const DataServiceForm: FC<Props> = ({
               name='version'
               value={values.version}
               onChange={handleChange}
+              disabled={isImported}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
@@ -344,6 +353,7 @@ const DataServiceForm: FC<Props> = ({
             description={translations.titleDescription}
           >
             <TextField
+              disabled={isImported}
               name='endpointUrl'
               value={values.endpointUrl}
               error={isPublished && touched.endpointUrl && errors.endpointUrl}
@@ -369,6 +379,7 @@ const DataServiceForm: FC<Props> = ({
                         name={`endpointDescriptions[${index}]`}
                         value={description}
                         onChange={handleChange}
+                        disabled={isImported}
                       />
                       {values.endpointDescriptions.length > 1 && (
                         <SC.RemoveButton
@@ -416,12 +427,14 @@ const DataServiceForm: FC<Props> = ({
               value={values.contact.name}
               labelText='Navn'
               onChange={handleChange}
+              disabled={isImported}
             />
             <TextField
               name='contact.url'
               value={values.contact.url}
               labelText='URL'
               onChange={handleChange}
+              disabled={isImported}
             />
           </SC.Fieldset>
           <SC.Fieldset
@@ -435,12 +448,14 @@ const DataServiceForm: FC<Props> = ({
                 value={values.contact.email}
                 labelText='E-post'
                 onChange={handleChange}
+                disabled={isImported}
               />
               <TextField
                 name='contact.phone'
                 value={values.contact.phone}
                 labelText='Telefon'
                 onChange={handleChange}
+                disabled={isImported}
               />
             </SC.InlineFields>
           </SC.Fieldset>
