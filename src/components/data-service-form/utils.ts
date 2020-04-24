@@ -18,7 +18,8 @@ export const mapDataServiceToValues = ({
   access = {},
   termsAndConditions = {},
   serviceType,
-  servesDataset = []
+  servesDataset = [],
+  imported = false
 }: Partial<DataService>): DataService => ({
   id,
   status,
@@ -36,5 +37,6 @@ export const mapDataServiceToValues = ({
   access,
   termsAndConditions,
   serviceType,
-  servesDataset
+  servesDataset,
+  imported
 });

@@ -13,12 +13,18 @@ const Language = styled.span`
   font-weight: bold;
 `;
 
-const TextField = styled(FormikField)<{ error?: boolean }>`
+const TextField = styled(FormikField)<{ disabled?: boolean; error?: boolean }>`
   width: 100%;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
   color: ${({ theme }) => theme.fdk.colors.text.default};
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      background: ${({ theme }) => theme.fdk.colors.neutrals.light};
+    `}
 
   &:not(:disabled):focus {
     box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};

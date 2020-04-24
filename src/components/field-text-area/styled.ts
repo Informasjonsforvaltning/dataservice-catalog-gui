@@ -1,6 +1,11 @@
 import styled, { css } from 'styled-components';
 import { Field as FormikField } from 'formik';
 
+interface TextAreaFieldProps {
+  disabled?: boolean;
+  error?: boolean;
+}
+
 const Language = styled.span`
   position: absolute;
   top: 9px;
@@ -12,7 +17,7 @@ const Language = styled.span`
   font-weight: bold;
 `;
 
-const TextAreaField = styled(FormikField)<{ error?: boolean }>`
+const TextAreaField = styled(FormikField)<TextAreaFieldProps>`
   width: 100%;
   min-height: 72px;
   padding: 8px;
@@ -24,6 +29,12 @@ const TextAreaField = styled(FormikField)<{ error?: boolean }>`
   &:not(:disabled):focus {
     box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      background: ${({ theme }) => theme.fdk.colors.neutrals.light};
+    `}
 `;
 
 const Label = styled.label`

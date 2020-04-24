@@ -23,6 +23,7 @@ interface Props {
   placeholder?: string;
   labelText?: string;
   helperText?: any;
+  disabled?: boolean;
   onChange?: (event: ChangeEvent<any>) => void;
   onLanguageChange?: () => void;
 }
@@ -36,6 +37,7 @@ const MultilingualInput: FC<Props> = ({
   labelText,
   helperText,
   onChange,
+  disabled,
   onLanguageChange,
   languages,
   component: Component
@@ -64,6 +66,7 @@ const MultilingualInput: FC<Props> = ({
           placeholder={placeholder}
           helperText={helperText?.[language] ?? helperText}
           onChange={onChange}
+          disabled={disabled}
           language={language}
         />
       ))}

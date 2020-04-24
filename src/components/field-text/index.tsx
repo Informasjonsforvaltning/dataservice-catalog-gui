@@ -9,6 +9,7 @@ interface Props {
   required?: boolean;
   placeholder?: string;
   labelText?: string;
+  disabled?: boolean;
   value?: string;
   error?: any;
   helperText?: any;
@@ -25,6 +26,7 @@ const TextField = ({
   helperText,
   placeholder,
   labelText,
+  disabled,
   language,
   onChange
 }: PropsWithChildren<Props>) => (
@@ -38,6 +40,7 @@ const TextField = ({
         name={name}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
     </SC.FieldWrapper>
     {helperText && <SC.HelperText>{helperText}</SC.HelperText>}
