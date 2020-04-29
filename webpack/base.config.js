@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BaseHrefWebpackPlugin } from 'base-href-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export default {
   entry: {
@@ -37,6 +38,18 @@ export default {
   },
   module: {
     rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              import: true
+            }
+          }
+        ]
+      },
       {
         test: /\.(js|ts)x?$/,
         use: [
@@ -124,6 +137,7 @@ export default {
     ),
     new BaseHrefWebpackPlugin({
       baseHref: '/'
-    })
+    }),
+    new MiniCssExtractPlugin()
   ]
 };

@@ -10,6 +10,8 @@ import React, {
 import { compose } from 'redux';
 import { FormikProps, withFormik, FieldArray } from 'formik';
 import { compare, Operation } from 'fast-json-patch';
+import DatePicker from 'react-datepicker';
+import { nb } from 'date-fns/locale';
 
 import {
   localization as translations,
@@ -47,6 +49,8 @@ import { mapDataServiceToValues } from './utils';
 import { DataService, Dataset, MediaType } from '../../types';
 import { Status, StatusText, ServiceType, Language } from '../../types/enums';
 import DataServiceImportForm from '../data-service-import-form';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface FormValues extends DataService {
   languages?: Language[];
@@ -255,7 +259,6 @@ const DataServiceForm: FC<Props> = ({
         dataServiceId={values.id}
         organizationId={organizationId}
       />
-
       <SC.DataServiceForm>
         <LanguagePicker languages={languages} toggleLanguage={toggleLanguage} />
         <SC.ExpandAllButton as='a' onClick={toggleAllExpanded}>
@@ -723,17 +726,31 @@ const DataServiceForm: FC<Props> = ({
               // isResettablenoOptionLabel='Velg status'
               onChange={handleChange}
             />
-            {/* <SC.DatePicker
-            id='expiration-date-picker'
+            <SC.Label htmlFor='dataServiceStatus.expirationDate'>
+              Utløpsdato
+            </SC.Label>
+            <DatePicker
+              selected={
+                values.dataServiceStatus.expirationDate
+                  ? new Date(values.dataServiceStatus.expirationDate)
+                  : null
+              }
+              id='expiration-date-picker'
               name='dataServiceStatus.expirationDate'
-              label='Utløpsdato'
-              value={values.dataServiceStatus.expirationDate}
-              format='dd.MM.yyyy'
-            variant='inline'
-              disableToolbar
-            margin='normal'
-              onChange={handleChange}
-            /> */}
+              minDate={new Date()}
+              customInput={<SC.DateField />}
+              placeholderText='Oppgi dato'
+              dateFormat='dd.MM.yyyy'
+              locale={nb}
+              todayButton='Today'
+              onChange={date => {
+                setFieldValue(
+                  'dataServiceStatus.expirationDate',
+                  date?.toISOString().replace(/\.[0-9]{2,3}/, ''),
+                  false
+                );
+              }}
+            />
             <TextField
               name='dataServiceStatus.supersededByUrl'
               value={values.dataServiceStatus.supersededByUrl}
