@@ -11,6 +11,28 @@ const DataServiceForm = styled(Form)`
   align-items: flex-start;
 `;
 
+const Label = styled.label`
+  margin-bottom: -15px;
+  font-weight: bold;
+`;
+
+const DateField = styled.input`
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
+  color: ${({ theme }) => theme.fdk.colors.text.default};
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      background: ${({ theme }) => theme.fdk.colors.neutrals.light};
+    `}
+
+  &:not(:disabled):focus {
+    box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};
+  }
+`;
+
 const ExpandAllButton = styled.button`
   display: flex;
   align-items: center;
@@ -107,5 +129,7 @@ export default {
   Fieldset,
   InlineFields,
   AddButton,
-  RemoveButton
+  RemoveButton,
+  DateField,
+  Label
 };
