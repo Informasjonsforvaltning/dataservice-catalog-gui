@@ -1,4 +1,4 @@
-import { object, string, addMethod } from 'yup';
+import { object, array, string, addMethod } from 'yup';
 
 import { MultiLanguageText } from '../../types';
 import { Status, StatusText, ServiceType, Language } from '../../types/enums';
@@ -18,7 +18,10 @@ addMethod(object, 'atLeastOneLanguage', function atLeastOneLanguage() {
 export default object().shape({
   status: string().oneOf([Status.DRAFT, Status.PUBLISHED]),
   title: (object() as any).atLeastOneLanguage(),
-  endpointUrl: string().ensure().url().required('Feltet må fylles ut'),
+  endpointUrls: array()
+    .of(string().ensure().url().required())
+    .ensure()
+    .required(),
   dataServiceStatus: object().shape({
     statusText: string().oneOf([
       StatusText.DEPRECATED,
