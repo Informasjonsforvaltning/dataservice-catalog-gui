@@ -355,15 +355,40 @@ const DataServiceForm: FC<Props> = ({
             subtitle={translations.titleAbstract}
             description={translations.titleDescription}
           >
-            <TextField
-              disabled={isImported}
-              name='endpointUrl'
-              value={values.endpointUrl}
-              error={isPublished && touched.endpointUrl && errors.endpointUrl}
-              helperText={
-                isPublished && touched.endpointUrl && errors.endpointUrl
-              }
-              onChange={handleChange}
+            <FieldArray
+              name='endpointUrls'
+              render={({ push, remove }) => (
+                <>
+                  {values.endpointUrls.map((url, index) => (
+                    <Fragment key={`endpointUrls-${index}`}>
+                      <TextField
+                        placeholder='Ny endepunktsurl'
+                        name={`endpointUrls[${index}]`}
+                        value={url}
+                        onChange={handleChange}
+                        disabled={isImported}
+                      />
+                      {values.endpointUrls.length > 1 && (
+                        <SC.RemoveButton
+                          type='button'
+                          onClick={() => remove(index)}
+                        >
+                          <RemoveIcon />
+                          Slett endepunkt
+                        </SC.RemoveButton>
+                      )}
+                    </Fragment>
+                  ))}
+                  <SC.AddButton
+                    type='button'
+                    addMargin={values.endpointUrls.length === 1}
+                    onClick={() => push('')}
+                  >
+                    <AddIcon />
+                    Legg til nytt endepunkt
+                  </SC.AddButton>
+                </>
+              )}
             />
           </SC.Fieldset>
           <SC.Fieldset
@@ -390,7 +415,7 @@ const DataServiceForm: FC<Props> = ({
                           onClick={() => remove(index)}
                         >
                           <RemoveIcon />
-                          Slett endepunkt
+                          Slett endepunktsbeskrivelse
                         </SC.RemoveButton>
                       )}
                     </Fragment>
@@ -401,7 +426,7 @@ const DataServiceForm: FC<Props> = ({
                     onClick={() => push('')}
                   >
                     <AddIcon />
-                    Legg til nytt endepunkt
+                    Legg til nytt endepunktsbeskrivelse
                   </SC.AddButton>
                 </>
               )}
