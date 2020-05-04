@@ -281,7 +281,7 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Tittel'
-            subtitle='Den korte hjelpeteksten som oppsummerer hvordan feltet skal fylles ut'
+            subtitle={translations.title.abstract}
             required
           >
             <MultilingualInput
@@ -300,7 +300,7 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Beskrivelse'
-            subtitle='Den korte hjelpeteksten som oppsummerer hvordan feltet skal fylles ut'
+            subtitle={translations.description.abstract}
           >
             <MultilingualInput
               name='description'
@@ -326,8 +326,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Versjon'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.version.abstract}
+            description={translations.version.description}
           >
             <TextField
               name='version'
@@ -352,8 +352,8 @@ const DataServiceForm: FC<Props> = ({
           <SC.Fieldset
             title='EndepunktURL'
             required
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.endpointUrl.abstract}
+            description={translations.endpointUrl.description}
           >
             <FieldArray
               name='endpointUrls'
@@ -393,8 +393,8 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Lenke til endepunktsbeskrivelse'
-            subtitle={translations.dataProcessingAgreementsAbstract}
-            description={translations.dataProcessingAgreementsDescription}
+            subtitle={translations.endpointDescriptions.abstract}
+            description={translations.endpointDescriptions.description}
           >
             <FieldArray
               name='endpointDescriptions'
@@ -447,8 +447,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Kontaktpunkt'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.contactName.abstract}
+            description={translations.contactName.description}
           >
             <TextField
               name='contact.name'
@@ -502,8 +502,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Mediatyper'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.mediaTypes.abstract}
+            description={translations.mediaTypes.description}
           >
             <FieldArray
               name='mediaTypes'
@@ -586,8 +586,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Kan alle få tilgang?'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.isOpenAccess.abstract}
+            description={translations.isOpenAccess.description}
           >
             <Radio
               name='access.isOpenAccess'
@@ -601,8 +601,8 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Er lisensen åpen?'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.isOpenLicense.abstract}
+            description={translations.isOpenLicense.description}
           >
             <Radio
               name='access.isOpenLicense'
@@ -616,8 +616,8 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Er API-et gratis å bruke?'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.isFree.abstract}
+            description={translations.isFree.description}
           >
             <Radio
               name='access.isFree'
@@ -631,8 +631,8 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Gir datatjenesten kilde til en autoritativ kilde?'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.isAuthoritativeSource.abstract}
+            description={translations.isAuthoritativeSource.description}
           >
             <Radio
               name='access.isAuthoritativeSource'
@@ -659,8 +659,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Trafikkbegrensninger'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.usageLimitation.abstract}
+            description={translations.usageLimitation.description}
           >
             <MultilingualInput
               name='termsAndConditions.usageLimitation'
@@ -672,8 +672,8 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Pris'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.price.abstract}
+            description={translations.price.description}
           >
             <MultilingualInput
               name='termsAndConditions.price'
@@ -685,8 +685,8 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Kapasitet og ytelse'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.capacityAndPerformance.abstract}
+            description={translations.capacityAndPerformance.description}
           >
             <MultilingualInput
               name='termsAndConditions.capacityAndPerformance'
@@ -698,8 +698,8 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
           <SC.Fieldset
             title='Pålitelighet'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.reliability.abstract}
+            description={translations.reliability.description}
           >
             <MultilingualInput
               name='termsAndConditions.reliability'
@@ -724,8 +724,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Status på API-et'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.status.abstract}
+            description={translations.status.description}
           >
             <Select
               name='dataServiceStatus.statusText'
@@ -798,8 +798,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Søk etter og velg datasettbeskrivelse(r)'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.servesDataset.abstract}
+            description={translations.servesDataset.description}
           >
             <FieldArray
               name='servesDataset'
@@ -856,8 +856,8 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Tjenestetype'
-            subtitle={translations.titleAbstract}
-            description={translations.titleDescription}
+            subtitle={translations.serviceType.abstract}
+            description={translations.serviceType.description}
           >
             <Select
               name='serviceType'
