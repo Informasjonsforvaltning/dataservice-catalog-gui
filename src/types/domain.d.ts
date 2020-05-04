@@ -16,9 +16,9 @@ export interface DataService {
   version?: string;
   operationCount?: number;
   contact: Partial<Contact>;
-  endpointUrl: string;
   mediaTypes: string[];
   description: MultiLanguageText;
+  endpointUrls: string[];
   endpointDescriptions: string[];
   license: Partial<License>;
   access: Partial<Access>;
