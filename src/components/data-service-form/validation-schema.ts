@@ -18,7 +18,7 @@ addMethod(object, 'atLeastOneLanguage', function atLeastOneLanguage() {
 export default object().shape({
   status: string().oneOf([Status.DRAFT, Status.PUBLISHED]),
   title: (object() as any).atLeastOneLanguage(),
-  endpointUrl: string().ensure().required('Feltet må fylles ut'),
+  endpointUrl: string().ensure().url().required('Feltet må fylles ut'),
   dataServiceStatus: object().shape({
     statusText: string().oneOf([
       StatusText.DEPRECATED,
