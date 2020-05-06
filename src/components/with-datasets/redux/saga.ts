@@ -9,6 +9,8 @@ import {
   SEARCH_DATASETS_REQUESTED
 } from './action-types';
 
+import { Dataset } from '../../../types';
+
 const { SEARCH_API } = env;
 
 function* getDatasetsRequested({
@@ -26,8 +28,12 @@ function* getDatasetsRequested({
       }
     );
 
-    if (data?._embedded?.datasets) {
-      yield put(actions.getDatasetsSucceeded(data?._embedded?.datasets));
+    const datasets: Dataset[] = data?.hits?.hits.map(
+      ({ _source }: any) => _source
+    );
+
+    if (datasets) {
+      yield put(actions.getDatasetsSucceeded(datasets));
     } else {
       yield put(actions.getDatasetsFailed(JSON.stringify(message)));
     }
