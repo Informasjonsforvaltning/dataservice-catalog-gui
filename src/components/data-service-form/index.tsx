@@ -124,7 +124,6 @@ const DataServiceForm: FC<Props> = ({
 
   useEffect(() => {
     getReferenceData('mediatypes');
-    getDatasets({});
     mounted.current = true;
   }, []);
 
@@ -133,6 +132,7 @@ const DataServiceForm: FC<Props> = ({
   const allFieldsExpanded = allExpanded.every(Boolean);
   const isPublished = dataService?.status === Status.PUBLISHED;
   const isImported = !!dataService?.imported;
+  const hasDatasets = !!dataService?.servesDataset?.length;
 
   const [languages, setLanguages] = useState({
     [Language.NB]: true,
@@ -194,6 +194,9 @@ const DataServiceForm: FC<Props> = ({
         languages: selectedLanguages
       };
       if (!isDataServiceLoaded) {
+        if (hasDatasets) {
+          getDatasets({ uris: dataService.servesDataset.join() });
+        }
         setValues(dataServiceValues, true);
         previousDataService.current = dataServiceValues;
         dataServiceLoaded.current = true;
@@ -748,7 +751,8 @@ const DataServiceForm: FC<Props> = ({
                   value: StatusText.REMOVED
                 }
               ]}
-              // isResettablenoOptionLabel='Velg status'
+              isResettable
+              noOptionLabel='Velg status'
               onChange={handleChange}
             />
             <SC.Label htmlFor='dataServiceStatus.expirationDate'>
