@@ -2,7 +2,6 @@ import { resolve } from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import { BaseHrefWebpackPlugin } from 'base-href-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export default {
@@ -105,29 +104,12 @@ export default {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new (class ChunksFromEntryPlugin {
-      apply(compiler) {
-        compiler.hooks.emit.tap('ChunksFromEntryPlugin', compilation => {
-          compilation.hooks.htmlWebpackPluginAlterChunks.tap(
-            'ChunksFromEntryPlugin',
-            (_, { plugin }) =>
-              compilation.entrypoints
-                .get(plugin.options.entry)
-                .chunks.map(chunk => ({
-                  names: chunk.name ? [chunk.name] : [],
-                  files: chunk.files.slice(),
-                  size: chunk.modulesSize(),
-                  hash: chunk.hash
-                }))
-          );
-        });
-      }
-    })(),
     new HtmlWebpackPlugin({
-      entry: 'main',
       template: './src/entrypoints/main/index.html',
       filename: 'index.html',
-      favicon: './src/images/favicon.ico'
+      favicon: './src/images/favicon.ico',
+      base: '/',
+      chunks: ['main']
     }),
     new CopyWebpackPlugin(
       [{ from: './src/lib/auth/silent-check-sso.html', to: './' }],
@@ -135,9 +117,6 @@ export default {
         copyUnmodified: true
       }
     ),
-    new BaseHrefWebpackPlugin({
-      baseHref: '/'
-    }),
     new MiniCssExtractPlugin()
   ]
 };
