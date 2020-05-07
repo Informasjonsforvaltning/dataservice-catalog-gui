@@ -24,6 +24,7 @@ interface Props {
   labelText?: string;
   helperText?: any;
   disabled?: boolean;
+  isReadOnly?: boolean;
   onChange?: (event: ChangeEvent<any>) => void;
   onLanguageChange?: () => void;
 }
@@ -38,6 +39,7 @@ const MultilingualInput: FC<Props> = ({
   helperText,
   onChange,
   disabled,
+  isReadOnly,
   onLanguageChange,
   languages,
   component: Component
@@ -46,7 +48,9 @@ const MultilingualInput: FC<Props> = ({
 
   useEffect(() => {
     if (
-      !fromJS(languages.sort()).equals(fromJS(previousLanguages.current.sort()))
+      !fromJS([...languages].sort()).equals(
+        fromJS(previousLanguages.current.sort())
+      )
     ) {
       onLanguageChange?.();
       previousLanguages.current = languages;
@@ -68,6 +72,7 @@ const MultilingualInput: FC<Props> = ({
           onChange={onChange}
           disabled={disabled}
           language={language}
+          isReadOnly={isReadOnly}
         />
       ))}
     </SC.MultilingualInput>

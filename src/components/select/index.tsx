@@ -15,6 +15,7 @@ interface Props {
   labelText?: string;
   noOptionLabel?: string;
   isResettable?: boolean;
+  isReadOnly?: boolean;
   onChange?: (event?: ChangeEvent<any>) => void;
 }
 
@@ -24,6 +25,7 @@ const Select = ({
   labelText,
   noOptionLabel,
   isResettable,
+  isReadOnly,
   value,
   onChange
 }: Props): JSX.Element => {
@@ -75,43 +77,49 @@ const Select = ({
   return (
     <SC.Select ref={selectElement} onClick={toggleExpandedState}>
       {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-      <SC.SelectButton type='button'>
-        <span>{currentOption ? currentOption.label : selectLabel}</span>
-        {isResettable && selectValue && (
-          <SC.ResetIcon onClick={handleChangeValue(undefined, -1)} />
-        )}
-      </SC.SelectButton>
-      <SC.OverflowControl visible={isExpanded}>
-        <SC.Dropdown>
-          {noOptionLabel && (
-            <SC.NoOptionLabel>{noOptionLabel}</SC.NoOptionLabel>
-          )}
-          {options.map(({ label, value: optionValue }, index) => (
-            <SC.DropdownItem
-              id={name}
-              key={`${label}-${optionValue}`}
-              selected={`${value}` === `${optionValue}`}
-              onClick={handleChangeValue(optionValue, index, label)}
-            >
-              {label}
-            </SC.DropdownItem>
-          ))}
-        </SC.Dropdown>
-      </SC.OverflowControl>
-      <SC.HiddenSelect
-        ref={inputElement}
-        as='select'
-        name={name}
-        value={selectValue}
-        onInput={onChange}
-        onChange={() => {}}
-      >
-        {options.map(({ label, value: optionValue }) => (
-          <option key={`${name}-${optionValue}`} value={optionValue}>
-            {label}
-          </option>
-        ))}
-      </SC.HiddenSelect>
+      {!isReadOnly ? (
+        <>
+          <SC.SelectButton type='button'>
+            <span>{currentOption ? currentOption.label : selectLabel}</span>
+            {isResettable && selectValue && (
+              <SC.ResetIcon onClick={handleChangeValue(undefined, -1)} />
+            )}
+          </SC.SelectButton>
+          <SC.OverflowControl visible={isExpanded}>
+            <SC.Dropdown>
+              {noOptionLabel && (
+                <SC.NoOptionLabel>{noOptionLabel}</SC.NoOptionLabel>
+              )}
+              {options.map(({ label, value: optionValue }, index) => (
+                <SC.DropdownItem
+                  id={name}
+                  key={`${label}-${optionValue}`}
+                  selected={`${value}` === `${optionValue}`}
+                  onClick={handleChangeValue(optionValue, index, label)}
+                >
+                  {label}
+                </SC.DropdownItem>
+              ))}
+            </SC.Dropdown>
+          </SC.OverflowControl>
+          <SC.HiddenSelect
+            ref={inputElement}
+            as='select'
+            name={name}
+            value={selectValue}
+            onInput={onChange}
+            onChange={() => {}}
+          >
+            {options.map(({ label, value: optionValue }) => (
+              <option key={`${name}-${optionValue}`} value={optionValue}>
+                {label}
+              </option>
+            ))}
+          </SC.HiddenSelect>
+        </>
+      ) : (
+        <span>{currentOption?.label ?? 'Ikke valgt'}</span>
+      )}
     </SC.Select>
   );
 };

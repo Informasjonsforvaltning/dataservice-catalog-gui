@@ -9,6 +9,7 @@ const Select = styled.div`
   align-items: stretch;
   max-height: 59px;
   min-width: 200px;
+  padding: 0 8px;
   background: none;
 
   &,

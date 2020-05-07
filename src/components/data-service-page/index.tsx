@@ -3,6 +3,8 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import env from '../../env';
 
+import { authService } from '../../services/auth-service';
+
 import withOrganization, {
   Props as OrganizationProps
 } from '../with-organization';
@@ -54,6 +56,7 @@ const DataServicePage: FC<Props> = ({
 
   const navigateToDataServiceListPage = () => replace(`/${organizationId}`);
   const id = dataService?.id;
+  const isReadOnlyUser = authService.isReadOnlyUser(organizationId);
 
   useEffect(() => {
     if (organizationId) {
@@ -121,17 +124,19 @@ const DataServicePage: FC<Props> = ({
         onTitleChange={setDataServiceTitle}
         onValidityChange={setFormValidity}
       />
-      <StatusBar
-        dataServiceId={dataServiceId}
-        canBeApproved={formIsValid}
-        updatedAt={dataService?.modified}
-        status={dataServiceStatus}
-        onSetStatus={handleDataServiceStatusChange}
-        onDataServiceRemove={() =>
-          id &&
-          deleteDataService(id, organizationId, navigateToDataServiceListPage)
-        }
-      />
+      {!isReadOnlyUser && (
+        <StatusBar
+          dataServiceId={dataServiceId}
+          canBeApproved={formIsValid}
+          updatedAt={dataService?.modified}
+          status={dataServiceStatus}
+          onSetStatus={handleDataServiceStatusChange}
+          onDataServiceRemove={() =>
+            id &&
+            deleteDataService(id, organizationId, navigateToDataServiceListPage)
+          }
+        />
+      )}
     </SC.DataServicePage>
   );
 };

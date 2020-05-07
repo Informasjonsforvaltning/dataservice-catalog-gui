@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Field as FormikField } from 'formik';
 
-const Language = styled.span`
+const Language = styled.span<{ isReadOnly?: boolean }>`
   position: absolute;
   top: 50%;
   left: 0;
@@ -11,6 +11,19 @@ const Language = styled.span`
   text-transform: uppercase;
   text-align: center;
   font-weight: bold;
+
+  ${({ isReadOnly }) =>
+    isReadOnly &&
+    css`
+      top: -3px;
+      transform: none;
+      margin: 0;
+      padding: 3px 5px;
+      border-radius: 4px;
+      width: 34px;
+      text-transform: lowercase;
+      background: ${({ theme }) => theme.fdk.colors.neutrals.skyblue};
+    `}
 `;
 
 const TextField = styled(FormikField)<{ disabled?: boolean; error?: boolean }>`
@@ -36,13 +49,17 @@ const Label = styled.label`
   margin-bottom: 5px;
 `;
 
+const ReadOnlyLabel = styled.span`
+  min-height: 18.4px;
+`;
+
 const HelperText = styled.p`
   margin-top: 5px;
   margin-left: 8px;
   font-size: 12px;
 `;
 
-const FieldWrapper = styled.div<{ language?: string }>`
+const FieldWrapper = styled.div<{ language?: string; isReadOnly?: boolean }>`
   display: flex;
   align-items: center;
   position: relative;
@@ -53,12 +70,23 @@ const FieldWrapper = styled.div<{ language?: string }>`
       & > ${TextField} {
         padding-left: 41px;
       }
+
+      & > ${ReadOnlyLabel} {
+        margin-left: 42px;
+      }
+    `}
+
+  ${({ isReadOnly }) =>
+    isReadOnly &&
+    css`
+      margin: 4px 0;
     `}
 `;
 
 const Field = styled.div<{ error?: boolean }>`
   display: flex;
   flex-direction: column;
+  padding: 0 8px;
 
   ${({ error }) =>
     error &&
@@ -77,4 +105,12 @@ const Field = styled.div<{ error?: boolean }>`
     `}
 `;
 
-export default { Field, FieldWrapper, TextField, Language, Label, HelperText };
+export default {
+  Field,
+  FieldWrapper,
+  TextField,
+  Language,
+  Label,
+  ReadOnlyLabel,
+  HelperText
+};

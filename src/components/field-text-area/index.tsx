@@ -15,6 +15,7 @@ interface Props {
   language?: Language;
   name: string;
   disabled: boolean;
+  isReadOnly?: boolean;
   onChange?: (event: ChangeEvent<any>) => void;
 }
 
@@ -28,24 +29,31 @@ const TextAreaField = ({
   labelText,
   language,
   disabled,
+  isReadOnly,
   onChange
 }: PropsWithChildren<Props>) => (
   <SC.Field error={error}>
     {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-    <SC.FieldWrapper language={language}>
-      {language && <SC.Language>{language}</SC.Language>}
-      <SC.TextAreaField
-        component='textarea'
-        rows={3}
-        id={id}
-        placeholder={placeholder || labelText}
-        name={name}
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-      />
+    <SC.FieldWrapper language={language} isReadOnly={isReadOnly}>
+      {language && (
+        <SC.Language isReadOnly={isReadOnly}>{language}</SC.Language>
+      )}
+      {!isReadOnly ? (
+        <SC.TextAreaField
+          component='textarea'
+          rows={3}
+          id={id}
+          placeholder={placeholder || labelText}
+          name={name}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+        />
+      ) : (
+        <SC.ReadOnlyLabel>{value}</SC.ReadOnlyLabel>
+      )}
     </SC.FieldWrapper>
-    {helperText && <SC.HelperText>{helperText}</SC.HelperText>}
+    {helperText && !isReadOnly && <SC.HelperText>{helperText}</SC.HelperText>}
   </SC.Field>
 );
 
