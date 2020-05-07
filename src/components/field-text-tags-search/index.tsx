@@ -36,6 +36,7 @@ interface Props extends HTMLAttributes<any> {
   suggestions: Suggestion[];
   isLoadingSuggestions?: boolean;
   noOptionLabel?: string;
+  isReadOnly?: boolean;
   onAddTag: (tag: string) => void;
   onRemoveTag: (index: number) => void;
 }
@@ -49,6 +50,7 @@ const TextTagsSearchField = ({
   placeholder,
   labelText,
   noOptionLabel,
+  isReadOnly,
   suggestions,
   isLoadingSuggestions,
   onAddTag,
@@ -129,56 +131,64 @@ const TextTagsSearchField = ({
   return (
     <SC.Field>
       {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-      <SC.FieldWrapper error={error}>
-        <SC.TextTagsSearchField
-          id={id}
-          placeholder={placeholder || labelText}
-          name={name}
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
-        {isLoadingSuggestions && (
-          <SC.Spinner>
-            <CircularProgress />
-          </SC.Spinner>
-        )}
-        <SC.OverflowControl
-          visible={
-            isLoadingSuggestions ? false : isExpanded && suggestions?.length > 0
-          }
-        >
-          <SC.Dropdown ref={dropdownElement}>
-            {noOptionLabel && (
-              <SC.NoOptionLabel>{noOptionLabel}</SC.NoOptionLabel>
-            )}
-            {suggestions
-              .filter(({ label: l, value: v }) => l && v)
-              .map(({ label, value: suggestionValue }, index) => (
-                <SC.DropdownItem
-                  id={name}
-                  key={`${label}-${suggestionValue}`}
-                  selected={selectedItemIndex === index}
-                  tabIndex={0}
-                  onClick={() => addTag(suggestionValue)}
-                >
-                  {label}
-                </SC.DropdownItem>
-              ))}
-          </SC.Dropdown>
-        </SC.OverflowControl>
-      </SC.FieldWrapper>
-      {helperText && <SC.HelperText error={error}>{helperText}</SC.HelperText>}
+      {!isReadOnly && (
+        <SC.FieldWrapper error={error}>
+          <SC.TextTagsSearchField
+            id={id}
+            placeholder={placeholder || labelText}
+            name={name}
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+          {isLoadingSuggestions && (
+            <SC.Spinner>
+              <CircularProgress />
+            </SC.Spinner>
+          )}
+          <SC.OverflowControl
+            visible={
+              isLoadingSuggestions
+                ? false
+                : isExpanded && suggestions?.length > 0
+            }
+          >
+            <SC.Dropdown ref={dropdownElement}>
+              {noOptionLabel && (
+                <SC.NoOptionLabel>{noOptionLabel}</SC.NoOptionLabel>
+              )}
+              {suggestions
+                .filter(({ label: l, value: v }) => l && v)
+                .map(({ label, value: suggestionValue }, index) => (
+                  <SC.DropdownItem
+                    id={name}
+                    key={`${label}-${suggestionValue}`}
+                    selected={selectedItemIndex === index}
+                    tabIndex={0}
+                    onClick={() => addTag(suggestionValue)}
+                  >
+                    {label}
+                  </SC.DropdownItem>
+                ))}
+            </SC.Dropdown>
+          </SC.OverflowControl>
+        </SC.FieldWrapper>
+      )}
+      {helperText && !isReadOnly && (
+        <SC.HelperText error={error}>{helperText}</SC.HelperText>
+      )}
       {value && value.length > 0 && (
         <SC.Tags>
           {value
             .filter(({ label: l, value: v }) => l && v)
             .map(({ label, value: tagValue }, index) => (
-              <SC.Tag key={`${tagValue}-${index}`}>
+              <SC.Tag key={`${tagValue}-${index}`} isReadOnly={isReadOnly}>
                 <span>{label}</span>
-                <RemoveIcon onClick={() => onRemoveTag(index)} />
+                {!isReadOnly && (
+                  <RemoveIcon onClick={() => onRemoveTag(index)} />
+                )}
               </SC.Tag>
             ))}
         </SC.Tags>

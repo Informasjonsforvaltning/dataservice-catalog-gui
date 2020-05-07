@@ -11,12 +11,19 @@ const DataServiceForm = styled(Form)`
   align-items: flex-start;
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ isReadOnly?: boolean }>`
   margin-bottom: -15px;
   font-weight: bold;
+
+  ${({ isReadOnly }) =>
+    isReadOnly &&
+    css`
+      margin-top: 20px;
+      padding: 0 8px;
+    `}
 `;
 
-const DateField = styled.input`
+const DateField = styled.input<{ isReadOnly?: boolean }>`
   padding: 8px;
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
@@ -31,6 +38,13 @@ const DateField = styled.input`
   &:not(:disabled):focus {
     box-shadow: 0 0 0 0.1rem ${({ theme }) => theme.fdk.colors.text.default};
   }
+
+  ${({ isReadOnly }) =>
+    isReadOnly &&
+    css`
+      border: none;
+      box-shadow: none;
+    `}
 `;
 
 const ExpandAllButton = styled.button`

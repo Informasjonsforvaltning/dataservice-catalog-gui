@@ -11,6 +11,7 @@ interface Props {
   title: string;
   subtitle: string;
   description?: string;
+  isReadOnly?: boolean;
 }
 
 const Fieldset = ({
@@ -18,6 +19,7 @@ const Fieldset = ({
   title,
   subtitle,
   description,
+  isReadOnly,
   children,
   ...props
 }: PropsWithChildren<Props>) => {
@@ -28,17 +30,19 @@ const Fieldset = ({
       <SC.Legend>
         <SC.Inline>
           <SC.Title>{title}</SC.Title>
-          {required && <SC.RequiredLabel text='Obligatorisk' />}
+          {required && !isReadOnly && <SC.RequiredLabel text='Obligatorisk' />}
         </SC.Inline>
-        <SC.Inline justifyContent='space-between'>
-          <SC.Subtitle>{subtitle}</SC.Subtitle>
-          {description && (
-            <SC.Expand onClick={toggleExpansion}>
-              {isExpanded ? <ExpandLess /> : <ExpandMore />}
-            </SC.Expand>
-          )}
-        </SC.Inline>
-        {isExpanded && description && (
+        {!isReadOnly && (
+          <SC.Inline justifyContent='space-between'>
+            <SC.Subtitle>{subtitle}</SC.Subtitle>
+            {description && (
+              <SC.Expand onClick={toggleExpansion}>
+                {isExpanded ? <ExpandLess /> : <ExpandMore />}
+              </SC.Expand>
+            )}
+          </SC.Inline>
+        )}
+        {isExpanded && description && !isReadOnly && (
           <SC.Description
             dangerouslySetInnerHTML={{
               __html: convertToSanitizedHtml(description)

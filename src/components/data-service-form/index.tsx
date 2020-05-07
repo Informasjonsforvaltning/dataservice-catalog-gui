@@ -18,6 +18,8 @@ import {
   translate
 } from '../../lib/localization';
 
+import { authService } from '../../services/auth-service';
+
 import withDatasets, { Props as DatasetsProps } from '../with-datasets';
 import withDataService, {
   Props as DataServiceProps
@@ -133,11 +135,12 @@ const DataServiceForm: FC<Props> = ({
   const isPublished = dataService?.status === Status.PUBLISHED;
   const isImported = !!dataService?.imported;
   const hasDatasets = !!dataService?.servesDataset?.length;
+  const isReadOnly = authService.isReadOnlyUser(organizationId);
 
   const [languages, setLanguages] = useState({
     [Language.NB]: true,
-    [Language.NN]: false,
-    [Language.EN]: false
+    [Language.NN]: isReadOnly,
+    [Language.EN]: isReadOnly
   });
 
   const selectedLanguages = Object.entries(languages)
@@ -258,12 +261,19 @@ const DataServiceForm: FC<Props> = ({
 
   return (
     <>
-      <DataServiceImportForm
-        dataServiceId={values.id}
-        organizationId={organizationId}
-      />
+      {!isReadOnly && (
+        <DataServiceImportForm
+          dataServiceId={values.id}
+          organizationId={organizationId}
+        />
+      )}
       <SC.DataServiceForm>
-        <LanguagePicker languages={languages} toggleLanguage={toggleLanguage} />
+        {!isReadOnly && (
+          <LanguagePicker
+            languages={languages}
+            toggleLanguage={toggleLanguage}
+          />
+        )}
         <SC.ExpandAllButton as='a' onClick={toggleAllExpanded}>
           <span>
             {allFieldsExpanded ? 'Lukk alle felter' : 'Åpne alle felter'}
@@ -273,6 +283,7 @@ const DataServiceForm: FC<Props> = ({
         <SC.DataServiceFormSection
           title='Tittel og beskrivelse'
           required
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[0]}
           onClick={() =>
             setAllExpanded(
@@ -286,6 +297,7 @@ const DataServiceForm: FC<Props> = ({
             title='Tittel'
             subtitle={translations.title.abstract}
             required
+            isReadOnly={isReadOnly}
           >
             <MultilingualInput
               name='title'
@@ -296,6 +308,7 @@ const DataServiceForm: FC<Props> = ({
               helperText={isPublished && touched.title && errors.title}
               onChange={handleChange}
               disabled={isImported}
+              isReadOnly={isReadOnly}
               onLanguageChange={() =>
                 setFieldValue('languages', selectedLanguages)
               }
@@ -304,6 +317,7 @@ const DataServiceForm: FC<Props> = ({
           <SC.Fieldset
             title='Beskrivelse'
             subtitle={translations.description.abstract}
+            isReadOnly={isReadOnly}
           >
             <MultilingualInput
               name='description'
@@ -313,11 +327,13 @@ const DataServiceForm: FC<Props> = ({
               error={errors.description}
               onChange={handleChange}
               disabled={isImported}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Versjon'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[1]}
           onClick={() =>
             setAllExpanded(
@@ -331,18 +347,21 @@ const DataServiceForm: FC<Props> = ({
             title='Versjon'
             subtitle={translations.version.abstract}
             description={translations.version.description}
+            isReadOnly={isReadOnly}
           >
             <TextField
               name='version'
               value={values.version}
               onChange={handleChange}
               disabled={isImported}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Endepunkt'
           required
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[2]}
           onClick={() =>
             setAllExpanded(
@@ -357,6 +376,7 @@ const DataServiceForm: FC<Props> = ({
             required
             subtitle={translations.endpointUrl.abstract}
             description={translations.endpointUrl.description}
+            isReadOnly={isReadOnly}
           >
             <FieldArray
               name='endpointUrls'
@@ -370,8 +390,9 @@ const DataServiceForm: FC<Props> = ({
                         value={url}
                         onChange={handleChange}
                         disabled={isImported}
+                        isReadOnly={isReadOnly}
                       />
-                      {values.endpointUrls.length > 1 && (
+                      {values.endpointUrls.length > 1 && !isReadOnly && (
                         <SC.RemoveButton
                           type='button'
                           onClick={() => remove(index)}
@@ -382,14 +403,16 @@ const DataServiceForm: FC<Props> = ({
                       )}
                     </Fragment>
                   ))}
-                  <SC.AddButton
-                    type='button'
-                    addMargin={values.endpointUrls.length === 1}
-                    onClick={() => push('')}
-                  >
-                    <AddIcon />
-                    Legg til nytt endepunkt
-                  </SC.AddButton>
+                  {!isReadOnly && (
+                    <SC.AddButton
+                      type='button'
+                      addMargin={values.endpointUrls.length === 1}
+                      onClick={() => push('')}
+                    >
+                      <AddIcon />
+                      Legg til nytt endepunkt
+                    </SC.AddButton>
+                  )}
                 </>
               )}
             />
@@ -398,6 +421,7 @@ const DataServiceForm: FC<Props> = ({
             title='Lenke til endepunktsbeskrivelse'
             subtitle={translations.endpointDescriptions.abstract}
             description={translations.endpointDescriptions.description}
+            isReadOnly={isReadOnly}
           >
             <FieldArray
               name='endpointDescriptions'
@@ -411,8 +435,9 @@ const DataServiceForm: FC<Props> = ({
                         value={description}
                         onChange={handleChange}
                         disabled={isImported}
+                        isReadOnly={isReadOnly}
                       />
-                      {values.endpointDescriptions.length > 1 && (
+                      {values.endpointDescriptions.length > 1 && !isReadOnly && (
                         <SC.RemoveButton
                           type='button'
                           onClick={() => remove(index)}
@@ -423,22 +448,24 @@ const DataServiceForm: FC<Props> = ({
                       )}
                     </Fragment>
                   ))}
-                  <SC.AddButton
-                    type='button'
-                    addMargin={values.endpointDescriptions.length === 1}
-                    onClick={() => push('')}
-                  >
-                    <AddIcon />
-                    Legg til nytt endepunktsbeskrivelse
-                  </SC.AddButton>
+                  {!isReadOnly && (
+                    <SC.AddButton
+                      type='button'
+                      addMargin={values.endpointDescriptions.length === 1}
+                      onClick={() => push('')}
+                    >
+                      <AddIcon />
+                      Legg til nytt endepunktsbeskrivelse
+                    </SC.AddButton>
+                  )}
                 </>
               )}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
-
         <SC.DataServiceFormSection
           title='Kontaktinformasjon'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[3]}
           onClick={() =>
             setAllExpanded(
@@ -452,6 +479,7 @@ const DataServiceForm: FC<Props> = ({
             title='Kontaktpunkt'
             subtitle={translations.contactName.abstract}
             description={translations.contactName.description}
+            isReadOnly={isReadOnly}
           >
             <TextField
               name='contact.name'
@@ -459,6 +487,7 @@ const DataServiceForm: FC<Props> = ({
               labelText='Navn'
               onChange={handleChange}
               disabled={isImported}
+              isReadOnly={isReadOnly}
             />
             <TextField
               name='contact.url'
@@ -466,12 +495,14 @@ const DataServiceForm: FC<Props> = ({
               labelText='URL'
               onChange={handleChange}
               disabled={isImported}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
             title='Kontaktinformasjon'
             subtitle={translations.titleAbstract}
             description={translations.titleDescription}
+            isReadOnly={isReadOnly}
           >
             <SC.InlineFields>
               <TextField
@@ -480,6 +511,7 @@ const DataServiceForm: FC<Props> = ({
                 labelText='E-post'
                 onChange={handleChange}
                 disabled={isImported}
+                isReadOnly={isReadOnly}
               />
               <TextField
                 name='contact.phone'
@@ -487,13 +519,14 @@ const DataServiceForm: FC<Props> = ({
                 labelText='Telefon'
                 onChange={handleChange}
                 disabled={isImported}
+                isReadOnly={isReadOnly}
               />
             </SC.InlineFields>
           </SC.Fieldset>
         </SC.DataServiceFormSection>
-
         <SC.DataServiceFormSection
           title='Format'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[4]}
           onClick={() =>
             setAllExpanded(
@@ -507,6 +540,7 @@ const DataServiceForm: FC<Props> = ({
             title='Mediatyper'
             subtitle={translations.mediaTypes.abstract}
             description={translations.mediaTypes.description}
+            isReadOnly={isReadOnly}
           >
             <FieldArray
               name='mediaTypes'
@@ -514,7 +548,11 @@ const DataServiceForm: FC<Props> = ({
                 <>
                   <TextTagsSearchField
                     name='mediaTypes'
-                    labelText='Velg blant registrerte mediatyper'
+                    labelText={
+                      isReadOnly
+                        ? 'Registrerte mediatyper'
+                        : 'Velg blant registrerte mediatyper'
+                    }
                     value={values.mediaTypes.map(mediaType => {
                       const match = mediaTypes?.find(
                         ({ code }) => mediaType === code
@@ -557,10 +595,15 @@ const DataServiceForm: FC<Props> = ({
                       !values.mediaTypes.includes(tag) && push(tag)
                     }
                     onRemoveTag={remove}
+                    isReadOnly={isReadOnly}
                   />
                   <TextTagsField
                     name='mediaTypes'
-                    labelText='Oppgi evt. annen mediatype'
+                    labelText={
+                      isReadOnly
+                        ? 'Andre mediatyper'
+                        : 'Oppgi evt. annen mediatype'
+                    }
                     value={values.mediaTypes.filter(
                       mediaType =>
                         !mediaTypes?.find(({ code }) => mediaType === code)
@@ -569,15 +612,16 @@ const DataServiceForm: FC<Props> = ({
                       !values.mediaTypes.includes(tag) && push(tag)
                     }
                     onRemoveTag={remove}
+                    isReadOnly={isReadOnly}
                   />
                 </>
               )}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
-
         <SC.DataServiceFormSection
           title='Tilgang'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[5]}
           onClick={() =>
             setAllExpanded(
@@ -591,6 +635,7 @@ const DataServiceForm: FC<Props> = ({
             title='Kan alle få tilgang?'
             subtitle={translations.isOpenAccess.abstract}
             description={translations.isOpenAccess.description}
+            isReadOnly={isReadOnly}
           >
             <Radio
               name='access.isOpenAccess'
@@ -600,12 +645,14 @@ const DataServiceForm: FC<Props> = ({
                 { label: 'Nei', value: false }
               ]}
               onChange={handleBooleanRadioChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
             title='Er lisensen åpen?'
             subtitle={translations.isOpenLicense.abstract}
             description={translations.isOpenLicense.description}
+            isReadOnly={isReadOnly}
           >
             <Radio
               name='access.isOpenLicense'
@@ -615,12 +662,14 @@ const DataServiceForm: FC<Props> = ({
                 { label: 'Nei', value: false }
               ]}
               onChange={handleBooleanRadioChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
             title='Er API-et gratis å bruke?'
             subtitle={translations.isFree.abstract}
             description={translations.isFree.description}
+            isReadOnly={isReadOnly}
           >
             <Radio
               name='access.isFree'
@@ -630,12 +679,14 @@ const DataServiceForm: FC<Props> = ({
                 { label: 'Nei', value: false }
               ]}
               onChange={handleBooleanRadioChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
             title='Gir datatjenesten kilde til en autoritativ kilde?'
             subtitle={translations.isAuthoritativeSource.abstract}
             description={translations.isAuthoritativeSource.description}
+            isReadOnly={isReadOnly}
           >
             <Radio
               name='access.isAuthoritativeSource'
@@ -645,12 +696,13 @@ const DataServiceForm: FC<Props> = ({
                 { label: 'Nei', value: false }
               ]}
               onChange={handleBooleanRadioChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
-
         <SC.DataServiceFormSection
           title='Vilkår og begrensninger'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[6]}
           onClick={() =>
             setAllExpanded(
@@ -664,6 +716,7 @@ const DataServiceForm: FC<Props> = ({
             title='Trafikkbegrensninger'
             subtitle={translations.usageLimitation.abstract}
             description={translations.usageLimitation.description}
+            isReadOnly={isReadOnly}
           >
             <MultilingualInput
               name='termsAndConditions.usageLimitation'
@@ -671,12 +724,14 @@ const DataServiceForm: FC<Props> = ({
               languages={selectedLanguages}
               value={values.termsAndConditions.usageLimitation}
               onChange={handleChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
             title='Pris'
             subtitle={translations.price.abstract}
             description={translations.price.description}
+            isReadOnly={isReadOnly}
           >
             <MultilingualInput
               name='termsAndConditions.price'
@@ -684,12 +739,14 @@ const DataServiceForm: FC<Props> = ({
               languages={selectedLanguages}
               value={values.termsAndConditions.price}
               onChange={handleChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
             title='Kapasitet og ytelse'
             subtitle={translations.capacityAndPerformance.abstract}
             description={translations.capacityAndPerformance.description}
+            isReadOnly={isReadOnly}
           >
             <MultilingualInput
               name='termsAndConditions.capacityAndPerformance'
@@ -697,12 +754,14 @@ const DataServiceForm: FC<Props> = ({
               languages={selectedLanguages}
               value={values.termsAndConditions.capacityAndPerformance}
               onChange={handleChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
             title='Pålitelighet'
             subtitle={translations.reliability.abstract}
             description={translations.reliability.description}
+            isReadOnly={isReadOnly}
           >
             <MultilingualInput
               name='termsAndConditions.reliability'
@@ -710,12 +769,13 @@ const DataServiceForm: FC<Props> = ({
               languages={selectedLanguages}
               value={values.termsAndConditions.reliability}
               onChange={handleChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
-
         <SC.DataServiceFormSection
           title='Status'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[7]}
           onClick={() =>
             setAllExpanded(
@@ -729,6 +789,7 @@ const DataServiceForm: FC<Props> = ({
             title='Status på API-et'
             subtitle={translations.status.abstract}
             description={translations.status.description}
+            isReadOnly={isReadOnly}
           >
             <Select
               name='dataServiceStatus.statusText'
@@ -754,8 +815,12 @@ const DataServiceForm: FC<Props> = ({
               isResettable
               noOptionLabel='Velg status'
               onChange={handleChange}
+              isReadOnly={isReadOnly}
             />
-            <SC.Label htmlFor='dataServiceStatus.expirationDate'>
+            <SC.Label
+              htmlFor='dataServiceStatus.expirationDate'
+              isReadOnly={isReadOnly}
+            >
               Utløpsdato
             </SC.Label>
             <DatePicker
@@ -767,7 +832,7 @@ const DataServiceForm: FC<Props> = ({
               id='expiration-date-picker'
               name='dataServiceStatus.expirationDate'
               minDate={new Date()}
-              customInput={<SC.DateField />}
+              customInput={<SC.DateField isReadOnly={isReadOnly} />}
               placeholderText='Oppgi dato'
               dateFormat='dd.MM.yyyy'
               locale={nb}
@@ -785,12 +850,13 @@ const DataServiceForm: FC<Props> = ({
               value={values.dataServiceStatus.supersededByUrl}
               labelText='Lenke til ny versjon av API-beskrivelsen'
               onChange={handleChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
-
         <SC.DataServiceFormSection
           title='Tilknyttede datasettbeskrivelser'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[8]}
           onClick={() =>
             setAllExpanded(
@@ -801,9 +867,14 @@ const DataServiceForm: FC<Props> = ({
           }
         >
           <SC.Fieldset
-            title='Søk etter og velg datasettbeskrivelse(r)'
+            title={
+              isReadOnly
+                ? 'Tilknyttede datasettbeskrivelser'
+                : 'Søk etter og velg datasettbeskrivelse(r)'
+            }
             subtitle={translations.servesDataset.abstract}
             description={translations.servesDataset.description}
+            isReadOnly={isReadOnly}
           >
             <FieldArray
               name='servesDataset'
@@ -842,6 +913,7 @@ const DataServiceForm: FC<Props> = ({
                     }
                   }}
                   onRemoveTag={remove}
+                  isReadOnly={isReadOnly}
                 />
               )}
             />
@@ -849,6 +921,7 @@ const DataServiceForm: FC<Props> = ({
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Standard (tjenestetype)'
+          isReadOnly={isReadOnly}
           isExpanded={allExpanded[9]}
           onClick={() =>
             setAllExpanded(
@@ -862,6 +935,7 @@ const DataServiceForm: FC<Props> = ({
             title='Tjenestetype'
             subtitle={translations.serviceType.abstract}
             description={translations.serviceType.description}
+            isReadOnly={isReadOnly}
           >
             <Select
               name='serviceType'
@@ -879,6 +953,7 @@ const DataServiceForm: FC<Props> = ({
               isResettable
               noOptionLabel='Velg tjenestetype'
               onChange={handleChange}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
