@@ -21,6 +21,7 @@ interface Props {
   error?: any;
   helperText?: any;
   name: string;
+  isReadOnly?: boolean;
   onAddTag: (tag: string) => void;
   onRemoveTag: (index: number) => void;
 }
@@ -33,6 +34,7 @@ const TextTagsField = ({
   helperText,
   placeholder,
   labelText,
+  isReadOnly,
   onAddTag,
   onRemoveTag
 }: PropsWithChildren<Props>) => {
@@ -58,22 +60,26 @@ const TextTagsField = ({
   return (
     <SC.Field error={error}>
       {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-      <SC.TextTagsField
-        id={id}
-        placeholder={placeholder || labelText}
-        name={name}
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyPress}
-        onBlur={handleBlur}
-      />
-      {helperText && <SC.HelperText error={error}>{helperText}</SC.HelperText>}
+      {!isReadOnly && (
+        <SC.TextTagsField
+          id={id}
+          placeholder={placeholder || labelText}
+          name={name}
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyPress}
+          onBlur={handleBlur}
+        />
+      )}
+      {helperText && !isReadOnly && (
+        <SC.HelperText error={error}>{helperText}</SC.HelperText>
+      )}
       {value && value.length > 0 && (
         <SC.Tags>
           {value.map((tag, index) => (
-            <SC.Tag key={`${tag}-${index}`}>
+            <SC.Tag key={`${tag}-${index}`} isReadOnly={isReadOnly}>
               <span>{tag}</span>
-              <RemoveIcon onClick={() => onRemoveTag(index)} />
+              {!isReadOnly && <RemoveIcon onClick={() => onRemoveTag(index)} />}
             </SC.Tag>
           ))}
         </SC.Tags>

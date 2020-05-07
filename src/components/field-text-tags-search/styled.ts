@@ -4,6 +4,7 @@ import { Field as FormikField } from 'formik';
 const Field = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 8px;
 `;
 
 const Label = styled.label`
@@ -127,7 +128,7 @@ const Tags = styled.div`
   margin-right: -5px;
 `;
 
-const Tag = styled.span`
+const Tag = styled.span<{ isReadOnly?: boolean }>`
   display: flex;
   align-items: center;
   margin-top: 5px;
@@ -155,6 +156,13 @@ const Tag = styled.span`
       fill: white;
     }
   }
+
+  ${({ isReadOnly }) =>
+    isReadOnly &&
+    css`
+      padding: 4px 12px;
+      font-size: 16px;
+    `}
 `;
 
 export default {

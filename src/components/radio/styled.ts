@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 const Radio = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 8px;
 `;
 
 const Label = styled.label`
@@ -14,7 +15,7 @@ const Options = styled.div`
   display: flex;
 `;
 
-const Option = styled.span`
+const Option = styled.span<{ isReadOnly?: boolean; checked?: boolean }>`
   &,
   & * {
     cursor: pointer;
@@ -25,7 +26,19 @@ const Option = styled.span`
   }
 
   & > label {
+    display: flex;
     margin-left: 5px;
+
+    ${({ isReadOnly, checked, theme }) =>
+      isReadOnly &&
+      css`
+        margin: 0;
+        padding: 4px 12px;
+        border: 1px solid ${theme.fdk.colors.neutrals.darker};
+        border-radius: 4px;
+        background: ${checked ? theme.fdk.colors.neutrals.darker : 'none'};
+        color: ${checked ? 'white' : theme.fdk.colors.neutrals.darker};
+      `}
   }
 `;
 
