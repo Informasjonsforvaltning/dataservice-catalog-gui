@@ -1,4 +1,4 @@
-import path from 'path';
+import { resolve } from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
@@ -10,7 +10,7 @@ export default {
     main: './src/entrypoints/main/index.tsx'
   },
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: resolve(__dirname, '../dist'),
     publicPath: '/'
   },
   resolve: {
@@ -56,7 +56,7 @@ export default {
           {
             loader: 'babel-loader',
             options: {
-              configFile: path.resolve(__dirname, '../.babelrc')
+              configFile: resolve(__dirname, '../babel.config.js')
             }
           },
           'ts-loader'
