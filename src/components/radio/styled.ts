@@ -16,6 +16,8 @@ const Options = styled.div`
 `;
 
 const Option = styled.span<{ isReadOnly?: boolean; checked?: boolean }>`
+  display: flex;
+
   &,
   & * {
     cursor: pointer;
