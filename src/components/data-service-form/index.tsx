@@ -10,8 +10,6 @@ import React, {
 import { compose } from 'redux';
 import { FormikProps, withFormik, FieldArray } from 'formik';
 import { compare, Operation } from 'fast-json-patch';
-import DatePicker from 'react-datepicker';
-import { nb } from 'date-fns/locale';
 
 import {
   localization as translations,
@@ -31,6 +29,7 @@ import withReferenceData, {
 import MultilingualInput from '../multilingual-input';
 import LanguagePicker from '../language-picker';
 import TextField from '../field-text';
+import DateField from '../field-date';
 import TextAreaField from '../field-text-area';
 import TextTagsField from '../field-text-tags';
 import TextTagsSearchField from '../field-text-tags-search';
@@ -817,26 +816,12 @@ const DataServiceForm: FC<Props> = ({
               onChange={handleChange}
               isReadOnly={isReadOnly}
             />
-            <SC.Label
-              htmlFor='dataServiceStatus.expirationDate'
-              isReadOnly={isReadOnly}
-            >
-              Utløpsdato
-            </SC.Label>
-            <DatePicker
-              selected={
-                values.dataServiceStatus.expirationDate
-                  ? new Date(values.dataServiceStatus.expirationDate)
-                  : null
-              }
+            <DateField
               id='expiration-date-picker'
               name='dataServiceStatus.expirationDate'
-              minDate={new Date()}
-              customInput={<SC.DateField isReadOnly={isReadOnly} />}
-              placeholderText={!isReadOnly ? 'Oppgi dato' : '-'}
-              dateFormat='dd.MM.yyyy'
-              locale={nb}
-              todayButton='Today'
+              value={values.dataServiceStatus.expirationDate}
+              labelText='Utløpsdato'
+              placeholder={!isReadOnly ? 'Oppgi dato' : '-'}
               onChange={date => {
                 setFieldValue(
                   'dataServiceStatus.expirationDate',
@@ -844,6 +829,7 @@ const DataServiceForm: FC<Props> = ({
                   false
                 );
               }}
+              isReadOnly={isReadOnly}
             />
             <TextField
               name='dataServiceStatus.supersededByUrl'
