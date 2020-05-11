@@ -418,7 +418,7 @@ const DataServiceForm: FC<Props> = ({
             />
           </SC.Fieldset>
           <SC.Fieldset
-            title='Lenke til endepunktsbeskrivelse'
+            title='Endepunktsbeskrivelse'
             subtitle={translations.endpointDescriptions.abstract}
             description={translations.endpointDescriptions.description}
             isReadOnly={isReadOnly}
