@@ -7,8 +7,9 @@ const Select = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  max-height: 59px;
+  max-height: 36px;
   min-width: 200px;
+  max-width: 260px;
   padding: 0 8px;
   background: none;
 

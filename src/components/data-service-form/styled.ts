@@ -13,17 +13,18 @@ const DataServiceForm = styled(Form)`
 
 const Label = styled.label<{ isReadOnly?: boolean }>`
   margin-bottom: -15px;
+  padding: 0 8px;
   font-weight: bold;
 
   ${({ isReadOnly }) =>
     isReadOnly &&
     css`
       margin-top: 20px;
-      padding: 0 8px;
     `}
 `;
 
 const DateField = styled.input<{ isReadOnly?: boolean }>`
+  margin-left: 8px;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
@@ -42,8 +43,21 @@ const DateField = styled.input<{ isReadOnly?: boolean }>`
   ${({ isReadOnly }) =>
     isReadOnly &&
     css`
+      margin: 0;
       border: none;
       box-shadow: none;
+
+      ::-webkit-input-placeholder {
+        color: ${({ theme }) => theme.fdk.colors.text.default};
+      }
+
+      :-ms-input-placeholder {
+        color: ${({ theme }) => theme.fdk.colors.text.default};
+      }
+
+      ::placeholder {
+        color: ${({ theme }) => theme.fdk.colors.text.default};
+      }
     `}
 `;
 
