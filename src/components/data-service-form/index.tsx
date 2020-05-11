@@ -833,7 +833,7 @@ const DataServiceForm: FC<Props> = ({
               name='dataServiceStatus.expirationDate'
               minDate={new Date()}
               customInput={<SC.DateField isReadOnly={isReadOnly} />}
-              placeholderText='Oppgi dato'
+              placeholderText={!isReadOnly ? 'Oppgi dato' : '-'}
               dateFormat='dd.MM.yyyy'
               locale={nb}
               todayButton='Today'
