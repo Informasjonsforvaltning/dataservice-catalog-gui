@@ -246,10 +246,7 @@ const DataServiceForm: FC<Props> = ({
 
   useEffect(() => {
     if (onTitleChange) {
-      onTitleChange(
-        translate(values?.title)?.trim() ||
-          'Åpne Data fra Enhetsregisteret - API Dokumentasjon'
-      );
+      onTitleChange(translate(values?.title)?.trim() || '');
     }
   }, [values?.title]);
 

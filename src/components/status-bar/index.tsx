@@ -36,7 +36,7 @@ const StatusBar = ({
           <span>{`Sist endret: ${new Date(updatedAt).toLocaleString()}`}</span>
         )}
         {showConfirmDeleteMessage && (
-          <span>Er du sikker du vil slette denne behandlingsaktiviteten?</span>
+          <span>Er du sikker du vil slette denne datatjenesten?</span>
         )}
         <SC.ButtonGroup>
           {!showConfirmDeleteMessage && (
