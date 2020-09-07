@@ -111,11 +111,11 @@ const DataServiceImportForm: FC<Props> = ({
               onClick={() => setImportMethod(ImportMethod.URI)}
               text='Import via lenke'
             />
-            <FDKButton
+            {/* <FDKButton
               variant='secondary'
               onClick={() => setImportMethod(ImportMethod.FILE)}
               text='Import via fil'
-            />
+            /> */}
           </SC.ButtonGroup>
         )}
       </SC.DataServiceImportPanel>
