@@ -27,8 +27,7 @@ export enum Language {
 }
 
 export enum ImportMethod {
-  URI = 'uri',
-  FILE = 'file'
+  URI = 'uri'
 }
 
 export enum AlertType {
