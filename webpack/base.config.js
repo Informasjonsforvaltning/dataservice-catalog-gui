@@ -111,12 +111,9 @@ export default {
       base: '/',
       chunks: ['main']
     }),
-    new CopyWebpackPlugin(
-      [{ from: './src/lib/auth/silent-check-sso.html', to: './' }],
-      {
-        copyUnmodified: true
-      }
-    ),
+    new CopyWebpackPlugin({
+      patterns: [{ from: './src/lib/auth/silent-check-sso.html', to: './' }]
+    }),
     new MiniCssExtractPlugin()
   ]
 };
