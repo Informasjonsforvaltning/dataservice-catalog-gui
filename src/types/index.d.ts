@@ -4,6 +4,7 @@ export interface Configuration {
   FDK_REGISTRATION_BASE_URI: string;
   ORGANIZATION_API: string;
   SEARCH_API: string;
+  SEARCH_FULLTEXT_HOST: string;
 }
 
 export * from './domain';

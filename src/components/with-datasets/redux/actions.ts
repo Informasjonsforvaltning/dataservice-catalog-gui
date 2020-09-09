@@ -10,11 +10,11 @@ import {
 
 import { Dataset } from '../../../types';
 
-export function getDatasetsRequested(params: object) {
+export function getDatasetsRequested(body: object) {
   return {
     type: GET_DATASETS_REQUESTED,
     payload: {
-      params
+      body
     }
   };
 }
@@ -37,14 +37,11 @@ export function getDatasetsFailed(message: string) {
   };
 }
 
-export function searchDatasetsRequested(
-  params: object,
-  onSuccess?: () => void
-) {
+export function searchDatasetsRequested(body: object, onSuccess?: () => void) {
   return {
     type: SEARCH_DATASETS_REQUESTED,
     payload: {
-      params,
+      body,
       onSuccess
     }
   };

@@ -197,7 +197,13 @@ const DataServiceForm: FC<Props> = ({
       };
       if (!isDataServiceLoaded) {
         if (hasDatasets) {
-          getDatasets({ uris: dataService.servesDataset.join() });
+          getDatasets({
+            filters: [
+              {
+                collection: { field: 'uri', values: dataService.servesDataset }
+              }
+            ]
+          });
         }
         setValues(dataServiceValues, true);
         previousDataService.current = dataServiceValues;
@@ -878,7 +884,7 @@ const DataServiceForm: FC<Props> = ({
                   }: ChangeEvent<HTMLInputElement>) => {
                     if (query) {
                       setIsWaitingForDatasetSuggestions(true);
-                      searchDatasets({ q: query, size: 5 });
+                      searchDatasets({ q: query });
                     }
                   }}
                   suggestions={datasetSuggestions.map(({ title, uri }) => ({
