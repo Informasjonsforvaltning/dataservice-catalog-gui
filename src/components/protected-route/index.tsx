@@ -16,11 +16,11 @@ const ProtectedRoute = (props: Props): JSX.Element => {
     }
   } = props;
 
-  return authService.hasOrganizationWritePermission(organizationId) ? (
-    <Route {...props} />
-  ) : (
-    <Redirect to='/login' />
-  );
+  const hasAnyPermission =
+    authService.hasOrganizationWritePermission(organizationId) ||
+    authService.hasOrganizationReadPermission(organizationId);
+
+  return hasAnyPermission ? <Route {...props} /> : <Redirect to='/login' />;
 };
 
 export default memo(withAuth(ProtectedRoute));
