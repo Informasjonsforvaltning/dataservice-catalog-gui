@@ -11,26 +11,19 @@ import {
 
 import { Dataset } from '../../../types';
 
-const { SEARCH_API } = env;
+const { SEARCH_FULLTEXT_HOST } = env;
 
 function* getDatasetsRequested({
-  payload: { params }
+  payload: { body }
 }: ReturnType<typeof actions.getDatasetsRequested>) {
   try {
     const { data, message } = yield call(
-      axios.get,
-      `${SEARCH_API}/api/datasets`,
-      {
-        params,
-        headers: {
-          accept: 'application/json'
-        }
-      }
+      axios.post,
+      `${SEARCH_FULLTEXT_HOST}/datasets`,
+      body
     );
 
-    const datasets: Dataset[] = data?.hits?.hits.map(
-      ({ _source }: any) => _source
-    );
+    const datasets: Dataset[] = data?.hits;
 
     if (datasets) {
       yield put(actions.getDatasetsSucceeded(datasets));
@@ -43,26 +36,17 @@ function* getDatasetsRequested({
 }
 
 function* searchDatasetsRequested({
-  payload: { params, onSuccess }
+  payload: { body, onSuccess }
 }: ReturnType<typeof actions.searchDatasetsRequested>) {
   try {
     const { data, message } = yield call(
-      axios.get,
-      `${SEARCH_API}/api/datasets`,
-      {
-        params,
-        headers: {
-          accept: 'application/json'
-        }
-      }
+      axios.post,
+      `${SEARCH_FULLTEXT_HOST}/datasets`,
+      body
     );
 
-    if (data?.hits?.hits) {
-      yield put(
-        actions.searchDatasetsSucceeded(
-          data?.hits?.hits.map(({ _source }: any) => _source)
-        )
-      );
+    if (data?.hits) {
+      yield put(actions.searchDatasetsSucceeded(data?.hits));
       onSuccess?.();
     } else {
       yield put(actions.searchDatasetsFailed(JSON.stringify(message)));
