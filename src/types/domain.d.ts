@@ -20,6 +20,7 @@ export interface DataService {
   description: MultiLanguageText;
   endpointUrls: string[];
   endpointDescriptions: string[];
+  externalDocs: Partial<ExternalDocumentation>;
   license: Partial<License>;
   access: Partial<Access>;
   termsAndConditions: Partial<TermsAndConditions>;
@@ -82,4 +83,9 @@ export interface MediaType {
 
 export interface ReferenceData {
   mediatypes?: MediaType[];
+}
+
+export interface ExternalDocumentation {
+  description: string;
+  url: string;
 }
