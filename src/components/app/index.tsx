@@ -1,6 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-import { ThemeProvider } from 'styled-components';
+import ThemeProvider from '@fellesdatakatalog/theme';
 import { Provider as ReduxProvider } from 'react-redux';
 
 import AuthProvider from '../../providers/auth';
