@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import InternalHeader from '@fellesdatakatalog/internal-header';
+import Link from '@fellesdatakatalog/link';
 
 import env from '../../env';
 
@@ -12,7 +13,7 @@ interface Props {
   authService: Auth;
 }
 
-const { FDK_REGISTRATION_BASE_URI } = env;
+const { ADMIN_GUI_HOST, FDK_REGISTRATION_BASE_URI, SEARCH_API } = env;
 
 const Header = ({ authService }: Props): JSX.Element => {
   const userName = authService.getUser()?.name;
@@ -20,20 +21,17 @@ const Header = ({ authService }: Props): JSX.Element => {
 
   return (
     <SC.Header>
-      <SC.Container>
-        <SC.LogoLink href={FDK_REGISTRATION_BASE_URI}>
-          <SC.Logo />
-        </SC.LogoLink>
-        {userName && (
-          <SC.UserAvatar>
-            <AccountCircleIcon />
-            <SC.UserName>{userName}</SC.UserName>
-            <SC.LogoutButton variant='outlined' onClick={logOutAndRedirect}>
-              Log out
-            </SC.LogoutButton>
-          </SC.UserAvatar>
-        )}
-      </SC.Container>
+      <InternalHeader
+        homeUrl={FDK_REGISTRATION_BASE_URI}
+        username={userName}
+        onLogout={logOutAndRedirect}
+      >
+        <Link href={`${SEARCH_API}/guidance`}>Registrere data</Link>guidance
+        <Link href={ADMIN_GUI_HOST}>Høste data</Link>
+        <Link href={SEARCH_API} external>
+          Søk i Felles datakatalog
+        </Link>
+      </InternalHeader>
     </SC.Header>
   );
 };

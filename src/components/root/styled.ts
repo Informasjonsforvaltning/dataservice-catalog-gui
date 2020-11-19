@@ -5,7 +5,6 @@ const Root = styled.div`
   flex-direction: column;
   flex: 1 0 auto;
   height: calc(100% - 74px);
-  margin-top: 74px;
 `;
 
 export default { Root };

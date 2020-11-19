@@ -5,6 +5,7 @@ export interface Configuration {
   ORGANIZATION_API: string;
   SEARCH_API: string;
   SEARCH_FULLTEXT_HOST: string;
+  ADMIN_GUI_HOST: string;
 }
 
 export * from './domain';
