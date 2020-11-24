@@ -597,7 +597,7 @@ const DataServiceForm: FC<Props> = ({
                       !values.mediaTypes.includes(tag) && push(tag)
                     }
                     onRemoveTag={remove}
-                    isReadOnly={isReadOnly}
+                    isReadOnly={isReadOnly || isImported}
                   />
                   <TextTagsField
                     name='mediaTypes'
@@ -614,7 +614,7 @@ const DataServiceForm: FC<Props> = ({
                       !values.mediaTypes.includes(tag) && push(tag)
                     }
                     onRemoveTag={remove}
-                    isReadOnly={isReadOnly}
+                    isReadOnly={isReadOnly || isImported}
                   />
                 </>
               )}
