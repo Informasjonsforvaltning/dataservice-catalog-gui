@@ -382,7 +382,7 @@ const DataServiceForm: FC<Props> = ({
           >
             <FieldArray
               name='endpointUrls'
-              render={({ push, remove }) => (
+              render={({ remove }) => (
                 <>
                   {values.endpointUrls.map((url, index) => (
                     <Fragment key={`endpointUrls-${index}`}>
@@ -405,16 +405,6 @@ const DataServiceForm: FC<Props> = ({
                       )}
                     </Fragment>
                   ))}
-                  {!isReadOnly && (
-                    <SC.AddButton
-                      type='button'
-                      addMargin={values.endpointUrls.length === 1}
-                      onClick={() => push('')}
-                    >
-                      <AddIcon />
-                      Legg til nytt endepunkt
-                    </SC.AddButton>
-                  )}
                 </>
               )}
             />
