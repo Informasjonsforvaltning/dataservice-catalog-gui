@@ -17,6 +17,7 @@ const ProtectedRoute = (props: Props): JSX.Element => {
   } = props;
 
   const hasAnyPermission =
+    authService.hasSystemAdminPermission() ||
     authService.hasOrganizationWritePermission(organizationId) ||
     authService.hasOrganizationReadPermission(organizationId);
 
