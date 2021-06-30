@@ -16,7 +16,6 @@ interface Props {
   helperText?: any;
   options: Option[];
   isReadOnly?: boolean;
-  columnDirection?: boolean;
   onChange?: (event: ChangeEvent<any>) => void;
 }
 
@@ -28,13 +27,12 @@ const Radio: FC<Props> = ({
   helperText,
   options,
   isReadOnly,
-  columnDirection,
   onChange,
   ...props
 }) => (
   <SC.Radio {...props}>
     {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-    <SC.Options columnDirection={columnDirection}>
+    <SC.Options>
       {options.map(({ label, value: optionValue }) => (
         <SC.Option
           key={`${name}-${optionValue}`}

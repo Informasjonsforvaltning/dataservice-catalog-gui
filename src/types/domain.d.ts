@@ -28,6 +28,12 @@ export interface DataService {
   serviceType?: ServiceType;
   servesDataset: string[];
   dataServiceStatus: DataServiceStatus;
+  accessRights: string;
+  keywords: MultiLanguageText[];
+  landingPage: string;
+  pages: string[];
+  themes: string[];
+  type: string;
   imported: boolean;
 }
 
@@ -63,6 +69,8 @@ export interface Contact {
 
 export type MultiLanguageText = { [key in Language]?: string };
 
+export type MultiLanguageTextArray = { [key in Language]?: string[] };
+
 export interface Organization {
   uri: string;
   id: string;
@@ -76,13 +84,26 @@ export interface Dataset {
   title: MultiLanguageText;
 }
 
+export interface Concept {
+  uri: string;
+  prefLabel: MultiLanguageText;
+}
+
 export interface MediaType {
   name: string;
   code: string;
 }
 
+export interface OpenLicense {
+  uri: string;
+  code: string;
+  prefLabel: { ['no']: string };
+  isReplacedBy?: string;
+}
+
 export interface ReferenceData {
   mediatypes?: MediaType[];
+  openlicenses?: OpenLicense[];
 }
 
 export interface ExternalDocumentation {

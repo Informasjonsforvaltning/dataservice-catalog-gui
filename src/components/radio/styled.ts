@@ -14,7 +14,6 @@ const Label = styled.label`
 const Option = styled.span<{
   isReadOnly?: boolean;
   checked?: boolean;
-  columnDirection?: boolean;
 }>`
   display: flex;
 
@@ -40,23 +39,12 @@ const Option = styled.span<{
   }
 `;
 
-const Options = styled.div<{
-  columnDirection?: boolean;
-}>`
+const Options = styled.div`
   display: flex;
-  ${({ columnDirection }) =>
-    columnDirection &&
-    css`
-      flex-direction: column;
-    `}
 
   ${Option} {
     &:nth-of-type(n + 2) {
-      margin-left: ${({ columnDirection }) => (columnDirection ? '0' : '20px')};
-    }
-    &:nth-of-type(n + 1) {
-      margin-bottom: ${({ columnDirection }) =>
-        columnDirection ? '20px' : '0'};
+      margin-left: 20px;
     }
   }
 `;

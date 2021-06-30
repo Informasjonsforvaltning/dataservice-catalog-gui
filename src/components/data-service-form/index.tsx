@@ -33,6 +33,7 @@ import DateField from '../field-date';
 import TextAreaField from '../field-text-area';
 import TextTagsField from '../field-text-tags';
 import TextTagsSearchField from '../field-text-tags-search';
+import TextTagsArrayField from '../field-text-tags-array';
 import Radio from '../radio';
 import Select from '../select';
 
@@ -45,9 +46,18 @@ import ExpandAllDownIcon from '../../images/expand-all-down.svg';
 
 import validationSchema from './validation-schema';
 
-import { mapDataServiceToValues } from './utils';
+import {
+  mapDataServiceToValues,
+  mapMultiLanguageTextArrayToMultiLanguageText,
+  mapMultiLanguageTextToMultiLanguageTextArray
+} from './utils';
 
-import { DataService, Dataset, MediaType } from '../../types';
+import {
+  DataService,
+  Dataset,
+  MediaType,
+  MultiLanguageTextArray
+} from '../../types';
 import { Status, StatusText, ServiceType, Language } from '../../types/enums';
 import DataServiceImportForm from '../data-service-import-form';
 
@@ -55,6 +65,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 interface FormValues extends DataService {
   languages?: Language[];
+  keywordsTextArray: MultiLanguageTextArray;
 }
 
 interface Props
@@ -74,7 +85,7 @@ const DataServiceForm: FC<Props> = ({
   dataServiceStatus,
   datasets,
   datasetSearchSuggestions,
-  referenceData: { mediatypes: mediaTypes },
+  referenceData: { mediatypes: mediaTypes, openlicenses: openLicenses },
   onTitleChange,
   onValidityChange,
   datasetsActions: {
@@ -95,6 +106,9 @@ const DataServiceForm: FC<Props> = ({
 }) => {
   const [allExpanded, setAllExpanded] = useState([
     true,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -125,6 +139,7 @@ const DataServiceForm: FC<Props> = ({
 
   useEffect(() => {
     getReferenceData('mediatypes');
+    getReferenceData('openlicenses');
     mounted.current = true;
   }, []);
 
@@ -165,6 +180,44 @@ const DataServiceForm: FC<Props> = ({
     }
   };
 
+  const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.persist();
+    setFieldValue(e.target.name, e.target.value, true);
+  };
+
+  const patch = (formValues: FormValues) => {
+    formValues.keywords = mapMultiLanguageTextArrayToMultiLanguageText(
+      formValues.keywordsTextArray
+    );
+    patchDataService(formValues);
+  };
+
+  const accessRightsOptions = [
+    {
+      label: 'Offentlig',
+      value:
+        'http://publications.europa.eu/resource/authority/access-right/PUBLIC'
+    },
+    {
+      label: 'Begrenset offentlighet',
+      value:
+        'http://publications.europa.eu/resource/authority/access-right/RESTRICTED'
+    },
+    {
+      label: 'Unntatt offentlighet',
+      value:
+        'http://publications.europa.eu/resource/authority/access-right/NON_PUBLIC'
+    }
+  ];
+
+  const licenseOptions = isImported
+    ? [{ label: values.license.name || '', value: values.license.url || '' }]
+    : openLicenses
+        ?.filter(({ isReplacedBy }) => !isReplacedBy)
+        .map(({ uri, prefLabel: { no } }) => {
+          return { label: no || '', value: uri };
+        }) ?? [];
+
   useEffect(() => {
     if (isMounted) {
       const previousDataServiceStatus = dataService?.status;
@@ -180,10 +233,10 @@ const DataServiceForm: FC<Props> = ({
           nextDataServiceStatus === Status.PUBLISHED
         ) {
           if (isValid) {
-            patchDataService(newValues);
+            patch(newValues);
           }
         } else {
-          patchDataService(newValues);
+          patch(newValues);
         }
       }
     }
@@ -193,7 +246,10 @@ const DataServiceForm: FC<Props> = ({
     if (dataService) {
       const dataServiceValues = {
         ...mapDataServiceToValues(dataService),
-        languages: selectedLanguages
+        languages: selectedLanguages,
+        keywordsTextArray: mapMultiLanguageTextToMultiLanguageTextArray(
+          dataService.keywords ?? []
+        )
       };
       if (!isDataServiceLoaded) {
         if (hasDatasets) {
@@ -236,15 +292,17 @@ const DataServiceForm: FC<Props> = ({
         { ...previousDataService.current, languages: selectedLanguages },
         { ...values, languages: selectedLanguages }
       );
-      const hasErrors =
-        Object.keys(
-          await validateForm({ ...values, languages: selectedLanguages })
-        ).length > 0;
+
+      const formikErrors = await validateForm({
+        ...values,
+        languages: selectedLanguages
+      });
+      const hasErrors = Object.keys(formikErrors).length > 0;
       if (
         diff.length > 0 &&
         !(dataService?.status === Status.PUBLISHED && hasErrors)
       ) {
-        patchDataService({ ...values, organizationId });
+        patch({ ...values, organizationId });
       }
     };
     validateAndSave();
@@ -390,6 +448,7 @@ const DataServiceForm: FC<Props> = ({
                         placeholder='Ny endepunktsurl'
                         name={`endpointUrls[${index}]`}
                         value={url}
+                        error={errors.endpointUrls}
                         onChange={handleChange}
                         disabled={isImported}
                         isReadOnly={isReadOnly}
@@ -425,6 +484,7 @@ const DataServiceForm: FC<Props> = ({
                         placeholder='Ny endepunktsbeskrivelse'
                         name={`endpointDescriptions[${index}]`}
                         value={description}
+                        error={errors.endpointDescriptions?.[index]}
                         onChange={handleChange}
                         disabled={isImported}
                         isReadOnly={isReadOnly}
@@ -517,13 +577,160 @@ const DataServiceForm: FC<Props> = ({
           </SC.Fieldset>
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
-          title='Format'
+          title='Landingsside og dokumentasjon'
           isReadOnly={isReadOnly}
           isExpanded={allExpanded[4]}
           onClick={() =>
             setAllExpanded(
               allExpanded.map((expanded, index) =>
                 index === 4 ? !expanded : expanded
+              )
+            )
+          }
+        >
+          <SC.Fieldset
+            title='Landingsside'
+            subtitle={translations.landingPage.abstract}
+            description={translations.landingPage.description}
+            isReadOnly={isReadOnly}
+          >
+            <>
+              <TextField
+                name='landingPage'
+                value={values.landingPage}
+                error={errors.landingPage}
+                onChange={handleChange}
+                isReadOnly={isReadOnly}
+              />
+            </>
+          </SC.Fieldset>
+          <SC.Fieldset
+            title='Dokumentasjon'
+            subtitle={translations.page.abstract}
+            description={translations.page.description}
+            isReadOnly={isReadOnly}
+          >
+            <FieldArray
+              name='pages'
+              render={({ push, remove }) => (
+                <>
+                  {values.pages.map((page, index) => (
+                    <Fragment key={`page-${index}`}>
+                      <TextField
+                        placeholder='Ny dokumentasjon'
+                        name={`pages[${index}]`}
+                        value={page}
+                        error={errors.pages?.[index]}
+                        onChange={handleChange}
+                        isReadOnly={isReadOnly}
+                      />
+                      {values.pages.length > 0 && !isReadOnly && (
+                        <SC.RemoveButton
+                          type='button'
+                          onClick={() => remove(index)}
+                        >
+                          <RemoveIcon />
+                          Slett dokumentasjon
+                        </SC.RemoveButton>
+                      )}
+                    </Fragment>
+                  ))}
+                  {!isReadOnly && (
+                    <SC.AddButton
+                      type='button'
+                      addMargin={values.pages.length === 1}
+                      onClick={() => push('')}
+                    >
+                      <AddIcon />
+                      Legg til ny dokumentasjon
+                    </SC.AddButton>
+                  )}
+                </>
+              )}
+            />
+          </SC.Fieldset>
+        </SC.DataServiceFormSection>
+        <SC.DataServiceFormSection
+          title='Søkeord'
+          isReadOnly={isReadOnly}
+          isExpanded={allExpanded[5]}
+          onClick={() =>
+            setAllExpanded(
+              allExpanded.map((expanded, index) =>
+                index === 5 ? !expanded : expanded
+              )
+            )
+          }
+        >
+          <SC.Fieldset
+            title='Søkeord'
+            subtitle={translations.keywords.abstract}
+            description={translations.keywords.description}
+            isReadOnly={isReadOnly}
+          >
+            <MultilingualInput
+              name='keywordsTextArray'
+              value={values.keywordsTextArray}
+              component={TextTagsArrayField}
+              languages={selectedLanguages}
+              error={errors.keywords}
+              onChange={handleChange}
+              disabled={isImported}
+              isReadOnly={isReadOnly}
+            />
+          </SC.Fieldset>
+        </SC.DataServiceFormSection>
+        <SC.DataServiceFormSection
+          title='Lisens og tilgangsnivå'
+          isReadOnly={isReadOnly}
+          isExpanded={allExpanded[6]}
+          onClick={() =>
+            setAllExpanded(
+              allExpanded.map((expanded, index) =>
+                index === 6 ? !expanded : expanded
+              )
+            )
+          }
+        >
+          <SC.Fieldset
+            title='Lisens'
+            subtitle={translations.license.abstract}
+            description={translations.license.description}
+            isReadOnly={isReadOnly}
+          >
+            <Select
+              name='license.url'
+              value={values.license.url}
+              options={licenseOptions}
+              isResettable
+              noOptionLabel='Velg lisens'
+              onChange={handleChange}
+              isReadOnly={isReadOnly || isImported}
+            />
+          </SC.Fieldset>
+          <SC.Fieldset
+            title='Tilgangsnivå'
+            subtitle={translations.accessRights.abstract}
+            description={translations.accessRights.description}
+            isReadOnly={isReadOnly}
+          >
+            <SC.RadioColumn
+              name='accessRights'
+              value={values.accessRights}
+              options={accessRightsOptions}
+              onChange={handleRadioChange}
+              isReadOnly={isReadOnly}
+            />
+          </SC.Fieldset>
+        </SC.DataServiceFormSection>
+        <SC.DataServiceFormSection
+          title='Format'
+          isReadOnly={isReadOnly}
+          isExpanded={allExpanded[7]}
+          onClick={() =>
+            setAllExpanded(
+              allExpanded.map((expanded, index) =>
+                index === 7 ? !expanded : expanded
               )
             )
           }
@@ -614,11 +821,11 @@ const DataServiceForm: FC<Props> = ({
         <SC.DataServiceFormSection
           title='Tilgang'
           isReadOnly={isReadOnly}
-          isExpanded={allExpanded[5]}
+          isExpanded={allExpanded[8]}
           onClick={() =>
             setAllExpanded(
               allExpanded.map((expanded, index) =>
-                index === 5 ? !expanded : expanded
+                index === 8 ? !expanded : expanded
               )
             )
           }
@@ -695,11 +902,11 @@ const DataServiceForm: FC<Props> = ({
         <SC.DataServiceFormSection
           title='Vilkår og begrensninger'
           isReadOnly={isReadOnly}
-          isExpanded={allExpanded[6]}
+          isExpanded={allExpanded[9]}
           onClick={() =>
             setAllExpanded(
               allExpanded.map((expanded, index) =>
-                index === 6 ? !expanded : expanded
+                index === 9 ? !expanded : expanded
               )
             )
           }
@@ -768,11 +975,11 @@ const DataServiceForm: FC<Props> = ({
         <SC.DataServiceFormSection
           title='Status'
           isReadOnly={isReadOnly}
-          isExpanded={allExpanded[7]}
+          isExpanded={allExpanded[10]}
           onClick={() =>
             setAllExpanded(
               allExpanded.map((expanded, index) =>
-                index === 7 ? !expanded : expanded
+                index === 10 ? !expanded : expanded
               )
             )
           }
@@ -836,11 +1043,11 @@ const DataServiceForm: FC<Props> = ({
         <SC.DataServiceFormSection
           title='Tilknyttede datasettbeskrivelser'
           isReadOnly={isReadOnly}
-          isExpanded={allExpanded[8]}
+          isExpanded={allExpanded[11]}
           onClick={() =>
             setAllExpanded(
               allExpanded.map((expanded, index) =>
-                index === 8 ? !expanded : expanded
+                index === 11 ? !expanded : expanded
               )
             )
           }
@@ -901,11 +1108,11 @@ const DataServiceForm: FC<Props> = ({
         <SC.DataServiceFormSection
           title='Standard (tjenestetype)'
           isReadOnly={isReadOnly}
-          isExpanded={allExpanded[9]}
+          isExpanded={allExpanded[12]}
           onClick={() =>
             setAllExpanded(
               allExpanded.map((expanded, index) =>
-                index === 9 ? !expanded : expanded
+                index === 12 ? !expanded : expanded
               )
             )
           }
@@ -947,8 +1154,14 @@ export default compose<FC<any>>(
   withDatasets,
   withReferenceData,
   withFormik<Props, FormValues>({
-    mapPropsToValues: ({ dataService }: Props) =>
-      mapDataServiceToValues(dataService ?? {}),
+    mapPropsToValues: ({ dataService }: Props) => {
+      return {
+        ...mapDataServiceToValues(dataService ?? {}),
+        keywordsTextArray: mapMultiLanguageTextToMultiLanguageTextArray(
+          dataService?.keywords ?? []
+        )
+      };
+    },
     handleSubmit: () => {},
     validationSchema,
     displayName: 'DataServiceForm'

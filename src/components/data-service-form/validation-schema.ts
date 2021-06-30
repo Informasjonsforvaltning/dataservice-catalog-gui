@@ -22,6 +22,10 @@ export default object().shape({
     .of(string().ensure().url().required())
     .ensure()
     .required(),
+  endpointDescriptions: array()
+    .of(string().ensure().url().required())
+    .ensure()
+    .required(),
   dataServiceStatus: object().shape({
     statusText: string().oneOf([
       StatusText.DEPRECATED,
@@ -32,5 +36,7 @@ export default object().shape({
   }),
   serviceType: string()
     .notRequired()
-    .oneOf([ServiceType.ACCOUNT_DETAILS, ServiceType.CUSTOMER_RELATIONS])
+    .oneOf([ServiceType.ACCOUNT_DETAILS, ServiceType.CUSTOMER_RELATIONS]),
+  landingPage: string().ensure().url().notRequired(),
+  pages: array().of(string().ensure().url().required()).ensure().notRequired()
 });
