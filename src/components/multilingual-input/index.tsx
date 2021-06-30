@@ -10,7 +10,7 @@ import { fromJS } from 'immutable';
 
 import SC from './styled';
 
-import { MultiLanguageText } from '../../types';
+import { MultiLanguageText, MultiLanguageTextArray } from '../../types';
 import { Language } from '../../types/enums';
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
   languages: Language[];
   id?: string;
   name: string;
-  value?: MultiLanguageText;
+  value?: MultiLanguageText | MultiLanguageTextArray;
   error?: any;
   placeholder?: string;
   labelText?: string;
