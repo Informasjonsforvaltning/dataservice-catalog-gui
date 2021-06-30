@@ -1,4 +1,4 @@
-import React, { memo, ChangeEvent } from 'react';
+import React, { FC, memo, ChangeEvent } from 'react';
 import { Field } from 'formik';
 
 import SC from './styled';
@@ -16,10 +16,11 @@ interface Props {
   helperText?: any;
   options: Option[];
   isReadOnly?: boolean;
+  columnDirection?: boolean;
   onChange?: (event: ChangeEvent<any>) => void;
 }
 
-const Radio = ({
+const Radio: FC<Props> = ({
   name,
   value,
   error,
@@ -27,12 +28,13 @@ const Radio = ({
   helperText,
   options,
   isReadOnly,
+  columnDirection,
   onChange,
   ...props
-}: Props): JSX.Element => (
+}) => (
   <SC.Radio {...props}>
     {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-    <SC.Options>
+    <SC.Options columnDirection={columnDirection}>
       {options.map(({ label, value: optionValue }) => (
         <SC.Option
           key={`${name}-${optionValue}`}
