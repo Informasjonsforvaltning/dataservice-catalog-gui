@@ -11,20 +11,16 @@ const Label = styled.label`
   margin-bottom: 10px;
 `;
 
-const Options = styled.div`
-  display: flex;
-`;
-
-const Option = styled.span<{ isReadOnly?: boolean; checked?: boolean }>`
+const Option = styled.span<{
+  isReadOnly?: boolean;
+  checked?: boolean;
+  columnDirection?: boolean;
+}>`
   display: flex;
 
   &,
   & * {
     cursor: pointer;
-  }
-
-  &:nth-of-type(n + 2) {
-    margin-left: 20px;
   }
 
   & > label {
@@ -41,6 +37,27 @@ const Option = styled.span<{ isReadOnly?: boolean; checked?: boolean }>`
         background: ${checked ? theme.fdk.colors.neutrals.darker : 'none'};
         color: ${checked ? 'white' : theme.fdk.colors.neutrals.darker};
       `}
+  }
+`;
+
+const Options = styled.div<{
+  columnDirection?: boolean;
+}>`
+  display: flex;
+  ${({ columnDirection }) =>
+    columnDirection &&
+    css`
+      flex-direction: column;
+    `}
+
+  ${Option} {
+    &:nth-of-type(n + 2) {
+      margin-left: ${({ columnDirection }) => (columnDirection ? '0' : '20px')};
+    }
+    &:nth-of-type(n + 1) {
+      margin-bottom: ${({ columnDirection }) =>
+        columnDirection ? '20px' : '0'};
+    }
   }
 `;
 
