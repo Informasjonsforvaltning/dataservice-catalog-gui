@@ -7,6 +7,7 @@
     "node": ">= 12.13.0"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "run-s start:webpack",
     "start:webpack": "webpack-dev-server --hot --inline --config-register @babel/register --config webpack/dev.config.js",
     "build:dev": "run-s build:webpack:dev",
@@ -46,6 +47,13 @@
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
+  },
+  "resolutions": {
+    "css-what": "^5.0.1",
+    "glob-parent": "^5.1.2",
+    "browserslist": "^4.16.5",
+    "ini": "^2.0.0",
+    "minimist": "^1.2.3"
   },
   "dependencies": {
     "@fellesdatakatalog/internal-footer": "^0.3.4",
