@@ -10,7 +10,7 @@ import SC from './styled';
 
 import RemoveIcon from '../../images/icon-remove.svg';
 
-import { KeyCode } from '../../types/enums';
+import { KeyCode, Language } from '../../types/enums';
 
 interface Props {
   id?: string;
@@ -18,6 +18,7 @@ interface Props {
   placeholder?: string;
   labelText?: string;
   value?: string[];
+  language?: Language;
   error?: any;
   helperText?: any;
   name: string;
@@ -30,6 +31,7 @@ const TextTagsField = ({
   id,
   name,
   value,
+  language,
   error,
   helperText,
   placeholder,
@@ -39,8 +41,10 @@ const TextTagsField = ({
   onRemoveTag
 }: PropsWithChildren<Props>) => {
   const [inputValue, setInputValue] = useState('');
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
   const handleKeyPress = (e: KeyboardEvent) => {
     if (
       inputValue?.trim() &&
@@ -60,17 +64,22 @@ const TextTagsField = ({
   return (
     <SC.Field error={error}>
       {labelText && <SC.Label htmlFor={name}>{labelText}</SC.Label>}
-      {!isReadOnly && (
-        <SC.TextTagsField
-          id={id}
-          placeholder={placeholder || labelText}
-          name={name}
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          onBlur={handleBlur}
-        />
-      )}
+      <SC.FieldWrapper language={language} isReadOnly={isReadOnly}>
+        {language && (
+          <SC.Language isReadOnly={isReadOnly}>{language}</SC.Language>
+        )}
+        {!isReadOnly && (
+          <SC.TextTagsField
+            id={id}
+            placeholder={placeholder || labelText}
+            name={name}
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+            onBlur={handleBlur}
+          />
+        )}
+      </SC.FieldWrapper>
       {helperText && !isReadOnly && (
         <SC.HelperText error={error}>{helperText}</SC.HelperText>
       )}

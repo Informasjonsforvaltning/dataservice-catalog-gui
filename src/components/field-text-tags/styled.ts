@@ -25,6 +25,7 @@ const Label = styled.label`
 `;
 
 const TextTagsField = styled(FormikField)`
+  width: 100%;
   display: block;
   padding: 8px;
   border: 1px solid ${({ theme }) => theme.fdk.colors.text.default};
@@ -95,9 +96,56 @@ const Tag = styled.span<{ isReadOnly?: boolean }>`
     `}
 `;
 
+const Language = styled.span<{ isReadOnly?: boolean }>`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 25px;
+  margin: 0 8px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+
+  ${({ isReadOnly }) =>
+    isReadOnly &&
+    css`
+      top: -3px;
+      transform: none;
+      margin: 0;
+      padding: 3px 5px;
+      border-radius: 4px;
+      width: 34px;
+      text-transform: lowercase;
+      background: ${({ theme }) => theme.fdk.colors.neutrals.skyblue};
+    `}
+`;
+
+const FieldWrapper = styled.div<{ language?: string; isReadOnly?: boolean }>`
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  ${({ language }) =>
+    language &&
+    css`
+      & > ${TextTagsField} {
+        padding-left: 41px;
+      }
+    `}
+
+  ${({ isReadOnly }) =>
+    isReadOnly &&
+    css`
+      margin: 4px 0;
+    `}
+`;
+
 export default {
   Field,
+  FieldWrapper,
   Label,
+  Language,
   TextTagsField,
   HelperText,
   Tags,
