@@ -15,7 +15,9 @@ function* getReferenceDataRequested({
     const { data } = yield call(
       axios.get,
       `${SEARCH_API}/reference-data/${
-        category === 'mediatypes' ? `codes/${category}` : category
+        category === 'mediatypes' || category === 'openlicenses'
+          ? `codes/${category}`
+          : category
       }`
     );
     if (data) {
