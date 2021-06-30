@@ -4,6 +4,8 @@ import { Form } from 'formik';
 import ExpansionPanel from '../expansion-panel';
 import BaseFieldSet from '../fdk-fieldset';
 
+import Radio from '../radio';
+
 const DataServiceForm = styled(Form)`
   margin-top: 40px;
   display: flex;
@@ -100,6 +102,20 @@ const RemoveButton = styled.button`
   }
 `;
 
+const RadioColumn = styled(Radio)`
+  & > div {
+    flex-direction: column;
+
+    & > span {
+      margin-left: 0 !important;
+
+      &:nth-of-type(n + 1) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+`;
+
 export default {
   DataServiceForm,
   ExpandAllButton,
@@ -107,5 +123,6 @@ export default {
   Fieldset,
   InlineFields,
   AddButton,
-  RemoveButton
+  RemoveButton,
+  RadioColumn
 };
