@@ -1,4 +1,11 @@
-import React, { memo, ChangeEvent, useState, useRef, useEffect } from 'react';
+import React, {
+  FC,
+  memo,
+  ChangeEvent,
+  useState,
+  useRef,
+  useEffect
+} from 'react';
 
 import SC from './styled';
 
@@ -19,7 +26,7 @@ interface Props {
   onChange?: (event?: ChangeEvent<any>) => void;
 }
 
-const Select = ({
+const Select: FC<Props> = ({
   name,
   options,
   labelText,
@@ -28,7 +35,7 @@ const Select = ({
   isReadOnly,
   value,
   onChange
-}: Props): JSX.Element => {
+}) => {
   const currentOption = options.find(
     ({ value: optionValue }) => `${value}` === `${optionValue}`
   );
