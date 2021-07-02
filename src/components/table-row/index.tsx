@@ -15,7 +15,14 @@ interface Props extends RouteComponentProps {
 }
 
 const TableRow = ({
-  dataService: { id, organizationId, title, status, modified = '' },
+  dataService: {
+    id,
+    organizationId,
+    title,
+    status,
+    created = '',
+    modified = created
+  },
   history: { push }
 }: Props) => {
   const navigateToDataService = () =>
