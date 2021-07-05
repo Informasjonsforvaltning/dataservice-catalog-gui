@@ -21,7 +21,6 @@ const DataServiceListTable: FC<Props> = ({ dataServices }) => (
             fieldSelector={['title']}
             title='Tittel på datatjenestebeskrivelse'
           />
-          <TableHead fieldSelector={['modifiedBy']} title='Sist endret av' />
           <TableHead fieldSelector={['modified']} title='Sist endret' />
           <TableHead fieldSelector={['status']} title='Status' />
         </tr>

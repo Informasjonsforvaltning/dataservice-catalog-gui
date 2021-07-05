@@ -30,7 +30,6 @@ const TableRow = ({
   return (
     <SC.TableRow onClick={navigateToDataService}>
       <td> {translate(title)} </td>
-      <td />
       <td>{formatDate(dateStringToDate(modified))}</td>
       <td>
         <DataServiceStatusIndicator status={status} />
