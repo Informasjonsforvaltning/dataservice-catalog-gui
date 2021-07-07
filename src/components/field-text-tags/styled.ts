@@ -110,6 +110,7 @@ const Language = styled.span<{ isReadOnly?: boolean }>`
   ${({ isReadOnly }) =>
     isReadOnly &&
     css`
+      position: relative;
       top: -3px;
       transform: none;
       margin: 0;
