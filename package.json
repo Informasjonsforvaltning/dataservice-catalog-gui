@@ -56,6 +56,7 @@
     "minimist": "^1.2.3"
   },
   "dependencies": {
+    "@fellesdatakatalog/alert": "^0.1.5",
     "@fellesdatakatalog/internal-footer": "^0.3.4",
     "@fellesdatakatalog/internal-header": "^0.4.4",
     "@fellesdatakatalog/link": "^0.2.2",

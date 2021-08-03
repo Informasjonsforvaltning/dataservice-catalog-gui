@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Field as FormikField } from 'formik';
+import { theme as fdkTheme } from '@fellesdatakatalog/theme';
+import AlertBase from '@fellesdatakatalog/alert';
 
 const Language = styled.span<{ isReadOnly?: boolean }>`
   position: absolute;
@@ -105,6 +107,15 @@ const Field = styled.div<{ error?: boolean }>`
     `}
 `;
 
+const Alert = styled(AlertBase)`
+  margin-top: ${fdkTheme.spacing('S8')};
+  padding: ${fdkTheme.spacing('S4')};
+
+  && > svg {
+    font-size: ${fdkTheme.fontSize('FS20')};
+  }
+`;
+
 export default {
   Field,
   FieldWrapper,
@@ -112,5 +123,6 @@ export default {
   Language,
   Label,
   ReadOnlyLabel,
-  HelperText
+  HelperText,
+  Alert
 };
