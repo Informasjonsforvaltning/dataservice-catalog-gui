@@ -1,5 +1,7 @@
 import React, { memo, PropsWithChildren, ChangeEvent } from 'react';
 
+import { Severity } from '@fellesdatakatalog/alert';
+
 import SC from './styled';
 
 import { Language } from '../../types/enums';
@@ -52,6 +54,7 @@ const TextField = ({
       )}
     </SC.FieldWrapper>
     {helperText && <SC.HelperText>{helperText}</SC.HelperText>}
+    {error && <SC.Alert severity={Severity.ERROR}>{error}</SC.Alert>}
   </SC.Field>
 );
 
