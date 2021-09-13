@@ -31,7 +31,6 @@ import LanguagePicker from '../language-picker';
 import TextField from '../field-text';
 import DateField from '../field-date';
 import TextAreaField from '../field-text-area';
-import TextTagsField from '../field-text-tags';
 import TextTagsSearchField from '../field-text-tags-search';
 import TextTagsArrayField from '../field-text-tags-array';
 import Radio from '../radio';
@@ -754,19 +753,17 @@ const DataServiceForm: FC<Props> = ({
                     }
                     value={values.mediaTypes.map(mediaType => {
                       const match = mediaTypes?.find(
-                        ({ code }) => mediaType === code
+                        ({ uri }) => mediaType === uri
                       );
                       return {
                         label: match?.name,
-                        value: match?.code
+                        value: match?.uri
                       };
                     })}
-                    suggestions={mediaTypesSuggestions.map(
-                      ({ code, name }) => ({
-                        label: name,
-                        value: code
-                      })
-                    )}
+                    suggestions={mediaTypesSuggestions.map(({ uri, name }) => ({
+                      label: name,
+                      value: uri
+                    }))}
                     onChange={({
                       target: { value: query }
                     }: ChangeEvent<HTMLInputElement>) => {
@@ -774,39 +771,21 @@ const DataServiceForm: FC<Props> = ({
                         setIsWaitingForMediaTypesSuggestions(true);
                         setMediaTypesSuggestions(
                           mediaTypes
-                            .filter(({ code, name }) => {
+                            .filter(({ uri, name }) => {
                               const match = values.mediaTypes.find(
-                                mediaType => code === mediaType
+                                mediaType => uri === mediaType
                               );
                               return (
                                 !match &&
-                                (code.toLowerCase().includes(query) ||
-                                  name.toLowerCase().includes(query))
+                                name.toLowerCase().includes(query.toLowerCase())
                               );
                             })
-                            .slice(0, 5)
+                            .slice(0, 100)
                         );
                         setIsWaitingForMediaTypesSuggestions(false);
                       }
                     }}
                     isLoadingSuggestions={isWaitingForMediaTypesSuggestions}
-                    onAddTag={(tag: string) =>
-                      !values.mediaTypes.includes(tag) && push(tag)
-                    }
-                    onRemoveTag={remove}
-                    isReadOnly={isReadOnly || isImported}
-                  />
-                  <TextTagsField
-                    name='mediaTypes'
-                    labelText={
-                      isReadOnly
-                        ? 'Andre mediatyper'
-                        : 'Oppgi evt. annen mediatype'
-                    }
-                    value={values.mediaTypes.filter(
-                      mediaType =>
-                        !mediaTypes?.find(({ code }) => mediaType === code)
-                    )}
                     onAddTag={(tag: string) =>
                       !values.mediaTypes.includes(tag) && push(tag)
                     }

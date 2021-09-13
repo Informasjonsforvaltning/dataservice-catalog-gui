@@ -80,10 +80,9 @@ export const helptextsNb = {
   },
 
   mediaTypes: {
-    abstract:
-      'Velg format(er) fra IANAs liste over offisielle medietyper. Dersom formatet ikke finnes i listen kan du angi eget.',
+    abstract: 'Velg format(er) fra IANAs liste over offisielle medietyper.',
     description:
-      'Skriv inn format og avlsutt med TAB eller Enter. Vi anbefaler at du bruker de samme formatbeskrivelsene som du finner i lenken nedenfor. (Obs: Du må selv kopiere over formatet fra listen.) Lenke til IANAs liste over offisielle medietyper: http://www.iana.org/assignments/media-types/media-types.xhtml'
+      'Skriv inn format og avlsutt med TAB eller Enter. Vi anbefaler at du bruker de samme formatbeskrivelsene som du finner i lenken nedenfor. (Obs: Du må selv kopiere over formatet fra listen.) Lenke til IANAs liste over offisielle medietyper: <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">http://www.iana.org/assignments/media-types/media-types.xhtml</a>'
   },
 
   isOpenAccess: {
