@@ -90,8 +90,8 @@ export interface Concept {
 }
 
 export interface MediaType {
+  uri: string;
   name: string;
-  code: string;
 }
 
 export interface OpenLicense {

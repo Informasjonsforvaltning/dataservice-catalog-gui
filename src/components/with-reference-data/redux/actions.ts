@@ -1,10 +1,9 @@
+import { ReferenceData } from '../../../types';
 import {
   GET_REFERENCE_DATA_REQUESTED,
   GET_REFERENCE_DATA_SUCCEEDED,
   GET_REFERENCE_DATA_FAILED
 } from './action-types';
-
-import { ReferenceData } from '../../../types';
 
 export function getReferenceDataRequested(category: keyof ReferenceData) {
   return {
