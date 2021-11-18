@@ -13,7 +13,12 @@ interface Props {
   authService: Auth;
 }
 
-const { ADMIN_GUI_HOST, FDK_REGISTRATION_BASE_URI, SEARCH_API } = env;
+const {
+  ADMIN_GUI_HOST,
+  FDK_REGISTRATION_BASE_URI,
+  SEARCH_API,
+  USE_DEMO_LOGO
+} = env;
 
 const Header = ({ authService }: Props): JSX.Element => {
   const userName = authService.getUser()?.name;
@@ -25,6 +30,7 @@ const Header = ({ authService }: Props): JSX.Element => {
         homeUrl={FDK_REGISTRATION_BASE_URI}
         username={userName}
         onLogout={logOutAndRedirect}
+        useDemoLogo={USE_DEMO_LOGO}
       >
         <Link href={`${SEARCH_API}/guidance`}>Registrere data</Link>guidance
         <Link href={ADMIN_GUI_HOST}>Høste data</Link>
