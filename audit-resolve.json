@@ -1,0 +1,275 @@
+{
+  "decisions": {
+    "1002401|eslint>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246749983,
+      "expiresAt": 1639838736938
+    },
+    "1002465|husky>find-versions>semver-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246755528,
+      "expiresAt": 1639838736938
+    },
+    "1002627|webpack-dev-server>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1637246761558,
+      "expiresAt": 1639838736938
+    },
+    "1004153|webpack-dev-server>chokidar>fsevents>node-pre-gyp>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1637246761558,
+      "expiresAt": 1639838736938
+    },
+    "1002627|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1637246766514,
+      "expiresAt": 1639838736938
+    },
+    "1004153|webpack>watchpack>watchpack-chokidar2>chokidar>fsevents>node-pre-gyp>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1637246766514,
+      "expiresAt": 1639838736938
+    },
+    "1002401|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246770949,
+      "expiresAt": 1639838736938
+    },
+    "1002401|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246770949,
+      "expiresAt": 1639838736938
+    },
+    "1002401|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246770949,
+      "expiresAt": 1639838736938
+    },
+    "1002401|lint-staged>listr2>cli-truncate>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246770949,
+      "expiresAt": 1639838736938
+    },
+    "1002401|lint-staged>listr2>log-update>wrap-ansi>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246770949,
+      "expiresAt": 1639838736938
+    },
+    "1002401|lint-staged>listr2>log-update>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246770949,
+      "expiresAt": 1639838736938
+    },
+    "1002423|html-webpack-plugin>pretty-error>renderkid>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1637246773087,
+      "expiresAt": 1639838736938
+    },
+    "1002401|commitizen>inquirer>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246775649,
+      "expiresAt": 1639838736938
+    },
+    "1002401|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246775649,
+      "expiresAt": 1639838736938
+    },
+    "1002401|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246775649,
+      "expiresAt": 1639838736938
+    },
+    "1002401|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246775649,
+      "expiresAt": 1639838736938
+    },
+    "1002401|commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246775649,
+      "expiresAt": 1639838736938
+    },
+    "1002401|cz-conventional-changelog>commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637246775649,
+      "expiresAt": 1639838736938
+    },
+    "1002423|react-svg-loader>react-svg-core>svgo>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1637246778973,
+      "expiresAt": 1639838736938
+    },
+    "1002477|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>axios": {
+      "decision": "ignore",
+      "madeAt": 1637246785542,
+      "expiresAt": 1639838736938
+    },
+    "1002487|error-overlay-webpack-plugin>react-dev-utils>immer": {
+      "decision": "ignore",
+      "madeAt": 1637246800971,
+      "expiresAt": 1639838736938
+    },
+    "1002492|error-overlay-webpack-plugin>react-dev-utils>immer": {
+      "decision": "ignore",
+      "madeAt": 1637246800971,
+      "expiresAt": 1639838736938
+    },
+    "1002521|@commitlint/cli>@commitlint/lint>@commitlint/parse>conventional-commits-parser>trim-off-newlines": {
+      "decision": "ignore",
+      "madeAt": 1637246804669,
+      "expiresAt": 1639838736938
+    },
+    "1002522|webpack-dev-server>ansi-html": {
+      "decision": "ignore",
+      "madeAt": 1637246808957,
+      "expiresAt": 1639838736938
+    },
+    "1002655|error-overlay-webpack-plugin>react-dev-utils>browserslist": {
+      "decision": "ignore",
+      "madeAt": 1637246810988,
+      "expiresAt": 1639838736938
+    },
+    "1002901|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>react-i18next>html-parse-stringify2": {
+      "decision": "ignore",
+      "madeAt": 1637246812677,
+      "expiresAt": 1639838736938
+    },
+    "1004946|eslint>strip-ansi>ansi-regex": {
+      "decision": "fix",
+      "madeAt": 1637324249115
+    },
+    "1005009|husky>find-versions>semver-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324270609,
+      "expiresAt": 1639916263452
+    },
+    "1005154|webpack-dev-server>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1637324278258,
+      "expiresAt": 1639916263452
+    },
+    "1006180|webpack-dev-server>chokidar>fsevents>node-pre-gyp>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1637324278259,
+      "expiresAt": 1639916263452
+    },
+    "1005154|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1637324280447,
+      "expiresAt": 1639916263452
+    },
+    "1006180|webpack>watchpack>watchpack-chokidar2>chokidar>fsevents>node-pre-gyp>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1637324280447,
+      "expiresAt": 1639916263452
+    },
+    "1004946|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324281898,
+      "expiresAt": 1639916263452
+    },
+    "1004946|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324281898,
+      "expiresAt": 1639916263452
+    },
+    "1004946|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324281898,
+      "expiresAt": 1639916263452
+    },
+    "1004946|lint-staged>listr2>cli-truncate>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324281898,
+      "expiresAt": 1639916263452
+    },
+    "1004946|lint-staged>listr2>log-update>wrap-ansi>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324281898,
+      "expiresAt": 1639916263452
+    },
+    "1004946|lint-staged>listr2>log-update>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324281898,
+      "expiresAt": 1639916263452
+    },
+    "1004967|html-webpack-plugin>pretty-error>renderkid>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1637324283320,
+      "expiresAt": 1639916263452
+    },
+    "1004946|commitizen>inquirer>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324284707,
+      "expiresAt": 1639916263452
+    },
+    "1004946|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324284707,
+      "expiresAt": 1639916263452
+    },
+    "1004946|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324284707,
+      "expiresAt": 1639916263452
+    },
+    "1004946|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324284707,
+      "expiresAt": 1639916263452
+    },
+    "1004946|commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324284707,
+      "expiresAt": 1639916263452
+    },
+    "1004946|cz-conventional-changelog>commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637324284707,
+      "expiresAt": 1639916263452
+    },
+    "1004967|react-svg-loader>react-svg-core>svgo>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1637324286059,
+      "expiresAt": 1639916263452
+    },
+    "1005018|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>axios": {
+      "decision": "ignore",
+      "madeAt": 1637324287573,
+      "expiresAt": 1639916263452
+    },
+    "1005024|error-overlay-webpack-plugin>react-dev-utils>immer": {
+      "decision": "ignore",
+      "madeAt": 1637324293918,
+      "expiresAt": 1639916263452
+    },
+    "1005029|error-overlay-webpack-plugin>react-dev-utils>immer": {
+      "decision": "ignore",
+      "madeAt": 1637324293918,
+      "expiresAt": 1639916263452
+    },
+    "1005058|@commitlint/cli>@commitlint/lint>@commitlint/parse>conventional-commits-parser>trim-off-newlines": {
+      "decision": "ignore",
+      "madeAt": 1637324295496,
+      "expiresAt": 1639916263452
+    },
+    "1005059|webpack-dev-server>ansi-html": {
+      "decision": "ignore",
+      "madeAt": 1637324299506,
+      "expiresAt": 1639916263452
+    },
+    "1005174|error-overlay-webpack-plugin>react-dev-utils>browserslist": {
+      "decision": "ignore",
+      "madeAt": 1637324302163,
+      "expiresAt": 1639916263452
+    },
+    "1005417|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>react-i18next>html-parse-stringify2": {
+      "decision": "ignore",
+      "madeAt": 1637324303961,
+      "expiresAt": 1639916263452
+    }
+  },
+  "rules": {},
+  "version": 1
+}
