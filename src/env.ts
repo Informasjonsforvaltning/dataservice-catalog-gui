@@ -8,6 +8,7 @@ interface EnvironmentVariables {
   SEARCH_API: string;
   SEARCH_FULLTEXT_HOST: string;
   ADMIN_GUI_HOST: string;
+  USE_DEMO_LOGO: boolean;
 }
 
 const env = ((window as any).env || {
@@ -21,7 +22,8 @@ const env = ((window as any).env || {
     'https://organization-catalogue.staging.fellesdatakatalog.digdir.no',
   SEARCH_API: 'https://staging.fellesdatakatalog.digdir.no',
   SEARCH_FULLTEXT_HOST: 'https://search.staging.fellesdatakatalog.digdir.no',
-  ADMIN_GUI_HOST: 'https://admin.fellesdatakatalog.digdir.no'
+  ADMIN_GUI_HOST: 'https://admin.fellesdatakatalog.digdir.no',
+  USE_DEMO_LOGO: false
 }) as EnvironmentVariables;
 
 export default { ...env } as Configuration;
