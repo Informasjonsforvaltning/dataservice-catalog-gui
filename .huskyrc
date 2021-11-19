@@ -2,6 +2,6 @@
   "hooks": {
     "pre-commit": "lint-staged && npm test",
     "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-    "pre-push": "npm audit"
+    "pre-push": "check-audit --production --audit-level=moderate"
   }
 }

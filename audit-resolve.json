@@ -1,0 +1,131 @@
+{
+  "decisions": {
+    "1004946|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|lint-staged>listr2>cli-truncate>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|lint-staged>listr2>log-update>wrap-ansi>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|lint-staged>listr2>log-update>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|commitizen>inquirer>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637567106639,
+      "expiresAt": 1640159069740
+    },
+    "1004946|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637335661766,
+      "expiresAt": 1639927652233
+    },
+    "1004946|cz-conventional-changelog>commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637567106639,
+      "expiresAt": 1640159069740
+    },
+    "1004967|html-webpack-plugin>pretty-error>renderkid>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1637335663250,
+      "expiresAt": 1639927652233
+    },
+    "1004967|react-svg-loader>react-svg-core>svgo>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1637335663250,
+      "expiresAt": 1639927652233
+    },
+    "1005018|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>axios": {
+      "decision": "ignore",
+      "madeAt": 1637335665725,
+      "expiresAt": 1639927652233
+    },
+    "1005024|error-overlay-webpack-plugin>react-dev-utils>immer": {
+      "decision": "ignore",
+      "madeAt": 1637335668175,
+      "expiresAt": 1639927652233
+    },
+    "1005029|error-overlay-webpack-plugin>react-dev-utils>immer": {
+      "decision": "ignore",
+      "madeAt": 1637335669786,
+      "expiresAt": 1639927652233
+    },
+    "1005058|@commitlint/cli>@commitlint/lint>@commitlint/parse>conventional-commits-parser>trim-off-newlines": {
+      "decision": "ignore",
+      "madeAt": 1637335671345,
+      "expiresAt": 1639927652233
+    },
+    "1005174|error-overlay-webpack-plugin>react-dev-utils>browserslist": {
+      "decision": "ignore",
+      "madeAt": 1637335673373,
+      "expiresAt": 1639927652233
+    },
+    "1005417|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>react-i18next>html-parse-stringify2": {
+      "decision": "ignore",
+      "madeAt": 1637567002527,
+      "expiresAt": 1640158972451
+    },
+    "1005417|@fellesdatakatalog/internal-header>@fellesdatakatalog/skatteetaten-frontend-components>react-i18next>html-parse-stringify2": {
+      "decision": "ignore",
+      "madeAt": 1637567002527,
+      "expiresAt": 1640158972451
+    },
+    "1004946|commitizen>cz-conventional-changelog>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637567106639,
+      "expiresAt": 1640159069740
+    },
+    "1004946|webpack-cli>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1637567106639,
+      "expiresAt": 1640159069740
+    },
+    "1004967|css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1637567031807,
+      "expiresAt": 1640158972451
+    },
+    "1005058|trim-off-newlines": {
+      "decision": "ignore",
+      "madeAt": 1637567040617,
+      "expiresAt": 1640158972451
+    }
+  },
+  "rules": {},
+  "version": 1
+}
