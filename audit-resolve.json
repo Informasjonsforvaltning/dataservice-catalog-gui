@@ -1,0 +1,31 @@
+{
+  "decisions": {
+    "1004946|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1642686693882,
+      "expiresAt": 1645278686431
+    },
+    "1004946|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1642686693882,
+      "expiresAt": 1645278686431
+    },
+    "1004946|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1642686693882,
+      "expiresAt": 1645278686431
+    },
+    "1005018|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>axios": {
+      "decision": "ignore",
+      "madeAt": 1642686697387,
+      "expiresAt": 1645278686431
+    },
+    "1005417|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>react-i18next>html-parse-stringify2": {
+      "decision": "ignore",
+      "madeAt": 1642686704633,
+      "expiresAt": 1645278686431
+    }
+  },
+  "rules": {},
+  "version": 1
+}
