@@ -27,10 +27,6 @@ export default object().shape({
     .of(string().ensure().url(messageURL).required(messageRequired))
     .ensure()
     .required(messageRequired),
-  endpointDescriptions: array()
-    .of(string().ensure().url(messageURL).required(messageRequired))
-    .ensure()
-    .required(messageRequired),
   dataServiceStatus: object().shape({
     statusText: string().oneOf(
       [
