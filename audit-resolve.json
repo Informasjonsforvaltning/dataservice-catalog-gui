@@ -24,6 +24,11 @@
       "decision": "ignore",
       "madeAt": 1642686704633,
       "expiresAt": 1645278686431
+    },
+    "1006897|sanitize-html>postcss>nanoid": {
+      "decision": "ignore",
+      "madeAt": 1643810252066,
+      "expiresAt": 1646402245707
     }
   },
   "rules": {},
