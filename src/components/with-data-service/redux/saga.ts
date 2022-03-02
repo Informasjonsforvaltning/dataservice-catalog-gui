@@ -18,14 +18,16 @@ import {
   IMPORT_DATA_SERVICE_REQUESTED
 } from './action-types';
 
+import AuthService from '../../../services/auth-service';
+
 const { DATA_SERVICE_CATALOG_URL } = env;
 
 function* getDataServiceRequested({
   payload: { dataServiceId, organizationId, onError }
 }: ReturnType<typeof actions.getDataServiceRequested>) {
   try {
-    const auth = yield getContext('auth');
-    const authorization = yield call([auth, auth.getAuthorizationHeader]);
+    const auth: typeof AuthService = yield getContext('auth');
+    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
 
     const { data, message } = yield call(
       axios.get,
@@ -43,7 +45,7 @@ function* getDataServiceRequested({
       yield put(actions.getDataServiceFailed(JSON.stringify(message)));
       onError();
     }
-  } catch (e) {
+  } catch (e: any) {
     yield put(actions.getDataServiceFailed(e.message));
     onError();
   }
@@ -53,8 +55,8 @@ function* patchDataServiceRequested({
   payload: { dataService }
 }: ReturnType<typeof actions.patchDataServiceRequested>) {
   try {
-    const auth = yield getContext('auth');
-    const authorization = yield call([auth, auth.getAuthorizationHeader]);
+    const auth: typeof AuthService = yield getContext('auth');
+    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
 
     const url = `${DATA_SERVICE_CATALOG_URL}/catalogs/${dataService.organizationId}/dataservices`;
 
@@ -74,7 +76,7 @@ function* patchDataServiceRequested({
     } else {
       yield put(actions.patchDataServiceFailed(JSON.stringify(message)));
     }
-  } catch (e) {
+  } catch (e: any) {
     yield put(actions.patchDataServiceFailed(e.message));
   }
 }
@@ -83,8 +85,8 @@ function* deleteDataServiceRequested({
   payload: { dataServiceId, organizationId, onSuccess }
 }: ReturnType<typeof actions.deleteDataServiceRequested>) {
   try {
-    const auth = yield getContext('auth');
-    const authorization = yield call([auth, auth.getAuthorizationHeader]);
+    const auth: typeof AuthService = yield getContext('auth');
+    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
     const { status, message } = yield call(
       axios.delete,
       `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices/${dataServiceId}`,
@@ -101,7 +103,7 @@ function* deleteDataServiceRequested({
     } else {
       yield put(actions.deleteDataServiceFailed(JSON.stringify(message)));
     }
-  } catch (e) {
+  } catch (e: any) {
     yield put(actions.deleteDataServiceFailed(e.message));
   }
 }
@@ -110,8 +112,8 @@ function* importDataServiceRequested({
   payload: { importUrl, dataServiceId, organizationId, onSuccess, onError }
 }: ReturnType<typeof actions.importDataServiceRequested>) {
   try {
-    const auth = yield getContext('auth');
-    const authorization = yield call([auth, auth.getAuthorizationHeader]);
+    const auth: typeof AuthService = yield getContext('auth');
+    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
 
     const url = dataServiceId
       ? `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices/${dataServiceId}/import`
@@ -138,7 +140,7 @@ function* importDataServiceRequested({
       yield put(actions.importDataServiceFailed(JSON.stringify(message)));
       onError(message);
     }
-  } catch (e) {
+  } catch (e: any) {
     yield put(actions.importDataServiceFailed(e.message));
     onError(e.message);
   }
