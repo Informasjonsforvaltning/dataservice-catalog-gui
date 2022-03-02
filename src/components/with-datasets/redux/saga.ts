@@ -30,7 +30,7 @@ function* getDatasetsRequested({
     } else {
       yield put(actions.getDatasetsFailed(JSON.stringify(message)));
     }
-  } catch (e) {
+  } catch (e: any) {
     yield put(actions.getDatasetsFailed(e.message));
   }
 }
@@ -51,7 +51,7 @@ function* searchDatasetsRequested({
     } else {
       yield put(actions.searchDatasetsFailed(JSON.stringify(message)));
     }
-  } catch (e) {
+  } catch (e: any) {
     yield put(actions.searchDatasetsFailed(e.message));
   }
 }

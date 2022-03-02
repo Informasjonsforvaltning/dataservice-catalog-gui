@@ -6,14 +6,16 @@ import env from '../../../env';
 import * as actions from './actions';
 import { FETCH_ALL_DATA_SERVICES_REQUESTED } from './action-types';
 
+import AuthService from '../../../services/auth-service';
+
 const { DATA_SERVICE_CATALOG_URL } = env;
 
 function* fetchAllDataServicesRequested({
   payload: { organizationId }
 }: ReturnType<typeof actions.fetchAllDataServicesRequested>) {
   try {
-    const auth = yield getContext('auth');
-    const authorization = yield call([auth, auth.getAuthorizationHeader]);
+    const auth: typeof AuthService = yield getContext('auth');
+    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
     const { data, message } = yield call(
       axios.get,
       `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices`,
@@ -29,7 +31,7 @@ function* fetchAllDataServicesRequested({
     } else {
       yield put(actions.fetchAllDataServicesFailed(JSON.stringify(message)));
     }
-  } catch (e) {
+  } catch (e: any) {
     yield put(actions.fetchAllDataServicesFailed(e.message));
   }
 }
