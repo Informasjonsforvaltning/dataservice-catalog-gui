@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import merge from 'webpack-merge';
-import ErrorOverlayPlugin from 'error-overlay-webpack-plugin';
 
 import baseConfig from './base.config';
 
@@ -48,6 +47,5 @@ export default merge(baseConfig, {
         exclude: /node_modules/
       }
     ]
-  },
-  plugins: [new ErrorOverlayPlugin()]
+  }
 });
