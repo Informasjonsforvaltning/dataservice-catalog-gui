@@ -1,159 +1,169 @@
 {
   "decisions": {
-    "1004946|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+    "1067301|showdown>yargs>cliui>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1642686693882,
-      "expiresAt": 1645278686431
+      "madeAt": 1649762685360,
+      "expiresAt": 1652354679698
     },
-    "1004946|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+    "1067301|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1642686693882,
-      "expiresAt": 1645278686431
+      "madeAt": 1649762685360,
+      "expiresAt": 1652354679698
     },
-    "1004946|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+    "1067301|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1642686693882,
-      "expiresAt": 1645278686431
+      "madeAt": 1649762685360,
+      "expiresAt": 1652354679698
     },
-    "1005018|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>axios": {
+    "1067301|eslint>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1642686697387,
-      "expiresAt": 1645278686431
+      "madeAt": 1649762686916,
+      "expiresAt": 1652354679698
     },
-    "1005417|@fellesdatakatalog/internal-footer>@fellesdatakatalog/skatteetaten-frontend-components>react-i18next>html-parse-stringify2": {
+    "1067323|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1642686704633,
-      "expiresAt": 1645278686431
+      "madeAt": 1649762689676,
+      "expiresAt": 1652354679698
     },
-    "1006897|sanitize-html>postcss>nanoid": {
+    "1067329|webpack-dev-server>chokidar>glob-parent": {
       "decision": "ignore",
-      "madeAt": 1643810252066,
-      "expiresAt": 1646402245707
+      "madeAt": 1649762693290,
+      "expiresAt": 1652354679698
     },
-    "1007326|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+    "1067363|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1646397227858,
-      "expiresAt": 1648989219763
+      "madeAt": 1649762694934,
+      "expiresAt": 1652354679698
     },
-    "1007326|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+    "1067364|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1646397227858,
-      "expiresAt": 1648989219763
+      "madeAt": 1649762696348,
+      "expiresAt": 1652354679698
     },
-    "1007326|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+    "1067452|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1646397227858,
-      "expiresAt": 1648989219763
+      "madeAt": 1649762697884,
+      "expiresAt": 1652354679698
     },
-    "1028226|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+    "1067471|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1646638761395,
-      "expiresAt": 1649230756747
+      "madeAt": 1649762699332,
+      "expiresAt": 1652354679698
     },
-    "1028226|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+    "1067473|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1646638761395,
-      "expiresAt": 1649230756747
+      "madeAt": 1649762700726,
+      "expiresAt": 1652354679698
     },
-    "1028226|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+    "1067329|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
       "decision": "ignore",
-      "madeAt": 1646638761395,
-      "expiresAt": 1649230756747
+      "madeAt": 1649762702041,
+      "expiresAt": 1652354679698
     },
-    "1059599|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+    "1067342|jest>@jest/core>jest-haste-map>sane>minimist": {
       "decision": "ignore",
-      "madeAt": 1646921410414,
-      "expiresAt": 1649513401721
+      "madeAt": 1649762703918,
+      "expiresAt": 1652354679698
     },
-    "1059599|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+    "1067342|jest>@jest/core>@jest/transform>jest-haste-map>sane>minimist": {
       "decision": "ignore",
-      "madeAt": 1646921410414,
-      "expiresAt": 1649513401721
+      "madeAt": 1649762703918,
+      "expiresAt": 1652354679698
     },
-    "1059599|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+    "1067342|jest>@jest/core>@jest/reporters>@jest/transform>jest-haste-map>sane>minimist": {
       "decision": "ignore",
-      "madeAt": 1646921410414,
-      "expiresAt": 1649513401721
+      "madeAt": 1649762703918,
+      "expiresAt": 1652354679698
     },
-    "1064657|webpack-dev-server>selfsigned>node-forge": {
+    "1067342|jest>jest-cli>@jest/core>@jest/reporters>@jest/transform>jest-haste-map>sane>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417245873,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762703918,
+      "expiresAt": 1652354679698
     },
-    "1064676|webpack-dev-server>selfsigned>node-forge": {
+    "1067342|jest>jest-cli>@jest/core>jest-runner>jest-runtime>@jest/transform>jest-haste-map>sane>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417248091,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762703918,
+      "expiresAt": 1652354679698
     },
-    "1064678|webpack-dev-server>selfsigned>node-forge": {
+    "1067342|jest>@jest/core>jest-config>@jest/test-sequencer>jest-runner>jest-runtime>@jest/transform>jest-haste-map>sane>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417250066,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762703918,
+      "expiresAt": 1652354679698
     },
-    "1065072|webpack-dev-server>chokidar>glob-parent": {
+    "1067342|jest>jest-cli>@jest/core>jest-config>@jest/test-sequencer>jest-runner>jest-runtime>@jest/transform>jest-haste-map>sane>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417252251,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762703918,
+      "expiresAt": 1652354679698
     },
-    "1064843|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+    "1067302|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1647417254106,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762705284,
+      "expiresAt": 1652354679698
     },
-    "1064843|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+    "1067302|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1647417254106,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762705284,
+      "expiresAt": 1652354679698
     },
-    "1064843|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+    "1067302|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1647417254106,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762705284,
+      "expiresAt": 1652354679698
     },
-    "1064843|eslint>strip-ansi>ansi-regex": {
+    "1067342|copy-webpack-plugin>loader-utils>json5>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417256084,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762708203,
+      "expiresAt": 1652354679698
     },
-    "1065072|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+    "1067342|css-loader>loader-utils>json5>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417258070,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762708203,
+      "expiresAt": 1652354679698
     },
-    "1064843|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
+    "1067342|file-loader>loader-utils>json5>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417259827,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762708203,
+      "expiresAt": 1652354679698
     },
-    "1064843|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+    "1067342|mini-css-extract-plugin>loader-utils>json5>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417259827,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762708203,
+      "expiresAt": 1652354679698
     },
-    "1064843|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+    "1067342|commitizen>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417259827,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762708203,
+      "expiresAt": 1652354679698
     },
-    "1064843|commitizen>inquirer>strip-ansi>ansi-regex": {
+    "1067342|cz-conventional-changelog>commitizen>minimist": {
       "decision": "ignore",
-      "madeAt": 1647417259827,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762708203,
+      "expiresAt": 1652354679698
     },
-    "1064843|commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+    "1067300|commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1647417259827,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762711404,
+      "expiresAt": 1652354679698
     },
-    "1064843|cz-conventional-changelog>commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+    "1067300|cz-conventional-changelog>commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1647417259827,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762711404,
+      "expiresAt": 1652354679698
     },
-    "1064864|react-svg-loader>react-svg-core>svgo>css-select>nth-check": {
+    "1067301|commitizen>inquirer>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1647417261578,
-      "expiresAt": 1650009239493
+      "madeAt": 1649762713356,
+      "expiresAt": 1652354679698
+    },
+    "1067654|react-svg-loader>react-svg-core>svgo>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1649762715845,
+      "expiresAt": 1652354679698
+    },
+    "1069972|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
+      "decision": "ignore",
+      "madeAt": 1649762717605,
+      "expiresAt": 1652354679698
     }
   },
   "rules": {},
