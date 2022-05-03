@@ -164,6 +164,66 @@
       "decision": "ignore",
       "madeAt": 1649762717605,
       "expiresAt": 1652354679698
+    },
+    "1070256|webpack-bundle-analyzer>ejs": {
+      "decision": "ignore",
+      "madeAt": 1651571311372,
+      "expiresAt": 1654163302198
+    },
+    "1070274|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571313473,
+      "expiresAt": 1654163302198
+    },
+    "1070274|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571313473,
+      "expiresAt": 1654163302198
+    },
+    "1070274|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571313473,
+      "expiresAt": 1654163302198
+    },
+    "1070274|eslint>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571315265,
+      "expiresAt": 1654163302198
+    },
+    "1070275|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571317340,
+      "expiresAt": 1654163302198
+    },
+    "1070275|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571317340,
+      "expiresAt": 1654163302198
+    },
+    "1070275|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571317340,
+      "expiresAt": 1654163302198
+    },
+    "1070245|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
+      "decision": "ignore",
+      "madeAt": 1651571319469,
+      "expiresAt": 1654163302198
+    },
+    "1070273|commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571321248,
+      "expiresAt": 1654163302198
+    },
+    "1070273|cz-conventional-changelog>commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571321248,
+      "expiresAt": 1654163302198
+    },
+    "1070274|commitizen>inquirer>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1651571322800,
+      "expiresAt": 1654163302198
     }
   },
   "rules": {},
