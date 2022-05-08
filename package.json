@@ -112,7 +112,7 @@
     "@types/yup": "^0.28.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^8.2.5",
     "babel-plugin-styled-components": "^1.13.3",
     "clean-webpack-plugin": "^4.0.0",
     "commitizen": "^4.2.4",
