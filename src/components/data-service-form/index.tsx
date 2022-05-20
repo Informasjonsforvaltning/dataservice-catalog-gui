@@ -366,7 +366,6 @@ const DataServiceForm: FC<Props> = ({
               error={isPublished && touched.title && errors.title}
               helperText={isPublished && touched.title && errors.title}
               onChange={handleChange}
-              disabled={isImported}
               isReadOnly={isReadOnly}
               onLanguageChange={() =>
                 setFieldValue('languages', selectedLanguages)
@@ -385,7 +384,6 @@ const DataServiceForm: FC<Props> = ({
               value={values.description}
               error={errors.description}
               onChange={handleChange}
-              disabled={isImported}
               isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
@@ -412,7 +410,6 @@ const DataServiceForm: FC<Props> = ({
               name='version'
               value={values.version}
               onChange={handleChange}
-              disabled={isImported}
               isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
@@ -449,7 +446,6 @@ const DataServiceForm: FC<Props> = ({
                         value={url}
                         error={errors.endpointUrls?.[index]}
                         onChange={handleChange}
-                        disabled={isImported}
                         isReadOnly={isReadOnly}
                       />
                       {values.endpointUrls.length > 1 && !isReadOnly && (
@@ -485,7 +481,6 @@ const DataServiceForm: FC<Props> = ({
                         value={description}
                         error={errors.endpointDescriptions?.[index]}
                         onChange={handleChange}
-                        disabled={isImported}
                         isReadOnly={isReadOnly}
                       />
                       {values.endpointDescriptions.length > 1 && !isReadOnly && (
@@ -537,7 +532,6 @@ const DataServiceForm: FC<Props> = ({
               value={values.contact.name}
               labelText='Navn'
               onChange={handleChange}
-              disabled={isImported}
               isReadOnly={isReadOnly}
             />
             <TextField
@@ -545,7 +539,6 @@ const DataServiceForm: FC<Props> = ({
               value={values.contact.url}
               labelText='URL'
               onChange={handleChange}
-              disabled={isImported}
               isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
@@ -561,7 +554,6 @@ const DataServiceForm: FC<Props> = ({
                 value={values.contact.email}
                 labelText='E-post'
                 onChange={handleChange}
-                disabled={isImported}
                 isReadOnly={isReadOnly}
               />
               <TextField
@@ -569,7 +561,6 @@ const DataServiceForm: FC<Props> = ({
                 value={values.contact.phone}
                 labelText='Telefon'
                 onChange={handleChange}
-                disabled={isImported}
                 isReadOnly={isReadOnly}
               />
             </SC.InlineFields>
@@ -674,7 +665,6 @@ const DataServiceForm: FC<Props> = ({
               languages={selectedLanguages}
               error={errors.keywords}
               onChange={handleChange}
-              disabled={isImported}
               isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
