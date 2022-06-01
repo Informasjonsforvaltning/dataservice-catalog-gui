@@ -27,7 +27,10 @@ function* getDataServiceRequested({
 }: ReturnType<typeof actions.getDataServiceRequested>) {
   try {
     const auth: typeof AuthService = yield getContext('auth');
-    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
+    const authorization: string = yield call([
+      auth,
+      auth.getAuthorizationHeader
+    ]);
 
     const { data, message } = yield call(
       axios.get,
@@ -56,7 +59,10 @@ function* patchDataServiceRequested({
 }: ReturnType<typeof actions.patchDataServiceRequested>) {
   try {
     const auth: typeof AuthService = yield getContext('auth');
-    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
+    const authorization: string = yield call([
+      auth,
+      auth.getAuthorizationHeader
+    ]);
 
     const url = `${DATA_SERVICE_CATALOG_URL}/catalogs/${dataService.organizationId}/dataservices`;
 
@@ -86,7 +92,10 @@ function* deleteDataServiceRequested({
 }: ReturnType<typeof actions.deleteDataServiceRequested>) {
   try {
     const auth: typeof AuthService = yield getContext('auth');
-    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
+    const authorization: string = yield call([
+      auth,
+      auth.getAuthorizationHeader
+    ]);
     const { status, message } = yield call(
       axios.delete,
       `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices/${dataServiceId}`,
@@ -113,13 +122,16 @@ function* importDataServiceRequested({
 }: ReturnType<typeof actions.importDataServiceRequested>) {
   try {
     const auth: typeof AuthService = yield getContext('auth');
-    const authorization: string = yield call([auth, auth.getAuthorizationHeader]);
+    const authorization: string = yield call([
+      auth,
+      auth.getAuthorizationHeader
+    ]);
 
     const url = dataServiceId
       ? `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices/${dataServiceId}/import`
       : `${DATA_SERVICE_CATALOG_URL}/catalogs/${organizationId}/dataservices`;
 
-    const { status, data, message } = yield call(
+    const { status, data } = yield call(
       axios.post,
       url,
       {
@@ -129,6 +141,9 @@ function* importDataServiceRequested({
         headers: {
           authorization,
           accept: 'application/json'
+        },
+        validateStatus(statusCode) {
+          return statusCode < 500; // Resolve only if the status code is less than 500
         }
       }
     );
@@ -137,8 +152,8 @@ function* importDataServiceRequested({
       yield put(actions.importDataServiceSucceeded(data));
       onSuccess();
     } else {
-      yield put(actions.importDataServiceFailed(JSON.stringify(message)));
-      onError(message);
+      yield put(actions.importDataServiceFailed(JSON.stringify(data.message)));
+      onError(data.message);
     }
   } catch (e: any) {
     yield put(actions.importDataServiceFailed(e.message));
