@@ -67,9 +67,8 @@ const DataServiceImportForm: FC<Props> = ({
       <SC.DataServiceImportPanel>
         <SC.FormTitle>Importer spesifikasjon</SC.FormTitle>
         <p>
-          Du kan importere en eksisterende spesifikasjon via lenke eller fil.
-          Felles datakatalog støtter Open API-Specification 2.0, 3.0 og Swagger
-          2.0.
+          Du kan importere en eksisterende spesifikasjon via lenke. Felles
+          datakatalog støtter Open API-Specification 2.0, 3.0 og Swagger 2.0.
         </p>
         {importMethod === ImportMethod.URI ? (
           <SC.DataServiceImportForm onSubmit={formik.handleSubmit}>
