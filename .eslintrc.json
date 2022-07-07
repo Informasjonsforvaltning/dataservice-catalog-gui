@@ -75,6 +75,7 @@
     "react/no-unused-state": "off",
     "react/jsx-curly-newline": "off",
     "react/prop-types": "off",
+    "react/require-default-props": "warn",
     "no-restricted-globals": "off",
     "no-use-before-define": "off",
     "no-param-reassign": "off",
