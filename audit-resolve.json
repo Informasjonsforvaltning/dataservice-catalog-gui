@@ -42,18 +42,18 @@
     },
     "1067452|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1654669109612,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276168302,
+      "expiresAt": 1659868152536
     },
     "1067471|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1654669110919,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276178141,
+      "expiresAt": 1659868152536
     },
     "1067473|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1654669112200,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276181838,
+      "expiresAt": 1659868152536
     },
     "1067329|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
       "decision": "ignore",
@@ -172,18 +172,18 @@
     },
     "1070274|showdown>yargs>cliui>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669118974,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276202718,
+      "expiresAt": 1659868152536
     },
     "1070274|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669118974,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276202718,
+      "expiresAt": 1659868152536
     },
     "1070274|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669118974,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276202718,
+      "expiresAt": 1659868152536
     },
     "1070274|eslint>strip-ansi>ansi-regex": {
       "decision": "ignore",
@@ -192,18 +192,18 @@
     },
     "1070275|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669123439,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276210255,
+      "expiresAt": 1659868152536
     },
     "1070275|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669123439,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276210255,
+      "expiresAt": 1659868152536
     },
     "1070275|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669123439,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276210255,
+      "expiresAt": 1659868152536
     },
     "1070245|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
       "decision": "ignore",
@@ -212,48 +212,53 @@
     },
     "1070273|commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669126273,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276211838,
+      "expiresAt": 1659868152536
     },
     "1070273|cz-conventional-changelog>commitizen>inquirer>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669126273,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276211838,
+      "expiresAt": 1659868152536
     },
     "1070274|commitizen>inquirer>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1654669127669,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276213238,
+      "expiresAt": 1659868152536
     },
     "1070354|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1654669114465,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276184238,
+      "expiresAt": 1659868152536
     },
     "1070355|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1654669115944,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276195494,
+      "expiresAt": 1659868152536
     },
     "1070356|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1654669117495,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276198285,
+      "expiresAt": 1659868152536
     },
     "1070412|webpack-bundle-analyzer>ejs": {
       "decision": "ignore",
-      "madeAt": 1654669121929,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276208130,
+      "expiresAt": 1659868152536
     },
     "1070415|react-svg-loader>react-svg-core>svgo>css-select>nth-check": {
       "decision": "ignore",
-      "madeAt": 1654669129103,
-      "expiresAt": 1657261095921
+      "madeAt": 1657276214695,
+      "expiresAt": 1659868152536
     },
     "1080944|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
       "decision": "ignore",
       "madeAt": 1657197707339,
       "expiresAt": 1659789681573
+    },
+    "1080969|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
+      "decision": "ignore",
+      "madeAt": 1657276216342,
+      "expiresAt": 1659868152536
     }
   },
   "rules": {},
