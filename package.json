@@ -115,7 +115,7 @@
     "babel-loader": "^8.2.5",
     "babel-plugin-styled-components": "^1.13.3",
     "clean-webpack-plugin": "^4.0.0",
-    "commitizen": "^4.2.4",
+    "commitizen": "^4.2.5",
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^5.2.7",
     "cz-conventional-changelog": "^3.3.0",
