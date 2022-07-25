@@ -27,8 +27,8 @@
     },
     "1067329|webpack-dev-server>chokidar>glob-parent": {
       "decision": "ignore",
-      "madeAt": 1654669108078,
-      "expiresAt": 1657261095921
+      "madeAt": 1658755438889,
+      "expiresAt": 1661347431488
     },
     "1067363|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
@@ -57,8 +57,8 @@
     },
     "1067329|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
       "decision": "ignore",
-      "madeAt": 1654669104177,
-      "expiresAt": 1657261095921
+      "madeAt": 1658755436425,
+      "expiresAt": 1661347431488
     },
     "1067342|jest>@jest/core>jest-haste-map>sane>minimist": {
       "decision": "ignore",
@@ -259,6 +259,51 @@
       "decision": "ignore",
       "madeAt": 1657276216342,
       "expiresAt": 1659868152536
+    },
+    "1081528|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1658755437656,
+      "expiresAt": 1661347431488
+    },
+    "1081528|webpack-dev-server>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1658755440745,
+      "expiresAt": 1661347431488
+    },
+    "1081347|showdown>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1658755442081,
+      "expiresAt": 1661347431488
+    },
+    "1081347|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1658755442081,
+      "expiresAt": 1661347431488
+    },
+    "1081347|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1658755442081,
+      "expiresAt": 1661347431488
+    },
+    "1081348|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1658755443424,
+      "expiresAt": 1661347431488
+    },
+    "1081348|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1658755443424,
+      "expiresAt": 1661347431488
+    },
+    "1081348|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1658755443424,
+      "expiresAt": 1661347431488
+    },
+    "1081008|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
+      "decision": "ignore",
+      "madeAt": 1658755444808,
+      "expiresAt": 1661347431488
     }
   },
   "rules": {},
