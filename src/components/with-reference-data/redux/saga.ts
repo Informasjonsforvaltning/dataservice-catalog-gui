@@ -5,6 +5,7 @@ import env from '../../../env';
 
 import { GET_REFERENCE_DATA_REQUESTED } from './action-types';
 import * as actions from './actions';
+// eslint-disable-next-line import/extensions,import/no-unresolved
 import { ReferenceData } from '../../../types';
 
 const { SEARCH_API } = env;
@@ -14,9 +15,9 @@ const endpoint = (category: keyof ReferenceData) => {
     case 'mediatypes':
       return '/new-reference-data/iana/media-types';
     case 'openlicenses':
-      return '/reference-data/codes/openlicenses';
+      return '/new-reference-data/open-licenses';
     default:
-      return `/reference-data/${category}`;
+      return `/new-reference-data/${category}`;
   }
 };
 
@@ -32,7 +33,7 @@ function* getReferenceDataRequested({
       yield put(
         actions.getReferenceDataSucceeded(
           category,
-          category === 'mediatypes' ? data.mediaTypes : data
+          category === 'mediatypes' ? data.mediaTypes : data.openLicenses
         )
       );
     } else {

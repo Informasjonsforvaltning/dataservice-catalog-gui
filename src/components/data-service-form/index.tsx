@@ -56,6 +56,7 @@ import {
   Dataset,
   MediaType,
   MultiLanguageTextArray
+  // eslint-disable-next-line import/extensions,import/no-unresolved
 } from '../../types';
 import { Status, StatusText, ServiceType, Language } from '../../types/enums';
 import DataServiceImportForm from '../data-service-import-form';
@@ -131,10 +132,8 @@ const DataServiceForm: FC<Props> = ({
   ] = useState(false);
 
   const [datasetSuggestions, setDatasetSuggestions] = useState<Dataset[]>([]);
-  const [
-    isWaitingForDatasetSuggestions,
-    setIsWaitingForDatasetSuggestions
-  ] = useState(false);
+  const [isWaitingForDatasetSuggestions, setIsWaitingForDatasetSuggestions] =
+    useState(false);
 
   useEffect(() => {
     getReferenceData('mediatypes');
@@ -213,7 +212,7 @@ const DataServiceForm: FC<Props> = ({
     ? [{ label: values.license.name || '', value: values.license.url || '' }]
     : openLicenses
         ?.filter(({ isReplacedBy }) => !isReplacedBy)
-        .map(({ uri, prefLabel: { no } }) => {
+        .map(({ uri, label: { no } }) => {
           return { label: no || '', value: uri };
         }) ?? [];
 

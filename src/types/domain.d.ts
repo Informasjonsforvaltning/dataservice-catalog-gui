@@ -97,7 +97,7 @@ export interface MediaType {
 export interface OpenLicense {
   uri: string;
   code: string;
-  prefLabel: { ['no']: string };
+  label: { ['no']: string };
   isReplacedBy?: string;
 }
 
