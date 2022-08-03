@@ -17,7 +17,7 @@ const endpoint = (category: keyof ReferenceData) => {
     case 'openlicenses':
       return '/new-reference-data/open-licenses';
     default:
-      return `/new-reference-data/${category}`;
+      throw Error('Reference category not implemented');
   }
 };
 
