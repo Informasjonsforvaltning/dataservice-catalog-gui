@@ -13,9 +13,9 @@ const { SEARCH_API } = env;
 const endpoint = (category: keyof ReferenceData) => {
   switch (category) {
     case 'mediatypes':
-      return '/new-reference-data/iana/media-types';
+      return '/reference-data/iana/media-types';
     case 'openlicenses':
-      return '/new-reference-data/open-licenses';
+      return '/reference-data/open-licenses';
     default:
       throw Error('Reference category not implemented');
   }
