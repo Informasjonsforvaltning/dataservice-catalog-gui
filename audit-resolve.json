@@ -41,13 +41,13 @@
     },
     "1067452|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1660637162046,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352488895,
+      "expiresAt": 1663944484663
     },
     "1067471|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1660637162046,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352490533,
+      "expiresAt": 1663944484663
     },
     "1067473|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
@@ -226,18 +226,18 @@
     },
     "1070354|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1660637162046,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352492025,
+      "expiresAt": 1663944484663
     },
     "1070355|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1660637162046,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352493577,
+      "expiresAt": 1663944484663
     },
     "1070356|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1660637162046,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352495070,
+      "expiresAt": 1663944484663
     },
     "1070412|webpack-bundle-analyzer>ejs": {
       "decision": "ignore",
@@ -246,8 +246,8 @@
     },
     "1070415|react-svg-loader>react-svg-core>svgo>css-select>nth-check": {
       "decision": "ignore",
-      "madeAt": 1660637198905,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352506012,
+      "expiresAt": 1663944484663
     },
     "1080944|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
       "decision": "ignore",
@@ -305,8 +305,8 @@
     },
     "1081840|webpack-dev-server>selfsigned>node-forge": {
       "decision": "ignore",
-      "madeAt": 1660637162046,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352496504,
+      "expiresAt": 1663944484663
     },
     "1081761|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
       "decision": "ignore",
@@ -315,43 +315,48 @@
     },
     "1081884|webpack-dev-server>chokidar>glob-parent": {
       "decision": "ignore",
-      "madeAt": 1660637162046,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352497960,
+      "expiresAt": 1663944484663
     },
     "1081884|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
       "decision": "ignore",
-      "madeAt": 1660637184142,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352499365,
+      "expiresAt": 1663944484663
     },
     "1081983|showdown>yargs>cliui>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1660637189995,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352500902,
+      "expiresAt": 1663944484663
     },
     "1081983|showdown>yargs>cliui>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1660637189995,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352500902,
+      "expiresAt": 1663944484663
     },
     "1081983|showdown>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1660637189995,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352500903,
+      "expiresAt": 1663944484663
     },
     "1081984|@commitlint/cli>yargs>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1660637194701,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352504310,
+      "expiresAt": 1663944484663
     },
     "1081984|@commitlint/cli>yargs>cliui>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1660637194702,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352504310,
+      "expiresAt": 1663944484663
     },
     "1081984|@commitlint/cli>yargs>cliui>wrap-ansi>string-width>strip-ansi>ansi-regex": {
       "decision": "ignore",
-      "madeAt": 1660637194702,
-      "expiresAt": 1661241920111
+      "madeAt": 1661352504310,
+      "expiresAt": 1663944484663
+    },
+    "1083256|webpack-bundle-analyzer>ejs": {
+      "decision": "ignore",
+      "madeAt": 1661352502495,
+      "expiresAt": 1663944484663
     }
   },
   "rules": {},
