@@ -99,7 +99,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^10.4.9",
     "@types/jest": "^28.1.6",
-    "@types/jwt-decode": "^2.2.1",
+    "@types/jwt-decode": "^3.1.0",
     "@types/react": "^17.0.44",
     "@types/react-datepicker": "^4.4.2",
     "@types/react-dom": "^16.9.14",
