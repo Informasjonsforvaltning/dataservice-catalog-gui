@@ -86,7 +86,7 @@ export const helptextsNb = {
   },
 
   isOpenAccess: {
-    abstract: 'Kan hvem som hel',
+    abstract: '',
     description: ''
   },
 
