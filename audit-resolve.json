@@ -310,8 +310,8 @@
     },
     "1081761|@fellesdatakatalog/internal-footer>@skatteetaten/frontend-components>moment": {
       "decision": "ignore",
-      "madeAt": 1659351555843,
-      "expiresAt": 1661943532754
+      "madeAt": 1662116094740,
+      "expiresAt": 1664708087784
     },
     "1081884|webpack-dev-server>chokidar>glob-parent": {
       "decision": "ignore",
