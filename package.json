@@ -58,7 +58,7 @@
     "tar": "^6.1.11"
   },
   "dependencies": {
-    "@fellesdatakatalog/alert": "^0.1.9",
+    "@fellesdatakatalog/alert": "^0.1.11",
     "@fellesdatakatalog/internal-footer": "^0.3.14",
     "@fellesdatakatalog/internal-header": "^0.5.5",
     "@fellesdatakatalog/link": "^0.2.10",
