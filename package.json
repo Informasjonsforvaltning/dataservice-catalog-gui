@@ -68,7 +68,7 @@
     "axios": "^0.21.4",
     "core-js": "^3.25.1",
     "date-fns": "^2.29.3",
-    "fast-json-patch": "^3.1.0",
+    "fast-json-patch": "^3.1.1",
     "formik": "^2.2.9",
     "immutable": "^4.0.0-rc.12",
     "keycloak-js": "^19.0.1",
