@@ -13,12 +13,12 @@ import { Actions } from '../../../types';
 
 const initialState = fromJS({
   dataService: null
-});
+}).toMap();
 
-export default function reducer(
-  state = initialState,
-  action: Actions<typeof actions>
-) {
+export default function reducer(state, action: Actions<typeof actions>) {
+  if (!state) {
+    state = initialState;
+  }
   switch (action.type) {
     case GET_DATA_SERVICE_SUCCEEDED:
     case PATCH_DATA_SERVICE_SUCCEEDED:

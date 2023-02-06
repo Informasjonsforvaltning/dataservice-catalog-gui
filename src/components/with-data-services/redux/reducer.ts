@@ -13,12 +13,12 @@ import { SortOrder } from '../../../types/enums';
 
 const initialState = fromJS({
   dataServices: []
-});
+}).toMap();
 
-export default function reducer(
-  state = initialState,
-  action: Actions<typeof actions>
-) {
+export default function reducer(state, action: Actions<typeof actions>) {
+  if (!state) {
+    state = initialState;
+  }
   switch (action.type) {
     case FETCH_ALL_DATA_SERVICES_SUCCEEDED:
       return state.set('dataServices', fromJS(action.payload.dataServices));

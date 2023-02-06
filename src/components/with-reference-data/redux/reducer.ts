@@ -10,12 +10,12 @@ import { Actions } from '../../../types';
 
 const initialState = fromJS({
   referenceData: {}
-});
+}).toMap();
 
-export default function reducer(
-  state = initialState,
-  action: Actions<typeof actions>
-) {
+export default function reducer(state, action: Actions<typeof actions>) {
+  if (!state) {
+    state = initialState;
+  }
   switch (action.type) {
     case GET_REFERENCE_DATA_REQUESTED:
       return state.setIn(['referenceData', action.payload.category], null);
