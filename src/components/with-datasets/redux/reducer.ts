@@ -12,12 +12,13 @@ import { Actions } from '../../../types';
 const initialState = fromJS({
   datasets: [],
   datasetSearchSuggestions: []
-});
+}).toMap();
 
-export default function reducer(
-  state = initialState,
-  action: Actions<typeof actions>
-) {
+export default function reducer(state, action: Actions<typeof actions>) {
+  if (!state) {
+    state = initialState;
+  }
+
   switch (action.type) {
     case GET_DATASETS_SUCCEEDED:
       return state.set('datasets', fromJS(action.payload.datasets));

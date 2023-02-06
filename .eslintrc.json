@@ -30,7 +30,8 @@
     "html",
     "json",
     "markdown",
-    "prettier"
+    "prettier",
+    "import"
   ],
   "rules": {
     "prettier/prettier": [
@@ -46,7 +47,13 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": ["./webpack/*", "./test/*"]
+        "devDependencies": [
+          "./webpack/*",
+          "./src/types/**/*",
+          "./test/**/*",
+          "**/__tests__/**/*",
+          "**/*test.{js,jsx,ts,tsx}"
+        ]
       }
     ],
     "no-console": ["error", { "allow": ["warn", "error"] }],
@@ -105,5 +112,16 @@
         "no-unused-expressions": "off"
       }
     }
-  ]
+  ],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "tsconfig.json"
+      }
+    }
+  }
 }
