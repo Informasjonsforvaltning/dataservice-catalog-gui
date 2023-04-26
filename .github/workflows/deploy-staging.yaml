@@ -22,15 +22,6 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       DEPENDABOT_SLACK_WEBHOOK_URL: ${{ secrets.DEPENDABOT_SLACK_WEBHOOK_URL }}
 
-  run-codeql:
-    name: Run codeql scan
-    if: github.event.pull_request.draft == false
-    uses: Informasjonsforvaltning/workflows/.github/workflows/codeql.yaml@main
-    with:
-      language: javascript
-    secrets:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build-dev-image:
     name: Build and test dev image on PR from dependabot
     if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
