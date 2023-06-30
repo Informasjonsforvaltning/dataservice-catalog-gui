@@ -36,21 +36,18 @@ export class Auth {
     this.kc = Keycloak(kcConfig);
   }
 
-  init: ({
-    loginRequired
-  }: {
-    loginRequired: boolean;
-  }) => Promise<boolean> = async ({ loginRequired }) => {
-    const keycloakInitOptions: KeycloakInitOptions = {
-      onLoad: 'check-sso',
-      silentCheckSsoRedirectUri: this.conf.silentCheckSsoRedirectUri
+  init: ({ loginRequired }: { loginRequired: boolean }) => Promise<boolean> =
+    async ({ loginRequired }) => {
+      const keycloakInitOptions: KeycloakInitOptions = {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: this.conf.silentCheckSsoRedirectUri
+      };
+      await this.kc.init(keycloakInitOptions).catch(console.error);
+      if (loginRequired && !this.isAuthenticated()) {
+        await this.login();
+      }
+      return this.isAuthenticated();
     };
-    await this.kc.init(keycloakInitOptions).catch(console.error);
-    if (loginRequired && !this.isAuthenticated()) {
-      await this.login();
-    }
-    return this.isAuthenticated();
-  };
 
   login: () => Promise<void> = () =>
     this.kc.login().then().catch(console.error);
@@ -115,7 +112,7 @@ export class Auth {
     );
 
   hasOrganizationWritePermission = (orgNr: string) =>
-    this.hasOrganizationRole({ orgNr, role: 'admin' });
+    this.hasOrganizationRole({ orgNr, role: 'write' });
 
   hasOrganizationAdminPermission = (orgNr: string) =>
     this.hasOrganizationRole({ orgNr, role: 'admin' });
