@@ -7,6 +7,7 @@ export interface Configuration {
   SEARCH_FULLTEXT_HOST: string;
   ADMIN_GUI_HOST: string;
   USE_DEMO_LOGO: boolean;
+  CATALOG_ADMIN_BASE_URI: string;
 }
 
 export * from './domain';
