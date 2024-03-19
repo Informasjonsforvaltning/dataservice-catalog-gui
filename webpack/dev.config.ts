@@ -1,7 +1,6 @@
 import { resolve } from 'path';
 
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { Configuration as WebpackConfiguration } from 'webpack';
 import type { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
@@ -48,8 +47,7 @@ const configuration: Configuration = mergeWithCustomize<Configuration>({
           {
             loader: 'babel-loader',
             options: {
-              configFile: resolve(__dirname, '../babel.config.js'),
-              plugins: ['react-refresh/babel']
+              configFile: resolve(__dirname, '../babel.config.js')
             }
           },
           {
@@ -120,7 +118,7 @@ const configuration: Configuration = mergeWithCustomize<Configuration>({
       }
     ]
   },
-  plugins: [new ReactRefreshWebpackPlugin(), new ForkTsCheckerWebpackPlugin()]
+  plugins: [new ForkTsCheckerWebpackPlugin()]
 });
 
 export default configuration;
