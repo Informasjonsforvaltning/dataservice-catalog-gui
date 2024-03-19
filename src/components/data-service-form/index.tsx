@@ -212,9 +212,8 @@ const DataServiceForm: FC<Props> = ({
     ? [{ label: values.license.name || '', value: values.license.url || '' }]
     : openLicenses
         ?.filter(({ isReplacedBy }) => !isReplacedBy)
-        .map(({ uri, label: { no } }) => {
-          return { label: no || '', value: uri };
-        }) ?? [];
+        .map(({ uri, label: { no } }) => ({ label: no || '', value: uri })) ??
+      [];
 
   useEffect(() => {
     if (isMounted) {
@@ -482,15 +481,16 @@ const DataServiceForm: FC<Props> = ({
                         onChange={handleChange}
                         isReadOnly={isReadOnly}
                       />
-                      {values.endpointDescriptions.length > 1 && !isReadOnly && (
-                        <SC.RemoveButton
-                          type='button'
-                          onClick={() => remove(index)}
-                        >
-                          <RemoveIcon />
-                          Slett endepunktsbeskrivelse
-                        </SC.RemoveButton>
-                      )}
+                      {values.endpointDescriptions.length > 1 &&
+                        !isReadOnly && (
+                          <SC.RemoveButton
+                            type='button'
+                            onClick={() => remove(index)}
+                          >
+                            <RemoveIcon />
+                            Slett endepunktsbeskrivelse
+                          </SC.RemoveButton>
+                        )}
                     </Fragment>
                   ))}
                   {!isReadOnly && (
@@ -583,15 +583,13 @@ const DataServiceForm: FC<Props> = ({
             description={translations.landingPage.description}
             isReadOnly={isReadOnly}
           >
-            <>
-              <TextField
-                name='landingPage'
-                value={values.landingPage}
-                error={errors.landingPage}
-                onChange={handleChange}
-                isReadOnly={isReadOnly}
-              />
-            </>
+            <TextField
+              name='landingPage'
+              value={values.landingPage}
+              error={errors.landingPage}
+              onChange={handleChange}
+              isReadOnly={isReadOnly}
+            />
           </SC.Fieldset>
           <SC.Fieldset
             title='Dokumentasjon'
@@ -732,56 +730,54 @@ const DataServiceForm: FC<Props> = ({
             <FieldArray
               name='mediaTypes'
               render={({ push, remove }) => (
-                <>
-                  <TextTagsSearchField
-                    name='mediaTypes'
-                    labelText={
-                      isReadOnly
-                        ? 'Registrerte mediatyper'
-                        : 'Velg blant registrerte mediatyper'
-                    }
-                    value={values.mediaTypes.map(mediaType => {
-                      const match = mediaTypes?.find(
-                        ({ uri }) => mediaType === uri
+                <TextTagsSearchField
+                  name='mediaTypes'
+                  labelText={
+                    isReadOnly
+                      ? 'Registrerte mediatyper'
+                      : 'Velg blant registrerte mediatyper'
+                  }
+                  value={values.mediaTypes.map(mediaType => {
+                    const match = mediaTypes?.find(
+                      ({ uri }) => mediaType === uri
+                    );
+                    return {
+                      label: match?.name,
+                      value: match?.uri
+                    };
+                  })}
+                  suggestions={mediaTypesSuggestions.map(({ uri, name }) => ({
+                    label: name,
+                    value: uri
+                  }))}
+                  onChange={({
+                    target: { value: query }
+                  }: ChangeEvent<HTMLInputElement>) => {
+                    if (query && mediaTypes) {
+                      setIsWaitingForMediaTypesSuggestions(true);
+                      setMediaTypesSuggestions(
+                        mediaTypes
+                          .filter(({ uri, name }) => {
+                            const match = values.mediaTypes.find(
+                              mediaType => uri === mediaType
+                            );
+                            return (
+                              !match &&
+                              name.toLowerCase().includes(query.toLowerCase())
+                            );
+                          })
+                          .slice(0, 100)
                       );
-                      return {
-                        label: match?.name,
-                        value: match?.uri
-                      };
-                    })}
-                    suggestions={mediaTypesSuggestions.map(({ uri, name }) => ({
-                      label: name,
-                      value: uri
-                    }))}
-                    onChange={({
-                      target: { value: query }
-                    }: ChangeEvent<HTMLInputElement>) => {
-                      if (query && mediaTypes) {
-                        setIsWaitingForMediaTypesSuggestions(true);
-                        setMediaTypesSuggestions(
-                          mediaTypes
-                            .filter(({ uri, name }) => {
-                              const match = values.mediaTypes.find(
-                                mediaType => uri === mediaType
-                              );
-                              return (
-                                !match &&
-                                name.toLowerCase().includes(query.toLowerCase())
-                              );
-                            })
-                            .slice(0, 100)
-                        );
-                        setIsWaitingForMediaTypesSuggestions(false);
-                      }
-                    }}
-                    isLoadingSuggestions={isWaitingForMediaTypesSuggestions}
-                    onAddTag={(tag: string) =>
-                      !values.mediaTypes.includes(tag) && push(tag)
+                      setIsWaitingForMediaTypesSuggestions(false);
                     }
-                    onRemoveTag={remove}
-                    isReadOnly={isReadOnly || isImported}
-                  />
-                </>
+                  }}
+                  isLoadingSuggestions={isWaitingForMediaTypesSuggestions}
+                  onAddTag={(tag: string) =>
+                    !values.mediaTypes.includes(tag) && push(tag)
+                  }
+                  onRemoveTag={remove}
+                  isReadOnly={isReadOnly || isImported}
+                />
               )}
             />
           </SC.Fieldset>
@@ -1049,7 +1045,7 @@ const DataServiceForm: FC<Props> = ({
                   }: ChangeEvent<HTMLInputElement>) => {
                     if (query) {
                       setIsWaitingForDatasetSuggestions(true);
-                      searchDatasets({ q: query });
+                      searchDatasets(query);
                     }
                   }}
                   suggestions={datasetSuggestions.map(({ title, uri }) => ({
@@ -1122,14 +1118,12 @@ export default compose<FC<any>>(
   withDatasets,
   withReferenceData,
   withFormik<Props, FormValues>({
-    mapPropsToValues: ({ dataService }: Props) => {
-      return {
-        ...mapDataServiceToValues(dataService ?? {}),
-        keywordsTextArray: mapMultiLanguageTextToMultiLanguageTextArray(
-          dataService?.keywords ?? []
-        )
-      };
-    },
+    mapPropsToValues: ({ dataService }: Props) => ({
+      ...mapDataServiceToValues(dataService ?? {}),
+      keywordsTextArray: mapMultiLanguageTextToMultiLanguageTextArray(
+        dataService?.keywords ?? []
+      )
+    }),
     handleSubmit: () => {},
     validationSchema,
     displayName: 'DataServiceForm'

@@ -64,7 +64,7 @@ const configuration: Configuration = mergeWithCustomize<Configuration>({
       },
       {
         test: /\.s?css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'resolve-url-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.svg$/,
