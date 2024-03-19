@@ -1059,7 +1059,7 @@ function DataServiceForm({
                   }: ChangeEvent<HTMLInputElement>) => {
                     if (query) {
                       setIsWaitingForDatasetSuggestions(true);
-                      searchDatasets({ q: query });
+                      searchDatasets(query);
                     }
                   }}
                   suggestions={datasetSuggestions.map(({ title, uri }) => ({

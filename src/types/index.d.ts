@@ -4,7 +4,7 @@ export interface Configuration {
   FDK_REGISTRATION_BASE_URI: string;
   ORGANIZATION_CATALOG_URI: string;
   SEARCH_API: string;
-  SEARCH_FULLTEXT_HOST: string;
+  SEARCH_HOST: string;
   ADMIN_GUI_HOST: string;
   USE_DEMO_LOGO: boolean;
   CATALOG_ADMIN_BASE_URI: string;
