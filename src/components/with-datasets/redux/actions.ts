@@ -37,11 +37,11 @@ export function getDatasetsFailed(message: string) {
   };
 }
 
-export function searchDatasetsRequested(body: object, onSuccess?: () => void) {
+export function searchDatasetsRequested(q: string, onSuccess?: () => void) {
   return {
     type: SEARCH_DATASETS_REQUESTED,
     payload: {
-      body,
+      q,
       onSuccess
     }
   };

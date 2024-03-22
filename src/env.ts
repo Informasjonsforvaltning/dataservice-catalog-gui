@@ -6,7 +6,7 @@ interface EnvironmentVariables {
   FDK_REGISTRATION_BASE_URI: string;
   ORGANIZATION_CATALOG_URI: string;
   SEARCH_API: string;
-  SEARCH_FULLTEXT_HOST: string;
+  SEARCH_HOST: string;
   ADMIN_GUI_HOST: string;
   USE_DEMO_LOGO: boolean;
   CATALOG_ADMIN_BASE_URI: string;
@@ -22,7 +22,7 @@ const env = ((window as any).env || {
   ORGANIZATION_CATALOG_URI:
     'https://organization-catalog.staging.fellesdatakatalog.digdir.no',
   SEARCH_API: 'https://staging.fellesdatakatalog.digdir.no',
-  SEARCH_FULLTEXT_HOST: 'https://search.staging.fellesdatakatalog.digdir.no',
+  SEARCH_HOST: 'https://search.api.staging.fellesdatakatalog.digdir.no',
   ADMIN_GUI_HOST: 'https://admin.fellesdatakatalog.digdir.no',
   CATALOG_ADMIN_BASE_URI:
     'https://catalog-admin.staging.fellesdatakatalog.digdir.no',

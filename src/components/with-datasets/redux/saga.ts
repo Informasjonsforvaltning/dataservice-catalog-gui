@@ -11,7 +11,7 @@ import {
 
 import { Dataset } from '../../../types';
 
-const { SEARCH_FULLTEXT_HOST } = env;
+const { SEARCH_HOST } = env;
 
 function* getDatasetsRequested({
   payload: { body }
@@ -19,7 +19,7 @@ function* getDatasetsRequested({
   try {
     const { data, message } = yield call(
       axios.post,
-      `${SEARCH_FULLTEXT_HOST}/datasets`,
+      `${SEARCH_HOST}/datasets`,
       body
     );
 
@@ -36,17 +36,16 @@ function* getDatasetsRequested({
 }
 
 function* searchDatasetsRequested({
-  payload: { body, onSuccess }
+  payload: { q, onSuccess }
 }: ReturnType<typeof actions.searchDatasetsRequested>) {
   try {
     const { data, message } = yield call(
-      axios.post,
-      `${SEARCH_FULLTEXT_HOST}/datasets`,
-      body
+      axios.get,
+      `${SEARCH_HOST}/suggestions/datasets?q=${q}`
     );
 
-    if (data?.hits) {
-      yield put(actions.searchDatasetsSucceeded(data?.hits));
+    if (data?.suggestions) {
+      yield put(actions.searchDatasetsSucceeded(data?.suggestions));
       onSuccess?.();
     } else {
       yield put(actions.searchDatasetsFailed(JSON.stringify(message)));
