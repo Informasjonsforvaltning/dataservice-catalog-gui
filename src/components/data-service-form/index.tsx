@@ -79,7 +79,7 @@ interface Props
   onValidityChange?: (isValid: boolean) => void;
 }
 
-const DataServiceForm: FC<Props> = ({
+function DataServiceForm({
   organizationId,
   dataService,
   dataServiceStatus,
@@ -103,7 +103,7 @@ const DataServiceForm: FC<Props> = ({
   handleChange,
   setValues,
   setFieldValue
-}) => {
+}) {
   const [allExpanded, setAllExpanded] = useState([
     true,
     false,
@@ -212,9 +212,8 @@ const DataServiceForm: FC<Props> = ({
     ? [{ label: values.license.name || '', value: values.license.url || '' }]
     : openLicenses
         ?.filter(({ isReplacedBy }) => !isReplacedBy)
-        .map(({ uri, label: { no } }) => {
-          return { label: no || '', value: uri };
-        }) ?? [];
+        .map(({ uri, label: { no } }) => ({ label: no || '', value: uri })) ??
+      [];
 
   useEffect(() => {
     if (isMounted) {
@@ -389,6 +388,7 @@ const DataServiceForm: FC<Props> = ({
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Versjon'
+          deprecated
           isReadOnly={isReadOnly}
           isExpanded={allExpanded[1]}
           onClick={() =>
@@ -401,6 +401,7 @@ const DataServiceForm: FC<Props> = ({
         >
           <SC.Fieldset
             title='Versjon'
+            deprecated
             subtitle={translations.version.abstract}
             description={translations.version.description}
             isReadOnly={isReadOnly}
@@ -482,15 +483,16 @@ const DataServiceForm: FC<Props> = ({
                         onChange={handleChange}
                         isReadOnly={isReadOnly}
                       />
-                      {values.endpointDescriptions.length > 1 && !isReadOnly && (
-                        <SC.RemoveButton
-                          type='button'
-                          onClick={() => remove(index)}
-                        >
-                          <RemoveIcon />
-                          Slett endepunktsbeskrivelse
-                        </SC.RemoveButton>
-                      )}
+                      {values.endpointDescriptions.length > 1 &&
+                        !isReadOnly && (
+                          <SC.RemoveButton
+                            type='button'
+                            onClick={() => remove(index)}
+                          >
+                            <RemoveIcon />
+                            Slett endepunktsbeskrivelse
+                          </SC.RemoveButton>
+                        )}
                     </Fragment>
                   ))}
                   {!isReadOnly && (
@@ -583,15 +585,13 @@ const DataServiceForm: FC<Props> = ({
             description={translations.landingPage.description}
             isReadOnly={isReadOnly}
           >
-            <>
-              <TextField
-                name='landingPage'
-                value={values.landingPage}
-                error={errors.landingPage}
-                onChange={handleChange}
-                isReadOnly={isReadOnly}
-              />
-            </>
+            <TextField
+              name='landingPage'
+              value={values.landingPage}
+              error={errors.landingPage}
+              onChange={handleChange}
+              isReadOnly={isReadOnly}
+            />
           </SC.Fieldset>
           <SC.Fieldset
             title='Dokumentasjon'
@@ -732,62 +732,61 @@ const DataServiceForm: FC<Props> = ({
             <FieldArray
               name='mediaTypes'
               render={({ push, remove }) => (
-                <>
-                  <TextTagsSearchField
-                    name='mediaTypes'
-                    labelText={
-                      isReadOnly
-                        ? 'Registrerte mediatyper'
-                        : 'Velg blant registrerte mediatyper'
-                    }
-                    value={values.mediaTypes.map(mediaType => {
-                      const match = mediaTypes?.find(
-                        ({ uri }) => mediaType === uri
+                <TextTagsSearchField
+                  name='mediaTypes'
+                  labelText={
+                    isReadOnly
+                      ? 'Registrerte mediatyper'
+                      : 'Velg blant registrerte mediatyper'
+                  }
+                  value={values.mediaTypes.map(mediaType => {
+                    const match = mediaTypes?.find(
+                      ({ uri }) => mediaType === uri
+                    );
+                    return {
+                      label: match?.name,
+                      value: match?.uri
+                    };
+                  })}
+                  suggestions={mediaTypesSuggestions.map(({ uri, name }) => ({
+                    label: name,
+                    value: uri
+                  }))}
+                  onChange={({
+                    target: { value: query }
+                  }: ChangeEvent<HTMLInputElement>) => {
+                    if (query && mediaTypes) {
+                      setIsWaitingForMediaTypesSuggestions(true);
+                      setMediaTypesSuggestions(
+                        mediaTypes
+                          .filter(({ uri, name }) => {
+                            const match = values.mediaTypes.find(
+                              mediaType => uri === mediaType
+                            );
+                            return (
+                              !match &&
+                              name.toLowerCase().includes(query.toLowerCase())
+                            );
+                          })
+                          .slice(0, 100)
                       );
-                      return {
-                        label: match?.name,
-                        value: match?.uri
-                      };
-                    })}
-                    suggestions={mediaTypesSuggestions.map(({ uri, name }) => ({
-                      label: name,
-                      value: uri
-                    }))}
-                    onChange={({
-                      target: { value: query }
-                    }: ChangeEvent<HTMLInputElement>) => {
-                      if (query && mediaTypes) {
-                        setIsWaitingForMediaTypesSuggestions(true);
-                        setMediaTypesSuggestions(
-                          mediaTypes
-                            .filter(({ uri, name }) => {
-                              const match = values.mediaTypes.find(
-                                mediaType => uri === mediaType
-                              );
-                              return (
-                                !match &&
-                                name.toLowerCase().includes(query.toLowerCase())
-                              );
-                            })
-                            .slice(0, 100)
-                        );
-                        setIsWaitingForMediaTypesSuggestions(false);
-                      }
-                    }}
-                    isLoadingSuggestions={isWaitingForMediaTypesSuggestions}
-                    onAddTag={(tag: string) =>
-                      !values.mediaTypes.includes(tag) && push(tag)
+                      setIsWaitingForMediaTypesSuggestions(false);
                     }
-                    onRemoveTag={remove}
-                    isReadOnly={isReadOnly || isImported}
-                  />
-                </>
+                  }}
+                  isLoadingSuggestions={isWaitingForMediaTypesSuggestions}
+                  onAddTag={(tag: string) =>
+                    !values.mediaTypes.includes(tag) && push(tag)
+                  }
+                  onRemoveTag={remove}
+                  isReadOnly={isReadOnly || isImported}
+                />
               )}
             />
           </SC.Fieldset>
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Tilgang'
+          deprecated
           isReadOnly={isReadOnly}
           isExpanded={allExpanded[8]}
           onClick={() =>
@@ -802,6 +801,7 @@ const DataServiceForm: FC<Props> = ({
             title='Kan alle få tilgang?'
             subtitle={translations.isOpenAccess.abstract}
             description={translations.isOpenAccess.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <Radio
@@ -819,6 +819,7 @@ const DataServiceForm: FC<Props> = ({
             title='Er lisensen åpen?'
             subtitle={translations.isOpenLicense.abstract}
             description={translations.isOpenLicense.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <Radio
@@ -836,6 +837,7 @@ const DataServiceForm: FC<Props> = ({
             title='Er API-et gratis å bruke?'
             subtitle={translations.isFree.abstract}
             description={translations.isFree.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <Radio
@@ -853,6 +855,7 @@ const DataServiceForm: FC<Props> = ({
             title='Gir datatjenesten kilde til en autoritativ kilde?'
             subtitle={translations.isAuthoritativeSource.abstract}
             description={translations.isAuthoritativeSource.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <Radio
@@ -869,6 +872,7 @@ const DataServiceForm: FC<Props> = ({
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Vilkår og begrensninger'
+          deprecated
           isReadOnly={isReadOnly}
           isExpanded={allExpanded[9]}
           onClick={() =>
@@ -883,6 +887,7 @@ const DataServiceForm: FC<Props> = ({
             title='Trafikkbegrensninger'
             subtitle={translations.usageLimitation.abstract}
             description={translations.usageLimitation.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <MultilingualInput
@@ -898,6 +903,7 @@ const DataServiceForm: FC<Props> = ({
             title='Pris'
             subtitle={translations.price.abstract}
             description={translations.price.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <MultilingualInput
@@ -913,6 +919,7 @@ const DataServiceForm: FC<Props> = ({
             title='Kapasitet og ytelse'
             subtitle={translations.capacityAndPerformance.abstract}
             description={translations.capacityAndPerformance.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <MultilingualInput
@@ -928,6 +935,7 @@ const DataServiceForm: FC<Props> = ({
             title='Pålitelighet'
             subtitle={translations.reliability.abstract}
             description={translations.reliability.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <MultilingualInput
@@ -942,6 +950,7 @@ const DataServiceForm: FC<Props> = ({
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Status'
+          deprecated
           isReadOnly={isReadOnly}
           isExpanded={allExpanded[10]}
           onClick={() =>
@@ -956,6 +965,7 @@ const DataServiceForm: FC<Props> = ({
             title='Status på API-et'
             subtitle={translations.status.abstract}
             description={translations.status.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <Select
@@ -1075,6 +1085,7 @@ const DataServiceForm: FC<Props> = ({
         </SC.DataServiceFormSection>
         <SC.DataServiceFormSection
           title='Standard (tjenestetype)'
+          deprecated
           isReadOnly={isReadOnly}
           isExpanded={allExpanded[12]}
           onClick={() =>
@@ -1089,6 +1100,7 @@ const DataServiceForm: FC<Props> = ({
             title='Tjenestetype'
             subtitle={translations.serviceType.abstract}
             description={translations.serviceType.description}
+            deprecated
             isReadOnly={isReadOnly}
           >
             <Select
@@ -1114,7 +1126,7 @@ const DataServiceForm: FC<Props> = ({
       </SC.DataServiceForm>
     </>
   );
-};
+}
 
 export default compose<FC<any>>(
   memo,
@@ -1122,14 +1134,12 @@ export default compose<FC<any>>(
   withDatasets,
   withReferenceData,
   withFormik<Props, FormValues>({
-    mapPropsToValues: ({ dataService }: Props) => {
-      return {
-        ...mapDataServiceToValues(dataService ?? {}),
-        keywordsTextArray: mapMultiLanguageTextToMultiLanguageTextArray(
-          dataService?.keywords ?? []
-        )
-      };
-    },
+    mapPropsToValues: ({ dataService }: Props) => ({
+      ...mapDataServiceToValues(dataService ?? {}),
+      keywordsTextArray: mapMultiLanguageTextToMultiLanguageTextArray(
+        dataService?.keywords ?? []
+      )
+    }),
     handleSubmit: () => {},
     validationSchema,
     displayName: 'DataServiceForm'

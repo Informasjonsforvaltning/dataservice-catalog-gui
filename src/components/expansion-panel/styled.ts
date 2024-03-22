@@ -30,6 +30,11 @@ const RequiredLabel = styled(Tag)`
   margin-left: 5px;
 `;
 
+const DeprecatedLabel = styled(Tag)`
+  margin-left: 5px;
+  background: ${({ theme }) => theme.fdk.colors.neutrals.light};
+`;
+
 const Head = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,6 +70,7 @@ const Body = styled.div`
 export default {
   ExpansionPanel,
   RequiredLabel,
+  DeprecatedLabel,
   TitleWrapper,
   Description,
   Title,
