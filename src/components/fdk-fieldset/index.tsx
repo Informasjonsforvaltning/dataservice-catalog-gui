@@ -8,21 +8,23 @@ import { convertToSanitizedHtml } from '../../lib/markdown-converter';
 
 interface Props {
   required?: boolean;
+  deprecated?: boolean;
   title: string;
   subtitle: string;
   description?: string;
   isReadOnly?: boolean;
 }
 
-const Fieldset = ({
+function Fieldset({
   required,
+  deprecated,
   title,
   subtitle,
   description,
   isReadOnly,
   children,
   ...props
-}: PropsWithChildren<Props>) => {
+}: PropsWithChildren<Props>) {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpansion = () => setIsExpanded(!isExpanded);
   return (
@@ -31,6 +33,7 @@ const Fieldset = ({
         <SC.Inline>
           <SC.Title>{title}</SC.Title>
           {required && !isReadOnly && <SC.RequiredLabel text='Obligatorisk' />}
+          {deprecated && !isReadOnly && <SC.DeprecatedLabel text='Utgått' />}
         </SC.Inline>
         {!isReadOnly && (
           <SC.Inline justifyContent='space-between'>
@@ -53,6 +56,6 @@ const Fieldset = ({
       {children}
     </SC.Fieldset>
   );
-};
+}
 
 export default memo(Fieldset);

@@ -15,20 +15,22 @@ interface Props extends HTMLAttributes<any> {
   title: string;
   subtitle?: string;
   required?: boolean;
+  deprecated?: boolean;
   isExpanded?: boolean;
   isReadOnly?: boolean;
 }
 
-const ExpansionPanel = ({
+function ExpansionPanel({
   title = '',
   subtitle = '',
   required = false,
+  deprecated = false,
   isExpanded: isExpandedProp = false,
   isReadOnly = false,
   onClick,
   children,
   ...props
-}: PropsWithChildren<Props>): JSX.Element => {
+}: PropsWithChildren<Props>): JSX.Element {
   const [isExpanded, setIsExpanded] = useState(isExpandedProp);
   const toggleExpansion = () => setIsExpanded(!isExpanded);
 
@@ -43,6 +45,7 @@ const ExpansionPanel = ({
             {required && !isReadOnly && (
               <SC.RequiredLabel text='Obligatorisk' />
             )}
+            {deprecated && !isReadOnly && <SC.DeprecatedLabel text='Utgått' />}
           </SC.Description>
           {isExpanded ? (
             <ExpandLess fontSize='large' />
@@ -55,6 +58,6 @@ const ExpansionPanel = ({
       {isExpanded && <SC.Body>{children}</SC.Body>}
     </SC.ExpansionPanel>
   );
-};
+}
 
 export default memo(ExpansionPanel);

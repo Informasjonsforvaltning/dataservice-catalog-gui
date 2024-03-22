@@ -45,6 +45,11 @@ const RequiredLabel = styled(Tag)`
   margin-left: 5px;
 `;
 
+const DeprecatedLabel = styled(Tag)`
+  margin-left: 5px;
+  background: ${({ theme }) => theme.fdk.colors.neutrals.light};
+`;
+
 const Subtitle = styled.small`
   font-size: 15px;
   font-weight: 300;
@@ -70,6 +75,7 @@ export default {
   Inline,
   Title,
   RequiredLabel,
+  DeprecatedLabel,
   Subtitle,
   Description,
   Expand
