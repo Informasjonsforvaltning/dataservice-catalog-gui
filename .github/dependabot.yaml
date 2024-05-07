@@ -14,3 +14,10 @@ updates:
     schedule:
       interval: "weekly"
       day: "sunday"
+
+  # Configuration for Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+    interval: "weekly"
+    day: "sunday"
