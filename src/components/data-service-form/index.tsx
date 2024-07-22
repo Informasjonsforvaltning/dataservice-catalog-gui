@@ -79,7 +79,7 @@ interface Props
   onValidityChange?: (isValid: boolean) => void;
 }
 
-function DataServiceForm({
+const DataServiceForm = ({
   organizationId,
   dataService,
   dataServiceStatus,
@@ -103,7 +103,7 @@ function DataServiceForm({
   handleChange,
   setValues,
   setFieldValue
-}) {
+}) => {
   const [allExpanded, setAllExpanded] = useState([
     true,
     false,
@@ -208,12 +208,10 @@ function DataServiceForm({
     }
   ];
 
-  const licenseOptions = isImported
-    ? [{ label: values.license.name || '', value: values.license.url || '' }]
-    : openLicenses
-        ?.filter(({ isReplacedBy }) => !isReplacedBy)
-        .map(({ uri, label: { no } }) => ({ label: no || '', value: uri })) ??
-      [];
+  const licenseOptions =
+    openLicenses
+      ?.filter(({ isReplacedBy }) => !isReplacedBy)
+      .map(({ uri, label: { no } }) => ({ label: no || '', value: uri })) ?? [];
 
   useEffect(() => {
     if (isMounted) {
@@ -693,7 +691,7 @@ function DataServiceForm({
               isResettable
               noOptionLabel='Velg lisens'
               onChange={handleChange}
-              isReadOnly={isReadOnly || isImported}
+              isReadOnly={isReadOnly}
             />
           </SC.Fieldset>
           <SC.Fieldset
@@ -778,7 +776,7 @@ function DataServiceForm({
                     !values.mediaTypes.includes(tag) && push(tag)
                   }
                   onRemoveTag={remove}
-                  isReadOnly={isReadOnly || isImported}
+                  isReadOnly={isReadOnly}
                 />
               )}
             />
@@ -1126,7 +1124,7 @@ function DataServiceForm({
       </SC.DataServiceForm>
     </>
   );
-}
+};
 
 export default compose<FC<any>>(
   memo,
