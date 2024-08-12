@@ -79,6 +79,12 @@ export const helptextsNb = {
     description: ''
   },
 
+  formats: {
+    abstract: 'Velg format(er) for API’et.',
+    description:
+      'Listen kommer fra EU publication office sin liste over offisielle filtyper: <a href="http://publications.europa.eu/resource/authority/file-type">File type</a>. Se spesifikasjonen <a href="https://data.norge.no/specification/dcat-ap-no#Datatjeneste-format">Datatjeneste: format</a>'
+  },
+
   mediaTypes: {
     abstract: 'Velg format(er) fra IANAs liste over offisielle medietyper.',
     description:
