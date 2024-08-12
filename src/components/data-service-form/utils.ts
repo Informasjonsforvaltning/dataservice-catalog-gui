@@ -25,15 +25,9 @@ export const mapMultiLanguageTextToMultiLanguageTextArray = (
 export const mapMultiLanguageTextArrayToMultiLanguageText = (
   keywords: MultiLanguageTextArray
 ): MultiLanguageText[] => [
-  ...(keywords.nb?.map(keyword => {
-    return { nb: keyword };
-  }) ?? []),
-  ...(keywords.nn?.map(keyword => {
-    return { nn: keyword };
-  }) ?? []),
-  ...(keywords.en?.map(keyword => {
-    return { en: keyword };
-  }) ?? [])
+  ...(keywords.nb?.map(keyword => ({ nb: keyword })) ?? []),
+  ...(keywords.nn?.map(keyword => ({ nn: keyword })) ?? []),
+  ...(keywords.en?.map(keyword => ({ en: keyword })) ?? [])
 ];
 
 export const mapDataServiceToValues = ({
@@ -45,6 +39,7 @@ export const mapDataServiceToValues = ({
   version,
   operationCount,
   contact = {},
+  formats = [],
   mediaTypes = [],
   description = {},
   endpointUrls = [''],
@@ -71,6 +66,7 @@ export const mapDataServiceToValues = ({
   version,
   operationCount,
   contact,
+  formats,
   mediaTypes,
   description,
   endpointUrls,

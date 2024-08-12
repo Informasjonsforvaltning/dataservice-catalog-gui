@@ -54,6 +54,7 @@ import {
 import {
   DataService,
   Dataset,
+  FileType,
   MediaType,
   MultiLanguageTextArray
   // eslint-disable-next-line import/extensions,import/no-unresolved
@@ -85,7 +86,11 @@ const DataServiceForm = ({
   dataServiceStatus,
   datasets,
   datasetSearchSuggestions,
-  referenceData: { mediatypes: mediaTypes, openlicenses: openLicenses },
+  referenceData: {
+    mediatypes: mediaTypes,
+    openlicenses: openLicenses,
+    filetypes: fileTypes
+  },
   onTitleChange,
   onValidityChange,
   datasetsActions: {
@@ -123,6 +128,14 @@ const DataServiceForm = ({
   const dataServiceLoaded = useRef(false);
   const previousDataService = useRef<DataService>(values);
 
+  const [fileTypesSuggestions, setFileTypesSuggestions] = useState<FileType[]>(
+    []
+  );
+  const [
+    isWaitingForFileTypesSuggestions,
+    setIsWaitingForFileTypesSuggestions
+  ] = useState(false);
+
   const [mediaTypesSuggestions, setMediaTypesSuggestions] = useState<
     MediaType[]
   >([]);
@@ -138,6 +151,7 @@ const DataServiceForm = ({
   useEffect(() => {
     getReferenceData('mediatypes');
     getReferenceData('openlicenses');
+    getReferenceData('filetypes');
     mounted.current = true;
   }, []);
 
@@ -721,6 +735,64 @@ const DataServiceForm = ({
             )
           }
         >
+          <SC.Fieldset
+            title='Formater'
+            subtitle={translations.formats.abstract}
+            description={translations.formats.description}
+            isReadOnly={isReadOnly}
+          >
+            <FieldArray
+              name='formats'
+              render={({ push, remove }) => (
+                <TextTagsSearchField
+                  name='formats'
+                  labelText={
+                    isReadOnly
+                      ? 'Registrerte filtyper'
+                      : 'Søk på og velg blant registrerte filtyper'
+                  }
+                  value={values.formats.map(format => {
+                    const match = fileTypes?.find(({ uri }) => format === uri);
+                    return {
+                      label: match?.code,
+                      value: match?.uri
+                    };
+                  })}
+                  suggestions={fileTypesSuggestions.map(({ uri, code }) => ({
+                    label: code,
+                    value: uri
+                  }))}
+                  onChange={({
+                    target: { value: query }
+                  }: ChangeEvent<HTMLInputElement>) => {
+                    if (query && fileTypes) {
+                      setIsWaitingForFileTypesSuggestions(true);
+                      setFileTypesSuggestions(
+                        fileTypes
+                          .filter(({ uri, code }) => {
+                            const match = values.formats.find(
+                              format => uri === format
+                            );
+                            return (
+                              !match &&
+                              code.toLowerCase().includes(query.toLowerCase())
+                            );
+                          })
+                          .slice(0, 100)
+                      );
+                      setIsWaitingForFileTypesSuggestions(false);
+                    }
+                  }}
+                  isLoadingSuggestions={isWaitingForFileTypesSuggestions}
+                  onAddTag={(tag: string) =>
+                    !values.formats.includes(tag) && push(tag)
+                  }
+                  onRemoveTag={remove}
+                  isReadOnly={isReadOnly}
+                />
+              )}
+            />
+          </SC.Fieldset>
           <SC.Fieldset
             title='Mediatyper'
             subtitle={translations.mediaTypes.abstract}

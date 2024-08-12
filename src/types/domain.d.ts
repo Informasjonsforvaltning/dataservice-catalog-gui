@@ -16,6 +16,7 @@ export interface DataService {
   version?: string;
   operationCount?: number;
   contact: Partial<Contact>;
+  formats: string[];
   mediaTypes: string[];
   description: MultiLanguageText;
   endpointUrls: string[];
@@ -94,6 +95,11 @@ export interface MediaType {
   name: string;
 }
 
+export interface FileType {
+  uri: string;
+  code: string;
+}
+
 export interface OpenLicense {
   uri: string;
   code: string;
@@ -104,6 +110,7 @@ export interface OpenLicense {
 export interface ReferenceData {
   mediatypes?: MediaType[];
   openlicenses?: OpenLicense[];
+  filetypes?: FileType[];
 }
 
 export interface ExternalDocumentation {

@@ -16,6 +16,8 @@ const endpoint = (category: keyof ReferenceData) => {
       return '/reference-data/iana/media-types';
     case 'openlicenses':
       return '/reference-data/open-licenses';
+    case 'filetypes':
+      return '/reference-data/eu/file-types';
     default:
       throw Error('Reference category not implemented');
   }
@@ -30,12 +32,15 @@ function* getReferenceDataRequested({
       `${SEARCH_API}${endpoint(category)}`
     );
     if (data) {
-      yield put(
-        actions.getReferenceDataSucceeded(
-          category,
-          category === 'mediatypes' ? data.mediaTypes : data.openLicenses
-        )
-      );
+      if (category === 'mediatypes') {
+        yield put(actions.getReferenceDataSucceeded(category, data.mediaTypes));
+      } else if (category === 'filetypes') {
+        yield put(actions.getReferenceDataSucceeded(category, data.fileTypes));
+      } else {
+        yield put(
+          actions.getReferenceDataSucceeded(category, data.openLicenses)
+        );
+      }
     } else {
       yield put(actions.getReferenceDataFailed(''));
     }
