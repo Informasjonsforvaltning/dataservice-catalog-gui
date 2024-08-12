@@ -794,7 +794,7 @@ const DataServiceForm = ({
             />
           </SC.Fieldset>
           <SC.Fieldset
-            title='Mediatyper'
+            title='Medietyper'
             subtitle={translations.mediaTypes.abstract}
             description={translations.mediaTypes.description}
             isReadOnly={isReadOnly}
@@ -806,8 +806,8 @@ const DataServiceForm = ({
                   name='mediaTypes'
                   labelText={
                     isReadOnly
-                      ? 'Registrerte mediatyper'
-                      : 'Velg blant registrerte mediatyper'
+                      ? 'Registrerte medietyper'
+                      : 'Søk på og velg blant registrerte medietyper'
                   }
                   value={values.mediaTypes.map(mediaType => {
                     const match = mediaTypes?.find(

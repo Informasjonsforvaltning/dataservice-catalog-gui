@@ -86,9 +86,9 @@ export const helptextsNb = {
   },
 
   mediaTypes: {
-    abstract: 'Velg format(er) fra IANAs liste over offisielle medietyper.',
+    abstract: 'Velg medietype(r) for API’et.',
     description:
-      'Skriv inn format og avlsutt med TAB eller Enter. Vi anbefaler at du bruker de samme formatbeskrivelsene som du finner i lenken nedenfor. (Obs: Du må selv kopiere over formatet fra listen.) Lenke til IANAs liste over offisielle medietyper: <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">http://www.iana.org/assignments/media-types/media-types.xhtml</a>'
+      'Listen kommer fra IANAs liste over offisielle medietyper: <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">Media Types</a>. Se spesifikasjonen <a href="https://data.norge.no/specification/dcat-ap-no#Datatjeneste-medietype">Datatjeneste: medietype</a>'
   },
 
   isOpenAccess: {
