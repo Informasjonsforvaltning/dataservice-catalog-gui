@@ -357,6 +357,16 @@
       "decision": "ignore",
       "madeAt": 1661352502495,
       "expiresAt": 1663944484663
+    },
+    "1098582|@skatteetaten/frontend-components>axios": {
+      "decision": "ignore",
+      "madeAt": 1723557041628,
+      "expiresAt": 1726149019549
+    },
+    "1098582|axios": {
+      "decision": "ignore",
+      "madeAt": 1723557041628,
+      "expiresAt": 1726149019549
     }
   },
   "rules": {},
