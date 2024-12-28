@@ -16,13 +16,13 @@ interface Props {
 
 const {
   ADMIN_GUI_HOST,
-  FDK_REGISTRATION_BASE_URI,
+  CATALOG_PORTAL_BASE_URI,
   SEARCH_API,
   USE_DEMO_LOGO,
   CATALOG_ADMIN_BASE_URI
 } = env;
 
-function Header({ authService }: Props): JSX.Element {
+const Header = ({ authService }: Props): JSX.Element => {
   const userName = authService.getUser()?.name;
   const logOutAndRedirect = () => authService.logout();
 
@@ -43,7 +43,7 @@ function Header({ authService }: Props): JSX.Element {
   return (
     <SC.Header>
       <InternalHeader
-        homeUrl={FDK_REGISTRATION_BASE_URI}
+        homeUrl={CATALOG_PORTAL_BASE_URI}
         username={userName}
         onLogout={logOutAndRedirect}
         useDemoLogo={USE_DEMO_LOGO}
@@ -58,6 +58,6 @@ function Header({ authService }: Props): JSX.Element {
       </InternalHeader>
     </SC.Header>
   );
-}
+};
 
 export default memo(withAuth(Header));
