@@ -1,4 +1,4 @@
-FROM node:18.12.1 AS build
+FROM node:23.0.0 AS build
 RUN mkdir /app
 WORKDIR /app
 COPY package.json package-lock.json ./
