@@ -754,8 +754,8 @@ const DataServiceForm = ({
                   value={values.formats.map(format => {
                     const match = fileTypes?.find(({ uri }) => format === uri);
                     return {
-                      label: match?.code,
-                      value: match?.uri
+                      label: match?.code ?? format,
+                      value: match?.uri ?? format
                     };
                   })}
                   suggestions={fileTypesSuggestions.map(({ uri, code }) => ({
@@ -814,8 +814,8 @@ const DataServiceForm = ({
                       ({ uri }) => mediaType === uri
                     );
                     return {
-                      label: match?.name,
-                      value: match?.uri
+                      label: match?.name ?? mediaType,
+                      value: match?.uri ?? mediaType
                     };
                   })}
                   suggestions={mediaTypesSuggestions.map(({ uri, name }) => ({
