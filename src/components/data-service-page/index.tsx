@@ -19,7 +19,8 @@ import StatusBar from '../status-bar';
 
 import SC from './styled';
 
-import { Status } from '../../types/enums';
+import { AlertType, Status } from '../../types/enums';
+import AlertBox from '../alert-box';
 
 const { CATALOG_PORTAL_BASE_URI } = env;
 
@@ -117,7 +118,10 @@ const DataServicePage: FC<Props> = ({
         subTitle={organization?.name ?? ''}
         status={dataServiceStatus}
       />
-
+      <AlertBox
+        message='I forbindelse med oppdatering av katalogen er all skrivetilgang midlertidig deaktivert. Vi forventer at skrivetilgangen er tilgjengelig igjen innen 4. februar, kl. 15.00.'
+        type={AlertType.WARNING}
+      />
       <DataServiceForm
         organizationId={organizationId}
         dataServiceStatus={dataServiceStatus}
