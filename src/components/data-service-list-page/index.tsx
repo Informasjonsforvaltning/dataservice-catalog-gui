@@ -12,16 +12,15 @@ import withDataServices, {
   Props as DataServicesProps
 } from '../with-data-services';
 
-import IconAdd from '../../images/icon-add-cicle-sm-negative.svg';
-
 import Headline from '../headline';
-import FDKButton from '../fdk-button';
 import BreadcrumbsBar from '../breadcrumbs-bar';
 import DataServiceListTable from '../data-service-list-table';
 
 import SC from './styled';
 
 import { DataService } from '../../types';
+import AlertBox from '../alert-box';
+import { AlertType } from '../../types/enums';
 
 const { CATALOG_PORTAL_BASE_URI } = env;
 
@@ -39,7 +38,6 @@ interface Props
 const DataServiceListPage: FC<Props> = ({
   dataServices,
   organization,
-  history: { push },
   match: {
     params: { organizationId }
   },
@@ -50,9 +48,6 @@ const DataServiceListPage: FC<Props> = ({
       fetchAllDataServices(organizationId);
     }
   }, [organizationId]);
-
-  const navigateToNewDataServicePage = () =>
-    push(`/${organizationId}/data-services`);
 
   return (
     <SC.DataServiceListPage>
@@ -70,17 +65,10 @@ const DataServiceListPage: FC<Props> = ({
         subTitle={organization?.name ?? ''}
       />
       <SC.DataServiceListActions>
-        <FDKButton
-          icon={IconAdd}
-          variant='default'
-          text='Legg til datatjenestebeskrivelse'
-          onClick={navigateToNewDataServicePage}
+        <AlertBox
+          message='I forbindelse med oppdatering av katalogen er all skrivetilgang midlertidig deaktivert. Vi forventer at skrivetilgangen er tilgjengelig igjen innen 4. februar, kl. 15.00.'
+          type={AlertType.WARNING}
         />
-        {/*        <FDKButton
-          icon={IconAdd}
-          variant='secondary'
-          text='Høst spesifikasjon fra katalog'
-        /> */}
       </SC.DataServiceListActions>
       <DataServiceListTable dataServices={dataServices} />
     </SC.DataServiceListPage>

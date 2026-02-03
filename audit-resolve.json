@@ -367,6 +367,51 @@
       "decision": "ignore",
       "madeAt": 1723557041628,
       "expiresAt": 1726149019549
+    },
+    "1112686|@typescript-eslint/eslint-plugin>@typescript-eslint/parser>eslint": {
+      "decision": "ignore",
+      "madeAt": 1770094234378,
+      "expiresAt": 1772686208100
+    },
+    "1112686|@typescript-eslint/parser>eslint": {
+      "decision": "ignore",
+      "madeAt": 1770094234378,
+      "expiresAt": 1772686208100
+    },
+    "1112686|@typescript-eslint/type-utils>@typescript-eslint/utils>eslint": {
+      "decision": "ignore",
+      "madeAt": 1770094234378,
+      "expiresAt": 1772686208100
+    },
+    "1112686|eslint": {
+      "decision": "ignore",
+      "madeAt": 1770094234378,
+      "expiresAt": 1772686208100
+    },
+    "1112686|eslint-config-airbnb>eslint": {
+      "decision": "ignore",
+      "madeAt": 1770094234378,
+      "expiresAt": 1772686208100
+    },
+    "1112686|eslint-plugin-markdown>eslint": {
+      "decision": "ignore",
+      "madeAt": 1770094234378,
+      "expiresAt": 1772686208100
+    },
+    "1112686|eslint-plugin-react-hooks>eslint": {
+      "decision": "ignore",
+      "madeAt": 1770094234378,
+      "expiresAt": 1772686208100
+    },
+    "1112455|commitizen>lodash": {
+      "decision": "ignore",
+      "madeAt": 1770094242388,
+      "expiresAt": 1772686208100
+    },
+    "1112455|lodash": {
+      "decision": "ignore",
+      "madeAt": 1770096456324,
+      "expiresAt": 1772688434907
     }
   },
   "rules": {},

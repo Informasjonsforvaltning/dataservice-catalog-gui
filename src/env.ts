@@ -13,8 +13,7 @@ interface EnvironmentVariables {
 }
 
 const env = ((window as any).env || {
-  OIDC_ISSUER:
-    'https://sso.staging.fellesdatakatalog.digdir.no/auth/realms/fdk',
+  OIDC_ISSUER: 'https://auth.staging.fellesdatakatalog.digdir.no/realms/fdk',
   DATA_SERVICE_CATALOG_URL:
     'https://dataservice-catalog.staging.fellesdatakatalog.digdir.no',
   ORGANIZATION_CATALOG_URI:
